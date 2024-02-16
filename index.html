@@ -53,7 +53,18 @@
 
             <tr onmouseout="recon_stop()" onmouseover="recon_start()" bgcolor="#ffffd0">
               <td style="padding:20px;width:25%;vertical-align:middle">
-                <img src="images/gome-ngu_tnnls.png" alt="blind-date" width="160" height="120">
+                <div class="one">
+                    <img src="images/gome-ngu_tnnls.png" alt="blind-date" width="160" height="120">
+                </div>
+                <script type="text/javascript">
+                    function recon_start() {
+                        document.getElementById('recon_image').style.opacity = "1";
+                    }
+                    function recon_stop() {
+                        document.getElementById('recon_image').style.opacity = "0";
+                    }
+                    recon_stop()
+                </script>
               </td>
               <td width="75%" valign="middle">
                 <a href="https://drive.google.com/file/d/1Sg-RS1Uyctg_qA_PoJ9boNNPybSiDHxk/view?usp=drive_link">
