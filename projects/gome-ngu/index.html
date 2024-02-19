@@ -1,703 +1,322 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-96CCSDGHTX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
+  <meta charset="utf-8">
+  <meta name="description"
+        content="GOME-NGU: Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GOME-NGU: visual navigation under sparse reward via Goal Oriented Memory Encoder with Never-Give-Up</title>
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-        gtag('js', new Date());
-        gtag('config', 'G-96CCSDGHTX');
-    </script>
+    function gtag() {
+      dataLayer.push(arguments);
+    }
 
-    <title>METRA</title>
+    gtag('js', new Date());
 
-    <meta name="author" content="Seohong Park">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
 
-    <base target="_blank">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../stylesheet.css">
-    <link rel="stylesheet" href="css/app.css?v=20231012">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../images/favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="icon" href="./img/bear.png">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <script src="js/app.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
 </head>
-
 <body>
-<div class="container" id="main">
-    <div class="row">
-        <h1 class="col-md-12 text-center">
-            <b>GOME-NGU: visual navigation under sparse reward via Goal Oriented Memory Encoder with Never-Give-Up</b><br>
-            <small>
-                <b>IEEE Transactions on Neural Networks and Learning Systems (TNNLS)</b>
-            </small>
-        </h1>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <ul class="list-inline">
-                <li>
-                    <a href="https://leejisue.github.io/">JiSue Lee</a><br>University of Hanyang
-                </li>
-                <li>
-                    <a href="https://junmoony.github.io/">Jun Moon</a><br>University of Hanyang
-                </li>
-            </ul>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://leejisue.github.io/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://brunoleej.github.io/">
+            GOME-NGU
+          </a>
         </div>
+      </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4 text-center">
-            <ul class="list-inline">
-                <li>
-                    <a href="https://arxiv.org/abs/2310.08887"><h4 class="top10"><b>Paper</b></h4></a>
-                </li>
-                <li>
-                    <a href="https://github.com/seohongpark/METRA"><h4 class="top10"><b>Code</b></h4></a>
-                </li>
-            </ul>
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">GOME-NGU: visual navigation under sparse reward via Goal Oriented Memory Encoder with Never-Give-Up</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://leejisue.github.io/">Ji Sue Lee</a><sup>1</sup></span>
+            and
+            <span class="author-block">
+              <a href="https://junmoony.github.io/">Jun Moon</a><sup>2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1, 2</sup>University of Hanyang</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://drive.google.com/file/d/1zNjgLqhoUzV2w8u-Lm3ErZpxB3FVJbt5/view?usp=drive_link"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://youtu.be/jLMrcgprdCg?feature=shared"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h2>
-                <span class="font-weight-normal">Abstract</span>
-            </h2>
-            <p class="text-justify">
-                In this paper, we propose the <b>G</b>oal <b>O</b>riented <b>M</b>emory <b>E</b>ncoder (<b>GOME</b>) with <b>N</b>ever-<b>G</b>ive-<b>U</b>p (<b>NGU</b>) model to enhance visual navigation in sparse rewards environments.
-                Our approach addresses the critical need for efficient exploration and exploitation under high-dimensional visual data and limited spatial information.
-                In our proposed <b>GOME-NGU</b>, we first utilize <b>NGU</b> for sufficient exploration.
-                Then <b>GOME</b> is applied to effectively leverage the information acquired during the exploration phase for exploitation.
-                In <b>GOME</b>, the information of goals and their associated rewards, obtained during the exploration phase, are stored as pairs.
-                During the exploitation phase, priorities are assigned to the stored goals based on the agent's current location, arranging them in order of proximity to enable the agent acting optimally.
-                To demonstrate the efficiency of the proposed <b>GOME-NGU</b>, we consider two different experiment categories.
-                Specifically, (i) to validate the sufficiency of exploration using <b>NGU</b>, we measured the environment's state and recorded the number of times the agent visited each state, and (ii) to confirm that <b>GOME</b> optimizes the path to goals nearest to the agent's location during the exploitation phase, we measured the frequency of the agent consecutively reaching nearby goals at least twice.
-                The training for (i) and (ii) was conducted using NVIDIA Isaac Gym, and post-training validation was carried out through migration to Isaac Sim.
-                Additionally, for (ii), the efficiency of the proposed <b>GOME-NGU</b> was validated using the Husky robot in the real-world setting.
-                In the experimental results, our proposed GOME-NGU demonstrated the enhanced performance in both exploration and exploitation aspects in environments with sparse rewards.
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img id="teaser" src="./img/abstract.gif" alt="Abstract Image" style="width: 100%; height: auto;">
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            In this paper, we propose the <b>G</b>oal <b>O</b>riented <b>M</b>emory <b>E</b>ncoder (<b>GOME</b>) with <b>N</b>ever-<b>G</b>ive-<b>U</b>p (<b>NGU</b>) model to enhance visual navigation in sparse rewards environments.
+            Our approach addresses the critical need for efficient exploration and exploitation under high-dimensional visual data and limited spatial information.
+            In our proposed <b>GOME-NGU</b>, we first utilize NGU for sufficient exploration.
+            Then GOME is applied to effectively leverage the information acquired during the exploration phase for exploitation.
+            In GOME, the information of goals and their associated rewards, obtained during the exploration phase, are stored as pairs.
+            During the exploitation phase, priorities are assigned to the stored goals based on the agent's current location, arranging them in order of proximity to enable the agent acting optimally.
+            To demonstrate the efficiency of the proposed <b>GOME-NGU</b>, we consider two different experiment categories.
+            Specifically, (i) to validate the sufficiency of exploration using NGU, we measured the environment's state and recorded the number of times the agent visited each state, and (ii) to confirm that GOME optimizes the path to goals nearest to the agent's location during the exploitation phase, we measured the frequency of the agent consecutively reaching nearby goals at least twice.
+            The training for (i) and (ii) was conducted using NVIDIA Isaac Gym, and post-training validation was carried out through migration to Isaac Sim.
+            Additionally, for (ii), the efficiency of the proposed GOME-NGU was validated using the Husky robot in the real-world setting.
+            In the experimental results, our proposed <b>GOME-NGU</b> demonstrated the enhanced performance in both exploration and exploitation aspects in environments with sparse rewards.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!--    Method-->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <ol>
+            <li><b>Save the goal image and goal reward</b></li>
+            <p>Within our goal-oriented network, we input the goal image and generate the goal reward \(r^g_t\).
+              In the GOME, each pair of \((g_t, r^g_t)\) is stored.
+              The value of \(r^g_t\) changes according to the proximity of the goal based on the location of the agent.
+              If the agent takes a specific action (such as reaching a goal) during exploration, all \(r^g_t\) are set to 1.</p>
+            <li><b>Goal image feature extraction</b></li>
+            <p>
+              Through feature extraction, we provide meaningful information from the goal image. We utilize <a href="https://arxiv.org/pdf/1512.03385.pdf">ResNet-50</a> as the baseline for this process.
             </p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h2>Method</h2>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="col-md-12">
-            </div>
-        </div>
-        <div class="col-md-12">
-            <ol>
-                <li>
-                    <b>Save the goal image and goal reward</b>
-                    <p>Within our goal-oriented network, we input the goal image and generate the goal reward \(r^g_t\).
-                    In the GOME, each pair of \((g_t, r^g_t)\) is stored.
-                    The value of \(r^g_t\) changes according to the proximity of the goal based on the location of the agent.
-                    If the agent takes a specific action (such as reaching a goal) during exploration, all \(r^g_t\) are set to 1.
-                </p>
-                </li>
-
-                <li>
-                    <b>Goal image feature extraction</b>
-                    <p>
-                        Through feature extraction, we provide meaningful information from the goal image.
-                        We utilize <a href="https://arxiv.org/pdf/1512.03385.pdf">ResNet-50</a> as the baseline for this process.
-                    </p>
-                </li>
-
-                <li>
-                    <b>Priority goal selection based on the location of the agent</b>
-                    <p>
-                        Next, we select a priority goal based on the location of the agent. This involves assessing the similarity between the current and goal images in the GOME. If the \(g_n\) is close to the agent, it is selected as the priority goal. The proximity of the goal to the agent corresponds to the similarity score. A high score indicates that the goal is close to the agent. We utilze the cosine similarity to measure this similarity, which is calculated as follows:
-                        $$
-                        \begin{align*}
-                        (v_t^O, v_t^G) = \frac{v_t^O \cdot v_t^G}{\|v_t^O\| \times \|v_t^G\|}
-                        \end{align*}
-                        $$
-                        where \(v^O_t\) is the feature vector of the current image and \(v^G_t\) is the feature vector of the goal image in GOME. The norm of vector, \(v\) is represented as \(\|v\|\).
-                    </p>
-                </li>
-
-                <li>
-                    <b>Goal reward re-parameterization and GOME update</b>
-                    <p>
-                        Once the priority goal is selected, we re-parameterize our goal reward to prioritize the targets near the agent. This re-parameterization scales the similarity score to the goal. The priority goal is selected, and we re-parameterize \(r^g_t\) according to the following formula to facilitate the learning of the agent to visit closer goals first:
-                        $$
-                        \begin{align}
-                        r^g_t = \frac{1}{(v^O_t, v^G_t)^\xi},
-                        \end{align}
-                        $$
-                        where \(\xi\) is a parameter that adjusts the influence of distance. Using the formula above, goals that are farther from the agent will receive smaller rewards in the given episode.
-                    </p>
-                </li>
-            </ol>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h2>Experiment</h2>
-        </div>
-        <div class="col-md-12">
-            <h3>Experiment 01 - State Visitation Count</h3>
-            <div class="col-md-12">
-                <br>
-                <div class="col-md-12">
-                    <div class="col-md-10 col-md-offset-1">
-                        <p>
-                            <img src="img/experiment01.png" style="width: 100%;">
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-<!--            continuous case - experiment01-->
-            <div class="columns is-centered has-text-centered">
-                <div class="column custom-column">
-                    <img id="image-display-icm" src="./img/experiment01_continuous/icm/ICM000.gif" alt="ICM Image Display" style="width: 100%;">
-                    <p>ICM</p>
-                </div>
-
-                <div class="column custom-column">
-                    <img id="image-display-rnd" src="./img/experiment01_continuous/rnd/RND000.gif" alt="RND Image Display" style="width: 100%;">
-                    <p>RND</p>
-                </div>
-                <div class="column custom-column">
-                    <img id="image-display-ngu" src="./img/experiment01_continuous/ngu/NGU0000.gif" alt="NGU Image Display" style="width: 100%;">
-                    <p>NGU</p>
-                </div>
-            </div>
-            <input class="slider is-fullwidth is-large is-info" id="interpolation-slider" step="1" min="0" max="1533" value="0" type="range">
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const slider = document.getElementById('interpolation-slider');
-                    const imageDisplayIcm = document.getElementById('image-display-icm');
-                    const imageDisplayRnd = document.getElementById('image-display-rnd');
-                    const imageDisplayNgu = document.getElementById('image-display-ngu');
-
-                    slider.oninput = function() {
-                        const value = parseInt(this.value, 10);
-
-                        // ICM 이미지 업데이트
-                        const icmNumber = String(Math.round(value * 0.5234)).padStart(3, '0');
-                        imageDisplayIcm.src = `./img/experiment01_continuous/icm/ICM${icmNumber}.gif`;
-                        // RND 이미지 업데이트
-                        const rndNumber = String(Math.round(value * 0.545)).padStart(3, '0');
-                        imageDisplayRnd.src = `./img/experiment01_continuous/rnd/RND${rndNumber}.gif`;
-
-                        // NGU 이미지 업데이트
-                        const nguNumber = String(Math.round(value * 0.9866)).padStart(4, '0');
-                        imageDisplayNgu.src = `./img/experiment01_continuous/ngu/NGU${nguNumber}.gif`;
-                    }
-                });
-            </script>
-<!--            continuous case - experiment01-->
-
-            <h3>Objective</h3>
-            <ul>
-                <li>To achieve this, we propose the following novel objective for unsupervised RL:</li>
-            </ul>
-            <h3 class="text-center desktop-only">
-                $$\begin{aligned}
-                I_\mathcal{W}(S; Z) = \mathcal{W}(p(s, z), p(s)p(z)),
-                \end{aligned}$$
-            </h3>
-            <span class="text-center mobile-only">
-                $$\begin{aligned}
-                I_\mathcal{W}(S; Z) = \mathcal{W}(p(s, z), p(s)p(z)),
-                \end{aligned}$$
-            </span>
-            <ul>
-                <li>where \(I_\mathcal{W}(S; Z)\) is the <b>Wasserstein dependency measure</b> (<b>WDM</b>) between states and skills, and \(\mathcal{W}\) is the 1-Wasserstein distance with the <b>temporal distance metric</b>.</li>
-                <li>
-                    Intuitively, \(I_\mathcal{W}(S; Z)\) can be viewed as a "Wasserstein variant" of the previous MI objective \(I(S; Z)\), where the KL divergence in MI is replaced with the Wasserstein distance.
-                    However, despite the apparent similarity, there exists a significant difference between the two objectives: MI is completely agnostic to the underlying distance metric, while WDM is a <b>metric-aware</b> quantity.
-                </li>
-                <li>
-                    As a result, the WDM objective not only discovers diverse skills that are different from one another, as in the MI objective,
-                    but also actively maximizes temporal distances between different skill trajectories.
-                    This makes them collectively cover the state space as much as possible.
-                </li>
-            </ul>
-            <h3>Tractable optimization</h3>
-            <ul>
-                <li>Unfortunately, the WDM objective above is intractable. However, we show that it is equivalent to the following simple, tractable objective under some approximations:</li>
-            </ul>
-            <h3 class="text-center desktop-only">
-                $$\begin{aligned}
-                \text{Maximize} \ \ r = (\phi(s') - \phi(s))^\top z \quad
-                \text{s.t.} \ \ \|\phi(s) - \phi(s')\|_2 \leq 1.
-                \end{aligned}$$
-            </h3>
-            <span class="text-center mobile-only">
-                $$\begin{aligned}
-                \text{Maximize} \ \ &r = (\phi(s') - \phi(s))^\top z \quad \\
-                \text{s.t.} \ \ &\|\phi(s) - \phi(s')\|_2 \leq 1.
-                \end{aligned}$$
-            </span>
-            <ul>
-                <li>We jointly train both a policy \(\pi(a|s, z)\) and a <i>representation</i> function \(\phi(s)\) with the <i>same</i> objective above using dual gradient descent.</li>
-            </ul>
-            <h3>Intuition</h3>
-            <div class="col-md-12">
-                <br>
-                <div class="col-md-12">
-                    <div class="col-md-10 col-md-offset-1">
-                        <p>
-                            <img src="img/illust.png" style="width: 100%;">
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <ul>
-                <li>Our final objective above has an intuitive interpretation.
-                    Intuitively, to maximize the reward, the policy should learn to move as far as possible along various directions (specified by \(z\)) in the latent space.</li>
-                <li>Since distances in the latent space, \(\|\phi(s_1) - \phi(s_2)\|_2\), are always upper-bounded by the corresponding temporal distances in the MDP,
-                    the latent space should assign its (limited) dimensions to the most "<b>temporally spread-out</b>" manifolds in the state space,
-                    in the sense that shortest paths within the set of represented states should be as long as possible.</li>
-                <li>
-                    This conceptually resembles "<b>principal components</b>" of the state space, but with respect to shortest paths rather than Euclidean distances, and with non-linear \(\phi\) rather than linear \(\phi\).
-                    In other words, \(\phi\) learns to <i>abstract</i> the state space in a lossy manner, while preserving the most temporally important manifolds.
-                </li>
-                <li>Based on this intuition, we call our method <b>Metric-Aware Abstraction</b> (<b>METRA</b>).</li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h2>How good is METRA?</h2>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="col-md-12">
-                <div class="col-md-12">
-                    <p>
-                        <img src="img/qual.png" style="width: 100%;">
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <ul>
-                <li>
-                    To the best of our knowledge, METRA is the <b>first</b> unsupervised RL method that can discover diverse locomotion behaviors
-                    in <b>pixel-based</b> Quadruped and Humanoid, without any prior knowledge, supervision, or data.
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h2>Results (Pixel-based Quadruped)</h2>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="col-md-3 col-md-offset-3">
-                <div class="col-md-12">
-                    <p>
-                        <img src="img/quadruped_ob.png" style="width: 100%;">
-                    </p>
-                </div>
-                <span class="text-center text-caption top5 bottom5">
-                    Observation (pixels)
-                </span>
-            </div>
-            <div class="col-md-3">
-                <div class="col-md-12">
-                    <p>
-                        <img src="img/quadruped_global.png" style="width: 100%">
-                    </p>
-                </div>
-                <span class="text-center text-caption top5 bottom5">
-                    Global view
-                </span>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <ul>
-                <li>We use gradient-colored floors to allow the agent to infer its location from pixel observations.</li>
-            </ul>
-        </div>
-        <div class="col-md-12">
-            <hr>
-            <h3>Unsupervised skill discovery methods</h3>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-3">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_metra_16.png">
-                    </p>
-                </div>
-                <div class="col-md-9">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_metra_16.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5">
-                <b class="text-myred">METRA (ours)</b> (16 skills, 2 rollouts each)
-            </span>
-            <span class="text-center text-caption-small bottom5">
-                To demonstrate the consistency of the learned skill policy, we show <b>two rollouts (videos) for each skill</b>.
-            </span>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-3">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_metra_4d.png">
-                    </p>
-                </div>
-                <div class="col-md-9">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_metra_4d.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5">
-                <b class="text-myred">METRA (ours)</b> (4-D skills, 2 rollouts each for 9 randomly sampled skills)
-            </span>
-            <span class="text-center text-caption-small bottom5">
-                To demonstrate the consistency of the learned skill policy, we show <b>two rollouts (videos) for each skill</b>.
-            </span>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-3">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_diayn_4d.png">
-                    </p>
-                </div>
-                <div class="col-md-9">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_diayn_4d.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5">
-                <b>DIAYN</b> (4-D skills, 2 rollouts each for 9 randomly sampled skills)
-            </span>
-            <span class="text-center text-caption-small bottom5">
-                To demonstrate the consistency of the learned skill policy, we show <b>two rollouts (videos) for each skill</b>.
-            </span>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-3">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_lsd_4d.png">
-                    </p>
-                </div>
-                <div class="col-md-9">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_lsd_4d.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5">
-                <b>LSD</b> (4-D skills, 2 rollouts each for 9 randomly sampled skills)
-            </span>
-            <span class="text-center text-caption-small bottom5">
-                To demonstrate the consistency of the learned skill policy, we show <b>two rollouts (videos) for each skill</b>.
-            </span>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <ul>
-                <li>METRA discovers a variety of locomotion skills by maximizing <b>temporal distances</b> in diverse latent directions. In contrast, previous skill discovery methods mostly learn static behaviors.</li>
-            </ul>
-        </div>
-        <div class="col-md-12">
-            <hr>
-            <h3>Unsupervised exploration methods</h3>
-        </div>
-        <div class="col-md-6">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-6">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_icm.png">
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_icm.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5 bottom5">
-                <b>ICM</b> (9 random rollouts)
-            </span>
-        </div>
-        <div class="col-md-6">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-6">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_rnd.png">
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_rnd.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5 bottom5">
-                <b>RND</b> (9 random rollouts)
-            </span>
-        </div>
-        <div class="col-md-6">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-6">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_apt.png">
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_apt.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5 bottom5">
-                <b>APT</b> (9 random rollouts)
-            </span>
-        </div>
-        <div class="col-md-6">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-6">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_aps.png">
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_aps.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5 bottom5">
-                <b>APS</b> (9 random rollouts)
-            </span>
-        </div>
-        <div class="col-md-6">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-6">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_p2e.png">
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_p2e.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5 bottom5">
-                <b>Plan2Explore</b> (9 random rollouts)
-            </span>
-        </div>
-        <div class="col-md-6">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-6">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dqd_lbs.png">
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dqd_lbs.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5 bottom5">
-                <b>LBS</b> (9 random rollouts)
-            </span>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <ul>
-                <li>
-                    Unsupervised exploration methods mostly exhibit chaotic, random behaviors and fail to fully explore the state space (in terms of \(x\)-\(y\) coordinates).
-                    This is because it is practically infeasible to completely cover the infinitely many combinations of joint angles and positions.
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h2>Results (Pixel-based Cheetah)</h2>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-3">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dch_metra_8.png">
-                    </p>
-                </div>
-                <div class="col-md-9">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dch_metra_8.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5">
-                <b class="text-myred">METRA (ours)</b> (8 skills, 2 rollouts each)
-            </span>
-            <span class="text-center text-caption-small bottom5">
-                To demonstrate the consistency of the learned skill policy, we show <b>two rollouts (videos) for each skill</b>.
-            </span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h2>Results (Pixel-based Humanoid)</h2>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="vertical-align">
-                <div class="col-md-3">
-                    <p>
-                        <img class="img-responsive center-block" src="img/dhu_metra_16.png">
-                    </p>
-                </div>
-                <div class="col-md-9">
-                    <p>
-                        <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                            <source src="img/dhu_metra_16.mp4" type="video/mp4">
-                        </video>
-                    </p>
-                </div>
-            </div>
-            <span class="text-center text-caption top5">
-                <b class="text-myred">METRA (ours)</b> (16 skills, 2 rollouts each)
-            </span>
-            <span class="text-center text-caption-small bottom5">
-                To demonstrate the consistency of the learned skill policy, we show <b>two rollouts (videos) for each skill</b>.
-            </span>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <ul>
-                <li>METRA discovers diverse behaviors (e.g., running, backflipping, crawling, etc.) in pixel-based Cheetah and Humanoid as well. We refer to the paper for the complete qualitative results (8 seeds) on locomotion environments.</li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h2>Results (Pixel-based Kitchen)</h2>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="col-md-12">
-                <p>
-                    <video class="center-block" width="100%" autoplay loop muted controls playsinline>
-                        <source src="img/kit_metra_24.mp4" type="video/mp4">
-                    </video>
-                </p>
-            </div>
-            <span class="text-center text-caption top5">
-                <b class="text-myred">METRA (ours)</b> (24 skills, 2 rollouts each)
-            </span>
-            <span class="text-center text-caption-small bottom5">
-                To demonstrate the consistency of the learned skill policy, we show <b>two rollouts (videos) for each skill</b>.
-            </span>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <ul>
-                <li>METRA learns a variety of manipulation skills in pixel-based Kitchen. On average, METRA achieves 3-4 out of 6 predefined tasks (e.g., open the microwave, turn on the light, move the kettle, etc.).</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <p class="text-justify">
-                The website template was borrowed from <a href="http://mgharbi.com/">Michaël Gharbi</a> and <a href="https://jonbarron.info/">Jon Barron</a>.
+            <li><b>Priority goal selection based on the location of the agent</b></li>
+            <p>
+              Next, we select a priority goal based on the location of the agent. This involves assessing the similarity between the current and goal images in the GOME. If the \(g_n\) is close to the agent, it is selected as the priority goal. The proximity of the goal to the agent corresponds to the similarity score. A high score indicates that the goal is close to the agent. We utilze the cosine similarity to measure this similarity, which is calculated as follows:
+              $$
+              \begin{align*}
+              (v_t^O, v_t^G) = \frac{v_t^O \cdot v_t^G}{\|v_t^O\| \times \|v_t^G\|}
+              \end{align*}
+              $$
+              where \(v^O_t\) is the feature vector of the current image and \(v^G_t\) is the feature vector of the goal image in GOME. The norm of vector, \(v\) is represented as \(\|v\|\).
             </p>
+            <li><b>Goal reward re-parameterization and GOME update</b></li>
+            <p>
+              Once the priority goal is selected, we re-parameterize our goal reward to prioritize the targets near the agent. This re-parameterization scales the similarity score to the goal. The priority goal is selected, and we re-parameterize \(r^g_t\) according to the following formula to facilitate the learning of the agent to visit closer goals first:
+              $$
+              \begin{align}
+              r^g_t = \frac{1}{(v^O_t, v^G_t)^\xi},
+              \end{align}
+              $$
+              where \(\xi\) is a parameter that adjusts the influence of distance. Using the formula above, goals that are farther from the agent will receive smaller rewards in the given episode.
+            </p>
+          </ol>
         </div>
+      </div>
     </div>
+  </div>
+  <!--  Method-->
 
-    <script>
-        if (navigator.userAgent.match(/Android/i)
-            || navigator.userAgent.match(/webOS/i)
-            || navigator.userAgent.match(/iPhone/i)
-            || navigator.userAgent.match(/iPad/i)
-            || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-            || navigator.userAgent.match(/iPod/i)
-            || navigator.userAgent.match(/BlackBerry/i)
-            || navigator.userAgent.match(/Windows Phone/i)) {
-            const cells = document.getElementsByTagName('video');
-            for (const cell of cells) {
-                cell.removeAttribute("controls");
-            }
-        }
-    </script>
-</div>
+  <!-- Experiment. -->
+  <div class="container is-max-desktop">
+  <div class="columns is-centered">
+    <div class="column is-full-width">
+      <h2 class="title is-3 has-text-centered">Experiment</h2>
+      <h3 class="title is-4">Experiment 01 - State Visitation Count</h3>
+      <div class="content has-text-justified">
+        <p>Discrete Case</p>
+      </div>
+
+      <img src="./img/experiment01.png" alt="Experiment 01 Image Description">
+
+      <div class="content has-text-justified">
+        <p>Continuous Case</p>
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-one-third">
+          <img id="image-display-icm" src="./img/experiment01_continuous/icm/ICM000.gif" alt="ICM Image Display" style="width: 100%;">
+          <p>ICM</p>
+        </div>
+
+        <div class="column is-one-third">
+          <img id="image-display-rnd" src="./img/experiment01_continuous/rnd/RND000.gif" alt="RND Image Display" style="width: 100%;">
+          <p>RND</p>
+        </div>
+        <div class="column is-one-third">
+          <img id="image-display-ngu" src="./img/experiment01_continuous/ngu/NGU0000.gif" alt="NGU Image Display" style="width: 100%;">
+          <p>NGU</p>
+        </div>
+      </div>
+      <input class="slider is-fullwidth is-large is-info" id="interpolation-slider" step="1" min="0" max="1533" value="0" type="range">
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const slider = document.getElementById('interpolation-slider');
+          const imageDisplayIcm = document.getElementById('image-display-icm');
+          const imageDisplayRnd = document.getElementById('image-display-rnd');
+          const imageDisplayNgu = document.getElementById('image-display-ngu');
+
+          slider.oninput = function() {
+            const value = parseInt(this.value, 10);
+
+            // ICM 이미지 업데이트
+            const icmNumber = String(Math.round(value * 3.357)).padStart(3, '0');
+            imageDisplayIcm.src = `./img/experiment01_continuous/icm/ICM${icmNumber}.gif`;
+
+            // RND 이미지 업데이트
+            const rndNumber = String(Math.round(value * 3.495)).padStart(3, '0');
+            imageDisplayRnd.src = `./img/experiment01_continuous/rnd/RND${rndNumber}.gif`;
+
+            // NGU 이미지 업데이트
+            const nguNumber = String(Math.round(value * 6.328)).padStart(4, '0');
+            imageDisplayNgu.src = `./img/experiment01_continuous/ngu/NGU${nguNumber}.gif`;
+          }
+        });
+      </script>
+
+        <h3 class="title is-4">Experiment 02 - Sequential Goal Visitation Count</h3>
+        <div class="content has-text-justified">
+          <p>Simulation</p>
+        </div>
+      <div class="content has-text-justified">
+        <p>Real-world</p>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+</section>
+
+<section class="section">
+  <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/jLMrcgprdCg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen width="320" height="300"></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@unpublished{gome-ngu,
+	author = {Ji Sue Lee and Jun Moon},
+	title  = {{GOME-NGU: visual navigation under sparse reward via Goal-Oriented Memory Encoder with Never-Give-Up}},
+	year   = {2024},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            The website template was borrowed from <a href="https://keunhong.com/">Keunhong Park</a> and <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
