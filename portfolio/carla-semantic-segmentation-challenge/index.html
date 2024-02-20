@@ -48,6 +48,13 @@
       ga('create', 'UA-72422365-1', 'auto');
       ga('send', 'pageview');
   </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css"
+          crossorigin="anonymous">
+
+    <!-- Compressed JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -84,7 +91,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </nav>
 
@@ -94,47 +100,27 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-two-thirds">
-          <div class="is-size-6 publication-venue">CVPR 2020</div>
+          <div class="is-size-6 publication-venue">CARLA</div>
 
-          <h1 class="title is-1 publication-title">LatentFusion: End-to-End Differentiable Reconstruction and Rendering
-                                                   for Unseen Object Pose Estimation</h1>
+          <h1 class="title is-1 publication-title">CARLA Semantic Segmentation Challenge</h1>
           <div class="is-size-5 publication-authors">
-            <span class="author-block author-block-"><a href="https://keunhong.com">Keunhong Park</a></span>,
-            <span class="author-block author-block-"><a
-                href="https://cs.gmu.edu/~amousavi/">Arsalan Mousavian</a></span>,
-            <span class="author-block author-block-"><a href="https://yuxng.github.io/">Yu Xiang</a></span>,
-            <span class="author-block author-block-"><a
-                href="https://homes.cs.washington.edu/~fox/">Dieter Fox</a></span>
+            <span class="author-block author-block-"><a href="https://leejisue.github.io">Ji Sue Lee</a></span>
           </div>
-
-          <div class="publication-links">
-          <span class="link-block link-block-">
-            <a class="external-link button is-small is-rounded is-link" href="https://arxiv.org/pdf/1912.00416.pdf">
-              <span class="icon"> <i class="fas fa-file-pdf"></i> </span>
-              <span>PDF</span>
-            </a>
-          </span>
-
-            <span class="link-block link-block-">
-            <a class="external-link button is-small is-rounded is-link" href="https://arxiv.org/abs/1912.00416">
-              <span class="icon"><i class="ai ai-arxiv"></i></span>
-              <span>arXiv</span>
-            </a>
-          </span>
-
+            <br>
             <span class="link-block link-block-">
             <a class="external-link button is-small is-rounded is-link" href="https://github.com/NVlabs/latentfusion">
               <span class="icon"><i class="fas fab fa-github"></i></span>
               <span>Code</span>
             </a>
             </span>
-
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<hr>
 
 <section class="section">
   <div class="container">
@@ -153,66 +139,102 @@
 
       <div class="columns is-centered">
         <div class="column is-half">
-          <h2>Abstract</h2>
-          <p>Current 6D object pose estimation methods usually require a 3D model for each object. These methods also
-             require additional training in order to incorporate new objects. As a result, they are
-             difficult to scale to a large number of objects and cannot be directly applied to unseen objects.</p>
-          <p>We propose a novel framework for 6D pose estimation of unseen objects. We present a network that
-             reconstructs a
-             latent 3D representation of an object using a small number of reference views
-             at inference time. Our network is able to render the latent 3D representation from arbitrary views. Using
-             this
-             neural renderer, we directly optimize for pose given an input image. By training
-             our network with a large number of 3D shapes for reconstruction and rendering, our network generalizes well
-             to
-             unseen objects. We present a new dataset for unseen object pose
-             estimation--MOPED. We evaluate the performance of our method for unseen object pose estimation on MOPED as
-             well
-             as the ModelNet and LINEMOD datasets. Our method performs competitively to
-             supervised methods that are trained on those objects.</p>
+          <h2>Introduction</h2>
+            <hr>
+            <div class="callout callout alert">
+                In digital image processing and computer vision, <strong><em><span style="color:red;">Image Segmentation</span></em></strong> is the process of partitioning a digital image into multiple <strong><em>image segments</em></strong>, also known as <strong><em>image regions</em></strong> or <strong><em>image objects</em></strong> (set of pixels).
+                (<em>Wikipedia</em>)
+            </div>
+            <p>
+                Segmentation models are useful for a variety of tasks, including:
+
+                <ol>
+            <li>
+                <strong>Autonomous Driving</strong>
+                <p>
+                Image segmentation in autonomous driving helps classify every pixel of a scene, allowing vehicles to understand their environment in detail and make safer decisions on the road.
+                </p>
+            </li>
+
+            <li>
+                <strong>Medical Imaging</strong>
+                <p>Image segmentation in medical imaging allows for precise delineation of structures like tumors, blood vessels, or organs.
+                    This granularity helps in accurate diagnosis, treatment planning, and disease monitoring.
+                </p>
+            </li>
+
+            <li>
+                <strong>Agriculture</strong>
+                <p>
+                    In agriculture, image segmentation can detect and differentiate between crops and weeds. This facilitates targeted herbicide application, ensuring healthier crop growth while minimizing chemical usage.
+                </p>
+            </li>
+        </ol>
+            </p>
         </div>
       </div>
 
       <div class="columns is-centered">
         <div class="column is-two-thirds">
           <div class="publication-body">
-            <h2 class="is-2">Citing LatentFusion</h2>
-            <p>If you find the LatentFusion code or data useful, please consider citing:</p>
-            <pre><code class="lang-bibtex">@inproceedings{park2019latentfusion,
-  title={LatentFusion: End-to-End Differentiable Reconstruction and Rendering for Unseen Object Pose Estimation},
-  author={Park, Keunhong and Mousavian, Arsalan and Xiang, Yu and Fox, Dieter},
-  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
-  year={2020}
-}
-</code></pre>
-            <h2 class="is-2">Code</h2>
-            <p>You can find our code on <a href="https://github.com/NVlabs/latentfusion">Github</a></p>
-            <h2 class="is-2">MOPED Dataset</h2>
-            <div class="columns">
-              <div class="column is-half">
-                <img alt="MOPED dataset" src="./imgs/background.jpg"/>
-              </div>
-              <div class="column">
-                <p>The dataset is available for download <a
-                    href="https://homes.cs.washington.edu/~kpar/latentfusion/moped.tgz">here</a>!
-                </p>
-              </div>
-            </div>
-            <h3 class="is-3">Dataset License</h3>
-            <blockquote><p>Copyright 2020 NVIDIA</p>
-              <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-                 associated documentation files (the "Software"), to deal in the &gt; Software without
-                 restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
-                 sublicense, and/or sell copies of the Software, and to permit persons to whom the
-                 Software is furnished to do so, subject to the following conditions:</p>
-              <p>The above copyright notice and this permission notice shall be included in all copies or substantial
-                 portions of the Software.</p>
-              <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-                 LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-                 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-                 OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-                 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-            </blockquote>
+            <h2 class="is-2">Goal</h2>
+              <hr>
+            <p>Our goal is to achieve real-time semantic segmentation targets in the CARLA simulation environment using the diverse data collected from it. (e.g., heavy rain, fine dust, sunny, etc.)</p>
+            <p><strong>The techniques that are utilized in this project:</strong>
+            <li>
+                Pretrained
+                <ol>
+              <li>
+                  DeepLabv3 (backbone: resnet_50)
+              </li>
+              <li>
+                  DeepLabv3 (backbone: resnet_50 with Conditional Random Field)
+              </li>
+              <li>
+                  DeepLabv3 (backbone: mobilenet_v3_large)
+              </li>
+          </ol>
+            </li>
+              <li>
+                  Scratch
+                  <ol>
+                      <li>
+                          U-Net
+                      </li>
+                      <li>
+                          Mask-RCNN
+                      </li>
+                  </ol>
+              </li>
+            </p>
+
+              <!-- CRF explanation-->
+            <h2 class="is-2">Why is CRF (Conditional Random Field)?</h2>
+              <hr>
+              <li>
+                  <strong>Conditional Random Fields (CRFs)</strong> are a class of statistical modeling methods often applied in pattern recognition and machine learning and used for structured prediction. (<em>Wikipedia</em>)
+              </li>
+            <h2 class="is-2">Dataset Information</h2>
+              <hr>
+              <p>
+                  We performed segmentation using data collected from 10 towns provided by default in CARLA, under three environmental conditions: <strong><em>sunny</em></strong>, <strong><em>rainy</em></strong>, <strong><em>dusty</em></strong>.
+              </p>
+              <p>
+                  The image data has a 1:2 ratio, and we were able to test the generalization performance of segmentation by adjusting to a maximum size of (216 x 512).
+              </p>
+
+              <h3 class="is-3">Class Definition</h3>
+              <p>
+                  We modified the <strong>28 <em>classes</em></strong> obtained from the official CARLA documentation into <strong>12 <em>classes</em></strong>.
+              </p>
+
+              <!--fix needed-->
+              <pre>
+                  <code>
+                      original_class = {0: "None", 1 : "Roads", 2 : "Sidewalks", 3 : "Buildings", 4 : "Other", 5 : "Other", 6 : "Poles", 7 : "TrafficLight", 8 : "TrafficSigns", 9 : "Vegetation", 10 : "Roads", 11 : "None", 12 : "Pedestrians", 13 : "Vehicles", 14 : "Vehicles", 15 : "Vehicles", 16 : "Vehicles", 17 : "Vehicles", 18 : "Vehicles", 19 : "Vehicles", 20 : "Other", 21 : "Other", 22 : "Other", 23 : "Other", 24 : "RoadLines", 25 : "Sidewalks", 26 : "Other", 27 : "Other", 28 : "Other"}
+                      remap_class = {0: "None", 1: "Roads", 2: "Sidewalks", 3: "Buildings", 4: "Other", 5: "Poles", 6: "TrafficLight", 7: "TrafficSigns", 8: "Vegetation", 9: "Pedestrians", 10: "Vehicles", 11: "RoadLines"}
+                  </code>
+              </pre>
 
           </div>
         </div>
