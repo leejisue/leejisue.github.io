@@ -208,11 +208,19 @@
     <div class="column is-full-width">
       <h2 class="title is-3 has-text-centered">Experiment</h2>
       <h3 class="title is-4">Experiment 01 - State Visitation Count</h3>
-      <div class="content has-text-justified">
-        <p>Discrete Case</p>
-      </div>
 
       <img src="./img/experiment01.png" alt="Experiment 01 Image Description">
+      <div class="content has-text-justified">
+        <p>
+          <li>
+            We discretized states in a simple environment (empty warehouse) and measured the number of times each algorithm visited a state for three exploration algorithms.
+          </li>
+          <li>
+
+            In the case of ICM and RND, the problem of occasionally vanishing when revisiting states prevented sufficient exploration, but <strong>NGU</strong> was able to perform sufficient exploration.
+          </li>
+        </p>
+      </div>
 
       <div class="content has-text-justified">
         <p>Continuous Case</p>
@@ -260,19 +268,36 @@
         });
       </script>
 
-        <h3 class="title is-4">Experiment 02 - Sequential Goal Visitation Count</h3>
-        <div class="content has-text-justified">
-          <p>Simulation</p>
-          <div class="container is-max-desktop">
-            <div class="hero-body">
-              <img id="teaser" src="./img/Experiment_two_one.gif" alt="Abstract Image" style="width: 100%; height: auto;">
-            </div>
-          </div>
-        </div>
-
       <div class="content has-text-justified">
-        <p>Real-world</p>
+        <p>
+          <li>
+            We compared exploration algorithms in a complex environment (hospital) and validated that <strong>NGU</strong> enables long-horizontal exploration.
+          </li>
+          <li>
+            The experimental results showed that ICM and RND were unable to perform exploration to deep locations, whereas <strong>NGU</strong> demonstrated the capability for long-horizontal exploration.
+          </li>
+        </p>
+
       </div>
+
+      <h3 class="title is-4">Experiment 02 - Sequential Goal Visitation Count</h3>
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <img id="teaser" src="./img/Experiment_two_one_sim.gif" alt="Abstract Image" style="width: 100%; height: auto;">
+          </div>
+          <div class="content has-text-justified">
+          <li>
+            We conducted validation on the proposed <strong>GOME-NGU</strong> in a complex environment (hospital).
+          </li>
+            <li>
+              ICM and RND were unable to perform deep exploration, but <strong>NGU</strong> enabled long-horizontal exploration.
+              In terms of sequential goal count, neither ICM, RND, nor NGU demonstrated good performance individually. However, when combined with GOME, both GOME-ICM, GOME-RND, and GOME-NGU exhibited strong performance.
+              Among these, the proposed <strong>GOME-NGU</strong> achieved the highest performance.
+            </li>
+        </div>
+      </div>
+
+
 
       </div>
     </div>
