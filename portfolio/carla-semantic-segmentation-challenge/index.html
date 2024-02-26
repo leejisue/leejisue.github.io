@@ -257,7 +257,11 @@
             You can view the video of the original class and the remapped mask below.
           </p>
 
-          <img src="./imgs/original_remake_overlay.gif" alt="Comparison of original and remake image">
+          <div class="has-text-centered">
+            <div style="max-width: 1040px; overflow: hidden; display: inline-block">
+              <img src="./imgs/original_remake_overlay.gif" style="width: 100%; max-height: auto">
+            </div>
+          </div>
 
           <iframe src="https://wandb.ai/brunoleej/semantic_segmentation/reports/Naive-DeepLabv3_resnet50-Town04-Town06-Town10---Vmlldzo1MjIxNTk0?accessToken=t3jirjy8b4qme2z2j0vie609fl5qxgnkz5zbo07ulchf26jxlbd5u32g2l0dnrzu" width="100%" height="600px" frameborder="0"></iframe>
 
@@ -295,42 +299,42 @@
             </ol>
 
             <li>
-              Class Imbalance:
+              <strong>Class Imbalance</strong>:
             </li>
             <ol>
               If certain classes of pixels vastly outnumber others in an image, it can lead to class imbalance issues. This might degrade segmentation accuracy for some classes.
             </ol>
 
             <li>
-              Annotation Quality:
+              <strong>Annotation Quality</strong>:
             </li>
             <ol>
               The quality of the ground truth segmentation masks plays a major role in the outcome of the training. Inaccurate masks can decrease training accuracy.
             </ol>
 
             <li>
-              Channel Information:
+              <strong>Channel Information</strong>:
             </li>
             <ol>
               Multi-channel images (e.g., RGB, infra-red, depth, etc.) can provide additional information, potentially improving segmentation accuracy.
             </ol>
 
             <li>
-              Variability and Diversity:
+              <strong>Variability and Diversity</strong>:
             </li>
             <ol>
               A diverse set of images in the training set (varying lighting, angles, backgrounds, object sizes, etc.) ensures the model generalizes well in real-world scenarios.
             </ol>
 
             <li>
-              Contextual Information:
+              <strong>Contextual Information</strong>:
             </li>
             <ol>
               Context in images can assist in predicting the position of specific objects or structures, especially crucial in larger images.
             </ol>
 
             <li>
-              Spatial Dependencies:
+              <strong>Spatial Dependencies</strong>:
             </li>
             <ol>
               Considering the spatial dependencies between pixels within an image can lead to more accurate segmentation outcomes.
