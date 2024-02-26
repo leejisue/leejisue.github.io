@@ -36,6 +36,7 @@
 }
 
 .publication-authors {
+    width: fit-content;
 }
 
 .publication-authors a {
@@ -51,10 +52,6 @@
 
 .publication-authors {
   /*color: #4286f4;*/
-}
-
-.publication-links {
-    margin-top: 1em;
 }
 
 .publication-video {
@@ -77,8 +74,3 @@
 
 .publication-body img {
 }
-
-.red-text {
-    color: red;
-}
-

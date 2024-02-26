@@ -4,23 +4,23 @@
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
   <meta content="width=device-width, initial-scale=1" name="viewport">
-  <title>CARLA Semantic Segmentation Challenge</title>
+  <title>PhotoShape: Photorealistic Materials for Large-Scale Shape Collections — Keunhong Park</title>
 
   <!-- Google Tag Manager -->
   <script async="" src="http://www.google-analytics.com/analytics.js"></script>
   <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-THP5XBK"></script>
   <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({
-          'gtm.start':
-              new Date().getTime(), event: 'gtm.js'
-      });
-      var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-      j.async = true;
-      j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-      f.parentNode.insertBefore(j, f);
+    w[l] = w[l] || [];
+    w[l].push({
+      'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+    });
+    var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
   })(window, document, 'script', 'dataLayer', 'GTM-THP5XBK');</script>
   <!-- End Google Tag Manager -->
 
@@ -33,34 +33,29 @@
   <script src="./js/index.js"></script>
 
   <script>
-      (function (i, s, o, g, r, a, m) {
-          i['GoogleAnalyticsObject'] = r;
-          i[r] = i[r] || function () {
-              (i[r].q = i[r].q || []).push(arguments)
-          }, i[r].l = 1 * new Date();
-          a = s.createElement(o),
-              m = s.getElementsByTagName(o)[0];
-          a.async = 1;
-          a.src = g;
-          m.parentNode.insertBefore(a, m)
-      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-      ga('create', 'UA-72422365-1', 'auto');
-      ga('send', 'pageview');
+    ga('create', 'UA-72422365-1', 'auto');
+    ga('send', 'pageview');
   </script>
-
-    <!--callout script-->
-    <!-- Compressed CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css"
-          crossorigin="anonymous">
-
-    <!-- Compressed JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"
-            crossorigin="anonymous"></script>
-
 </head>
 <body>
 
+
+<section class="hero">
+  <div class="hero-body publication-banner" style="background-image: url(./imgs/background.jpg)">
+  </div>
+</section>
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -105,8 +100,34 @@
       <div class="columns is-centered">
         <div class="column is-two-thirds">
           <div class="is-size-6 publication-venue">Portfolio</div>
+<!--          <div class="is-size-6 is-bold publication-awards">Transactions on Graphics (TOG) Special Issue Cover</div>-->
 
           <h1 class="title is-1 publication-title">CARLA Semantic Segmentation Challenge</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block author-block-"><a href="https://leejisue.github.io/">Ji Sue Lee</a></span>
+          </div>
+
+          <div class="publication-links">
+        <span class="link-block link-block-">
+          <a class="external-link button is-small is-rounded is-link" href="http://bit.ly/2NsxjgP">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>PDF (High Res, 87.2 MB)</span>
+          </a>
+        </span>
+            <span class="link-block link-block-">
+          <a class="external-link button is-small is-rounded is-link" href="http://bit.ly/2DiNvwk">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>PDF (Low Res, 8.6 MB)</span>
+          </a>
+        </span>
+
+            <span class="link-block link-block-">
+          <a class="external-link button is-small is-rounded is-link" href="https://github.com/keunhong/photoshape">
+            <span class="icon"><i class="fab fa-github"></i></span>
+            <span>Code</span>
+          </a>
+        </span>
+
           </div>
         </div>
       </div>
@@ -116,199 +137,211 @@
 
 <section class="section">
   <div class="container">
-    <div class="content">
 
-      <div class="columns is-centered">
-        <div class="column is-two-thirds">
-          <h2 class="is-2">Video</h2>
-          <div class="publication-video">
-            <iframe allow="autoplay; encrypted-media"
-                    allowfullscreen frameborder="0"
-                    src="https://www.youtube.com/embed/tlzcq1KYXd8?rel=0&amp;showinfo=0"></iframe>
-          </div>
-        </div>
-      </div>
-
-      <div class="columns is-centered">
-        <div class="column is-half">
-          <h2>Introduction</h2>
-            <hr/>
-            <blockquote>In digital image processing and computer vision,
-                <strong><span style="color: red;">Image segmentation</span></strong> is the process of partitioning a digital image into multiple image segments, also known as <strong>image regions</strong> or <strong>image objects</strong> (set of pixels).
-                (<em>Wikipedia</em>)</blockquote>
-            <p>
-                Segmentation models are useful for a variety of tasks, including:
-            </p>
-            <ol>
-                <li>
-                    <strong>Autonomous Driving</strong> (<strong>AD</strong>)
-                    <p>
-                        Image segmentation in autonomous driving helps classify every pixel of a scene, allowing vehicles to understand their environment in detail and make safer decisions on the road.
-                    </p>
-                </li>
-                <li>
-                    <strong>Medical Imaging</strong>
-                    <p>
-                        Image segmentation in medical imaging allows for precise delineation of structures like tumors, blood vessels, or organs. This granularity helps in accurate diagnosis, treatment planning, and disease monitoring.
-                    </p>
-                </li>
-
-                <li>
-                    <strong>Agriculture</strong>
-                    <p>
-                       In agriculture, image segmentation can detect and differentiate between crops and weeds. This facilitates targeted herbicide application, ensuring healthier crop growth while minimizing chemical usage.
-                    </p>
-                </li>
-            </ol>
-
-        </div>
-      </div>
-
-      <div class="columns is-centered">
-        <div class="column is-two-thirds">
-          <div class="publication-body">
-            <h2 class="is-2">Goal</h2>
-              <hr/>
-              <p>
-                  Our goal is to achieve real-time semantic segmentation targets in the CARLA simulation environment using the diverse data collected from it. (e.g., heavy rain, fine dust, sunny, etc.)
-              </p>
-              <p>
-                  <strong>The techniques that are utilized in this project</strong>:
-              </p>
-
-              <li>
-                  Pretrained
-                  <ol>
-                      <li>
-                          DeepLabv3 (backbone: resnet_50)
-                      </li>
-                      <li>
-                          DeepLabv3 (backbone: resnet_50 with Conditional Random Field)
-                      </li>
-                      <li>
-                          DeepLabv3 (backbone: mobilenet_v3_large)
-                      </li>
-                  </ol>
-              </li>
-              <li>
-                  Scratch
-                  <ol>
-                      <li>
-                          U-Net
-                      </li>
-                      <li>
-                          Mask-RCNN
-                      </li>
-                  </ol>
-              </li>
-
-              <h2 class="is-2">Dataset Information</h2>
-              <hr/>
-              <p>
-                  We performed segmentation using data collected from 10 towns provided by default in CARLA, under three environmental conditions: <strong><em>sunny</em></strong>, <strong><em>rainy</em></strong>, <strong><em>dusty</em></strong>.
-              </p>
-              <p>
-                  The image data has a 1:2 ratio, and we were able to test the generalization performance of segmentation by adjusting to a maximum size of (216 x 512).
-              </p>
-
-              <h3 class="is-3">Class Definition</h3>
-              <p>
-                  We modified the <strong><em>28 classes</em></strong> obtained from the official CARLA documentation into <strong><em>12 classes</em></strong>.
-              </p>
-              <pre><code class="lang-bibtex">original_class = {0: "None", 1 : "Roads", 2 : "Sidewalks", 3 : "Buildings", 4 : "Other", 5 : "Other", 6 : "Poles", 7 : "TrafficLight", 8 : "TrafficSigns", 9 : "Vegetation", 10 : "Roads", 11 : "None", 12 : "Pedestrians", 13 : "Vehicles", 14 : "Vehicles", 15 : "Vehicles", 16 : "Vehicles", 17 : "Vehicles", 18 : "Vehicles", 19 : "Vehicles", 20 : "Other", 21 : "Other", 22 : "Other", 23 : "Other", 24 : "RoadLines", 25 : "Sidewalks", 26 : "Other", 27 : "Other", 28 : "Other"}
-              remap_class = {0: "None", 1: "Roads", 2: "Sidewalks", 3: "Buildings", 4: "Other", 5: "Poles", 6: "TrafficLight", 7: "TrafficSigns", 8: "Vegetation", 9: "Pedestrians", 10: "Vehicles", 11: "RoadLines"}
-              </code></pre>
-              <p>
-                  You can view the video of the original class and the remapped mask below.
-              </p>
-              <iframe src="https://wandb.ai/brunoleej/semantic_segmentation/reports/Naive-DeepLabv3_resnet50-Town04-Town06-Town10---Vmlldzo1MjIxNTk0?accessToken=t3jirjy8b4qme2z2j0vie609fl5qxgnkz5zbo07ulchf26jxlbd5u32g2l0dnrzu" width="100%" height="600px" frameborder="0"></iframe>
-
-              <p>
-                  There are several factors in images that influence the training of segmentation.
-              </p>
-
-              <ol>
-                  <li>
-                      <strong>Image Resolution</strong>:
-                  </li>
-                  <ol>
-                      High-resolution images provide finer details but increase training time and require more memory.
-                  </ol>
-                  <ol>
-                      Reducing resolution simplifies computation but may lead to loss of details.
-                  </ol>
-
-                  <li>
-                      <strong>Image Quality</strong>:
-                  </li>
-                  <ol>
-                      Poor quality images (e.g., with lots of noise or low contrast) can impact the accuracy of segmentation.
-                  </ol>
-
-                  <li>
-                      <strong>Image Augmentation</strong>:
-                  </li>
-                  <ol>
-                      Augmentation techniques (like rotation, scaling, flipping, brightness adjustments) help the model generalize better across varied scenarios.
-                  </ol>
-                  <ol>
-                      Over-augmenting can risk overfitting the model.
-                  </ol>
-
-                  <li>
-                      Class Imbalance:
-                  </li>
-                  <ol>
-                      If certain classes of pixels vastly outnumber others in an image, it can lead to class imbalance issues. This might degrade segmentation accuracy for some classes.
-                  </ol>
-
-                  <li>
-                      Annotation Quality:
-                  </li>
-                  <ol>
-                      The quality of the ground truth segmentation masks plays a major role in the outcome of the training. Inaccurate masks can decrease training accuracy.
-                  </ol>
-
-                  <li>
-                      Channel Information:
-                  </li>
-                  <ol>
-                      Multi-channel images (e.g., RGB, infra-red, depth, etc.) can provide additional information, potentially improving segmentation accuracy.
-                  </ol>
-
-                  <li>
-                      Variability and Diversity:
-                  </li>
-                  <ol>
-                      A diverse set of images in the training set (varying lighting, angles, backgrounds, object sizes, etc.) ensures the model generalizes well in real-world scenarios.
-                  </ol>
-
-                  <li>
-                      Contextual Information:
-                  </li>
-                  <ol>
-                      Context in images can assist in predicting the position of specific objects or structures, especially crucial in larger images.
-                  </ol>
-
-                  <li>
-                      Spatial Dependencies:
-                  </li>
-                  <ol>
-                      Considering the spatial dependencies between pixels within an image can lead to more accurate segmentation outcomes.
-                  </ol>
-
-              </ol>
-
-              <h2 class="is-2">Conclusion</h2>
-              <hr/>
-
-          </div>
+    <div class="columns is-centered">
+      <div class="column is-two-thirds">
+        <div class="publication-video">
+          <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0"
+                    src="https://www.youtube.com/embed/uzkQTVgUoQw"></iframe>
         </div>
       </div>
     </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-half">
+        <div class="content has-text-justified">
+          <h2>Introduction</h2>
+          <hr/>
+          <blockquote>In digital image processing and computer vision,
+            <strong><span style="color: red;">Image segmentation</span></strong> is the process of partitioning a digital image into multiple image segments, also known as <strong>image regions</strong> or <strong>image objects</strong> (set of pixels).
+            (<em>Wikipedia</em>)</blockquote>
+
+          <p>
+            Segmentation models are useful for a variety of tasks, including:
+          </p>
+
+          <ol>
+            <li>
+              <strong>Autonomous Driving</strong> (<strong>AD</strong>)
+              <p>
+                Image segmentation in autonomous driving helps classify every pixel of a scene, allowing vehicles to understand their environment in detail and make safer decisions on the road.
+              </p>
+            </li>
+            <li>
+              <strong>Medical Imaging</strong>
+              <p>
+                Image segmentation in medical imaging allows for precise delineation of structures like tumors, blood vessels, or organs. This granularity helps in accurate diagnosis, treatment planning, and disease monitoring.
+              </p>
+            </li>
+
+            <li>
+              <strong>Agriculture</strong>
+              <p>
+                In agriculture, image segmentation can detect and differentiate between crops and weeds. This facilitates targeted herbicide application, ensuring healthier crop growth while minimizing chemical usage.
+              </p>
+            </li>
+          </ol>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="columns is-centered">
+        <div class="column is-two-thirds">
+          <div class="has-text-centered">
+          </div>
+          <h2>Goal</h2>
+          <hr/>
+          <p>
+            Our goal is to achieve real-time semantic segmentation targets in the CARLA simulation environment using the diverse data collected from it. (e.g., heavy rain, fine dust, sunny, etc.)
+          </p>
+          <p>
+            <strong>The techniques that are utilized in this project</strong>:
+          </p>
+
+          <li>
+            Pretrained
+            <ol>
+              <li>
+                DeepLabv3 (backbone: resnet_50)
+              </li>
+              <li>
+                DeepLabv3 (backbone: resnet_50 with Conditional Random Field)
+              </li>
+              <li>
+                DeepLabv3 (backbone: mobilenet_v3_large)
+              </li>
+            </ol>
+          </li>
+          <li>
+            Scratch
+            <ol>
+              <li>
+                U-Net
+              </li>
+              <li>
+                Mask-RCNN
+              </li>
+            </ol>
+          </li>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="columns is-centered">
+        <div class="column is-two-thirds">
+          <div class="has-text-centered">
+          </div>
+          <h2>Dataset Information</h2>
+          <hr/>
+          <p>
+            We performed segmentation using data collected from 10 towns provided by default in CARLA, under three environmental conditions: <strong><em>sunny</em></strong>, <strong><em>rainy</em></strong>, <strong><em>dusty</em></strong>.
+          </p>
+          <p>
+            The image data has a 1:2 ratio, and we were able to test the generalization performance of segmentation by adjusting to a maximum size of (216 x 512).
+          </p>
+
+          <h3>Class Definition</h3>
+          <p>
+            We modified the <strong><em>28 classes</em></strong> obtained from the official CARLA documentation into <strong><em>12 classes</em></strong>.
+          </p>
+
+          <pre><code>
+            original_class = {0: "None", 1 : "Roads", 2 : "Sidewalks", 3 : "Buildings", 4 : "Other", 5 : "Other", 6 : "Poles", 7 : "TrafficLight", 8 : "TrafficSigns", 9 : "Vegetation", 10 : "Roads", 11 : "None", 12 : "Pedestrians", 13 : "Vehicles", 14 : "Vehicles", 15 : "Vehicles", 16 : "Vehicles", 17 : "Vehicles", 18 : "Vehicles", 19 : "Vehicles", 20 : "Other", 21 : "Other", 22 : "Other", 23 : "Other", 24 : "RoadLines", 25 : "Sidewalks", 26 : "Other", 27 : "Other", 28 : "Other"}
+            remap_class = {0: "None", 1: "Roads", 2: "Sidewalks", 3: "Buildings", 4: "Other", 5: "Poles", 6: "TrafficLight", 7: "TrafficSigns", 8: "Vegetation", 9: "Pedestrians", 10: "Vehicles", 11: "RoadLines"}
+          </code></pre>
+
+          <p>
+            You can view the video of the original class and the remapped mask below.
+          </p>
+
+          <img src="./imgs/original_remake_overlay.gif" alt="Comparison of original and remake image">
+
+          <iframe src="https://wandb.ai/brunoleej/semantic_segmentation/reports/Naive-DeepLabv3_resnet50-Town04-Town06-Town10---Vmlldzo1MjIxNTk0?accessToken=t3jirjy8b4qme2z2j0vie609fl5qxgnkz5zbo07ulchf26jxlbd5u32g2l0dnrzu" width="100%" height="600px" frameborder="0"></iframe>
+
+          <p>
+            There are several factors in images that influence the training of segmentation.
+          </p>
+
+          <ol>
+            <li>
+              <strong>Image Resolution</strong>:
+            </li>
+
+            <ol>
+              High-resolution images provide finer details but increase training time and require more memory.
+            </ol>
+            <ol>
+              Reducing resolution simplifies computation but may lead to loss of details.
+            </ol>
+
+            <li>
+              <strong>Image Quality</strong>:
+            </li>
+            <ol>
+              Poor quality images (e.g., with lots of noise or low contrast) can impact the accuracy of segmentation.
+            </ol>
+
+            <li>
+              <strong>Image Augmentation</strong>:
+            </li>
+            <ol>
+              Augmentation techniques (like rotation, scaling, flipping, brightness adjustments) help the model generalize better across varied scenarios.
+            </ol>
+            <ol>
+              Over-augmenting can risk overfitting the model.
+            </ol>
+
+            <li>
+              Class Imbalance:
+            </li>
+            <ol>
+              If certain classes of pixels vastly outnumber others in an image, it can lead to class imbalance issues. This might degrade segmentation accuracy for some classes.
+            </ol>
+
+            <li>
+              Annotation Quality:
+            </li>
+            <ol>
+              The quality of the ground truth segmentation masks plays a major role in the outcome of the training. Inaccurate masks can decrease training accuracy.
+            </ol>
+
+            <li>
+              Channel Information:
+            </li>
+            <ol>
+              Multi-channel images (e.g., RGB, infra-red, depth, etc.) can provide additional information, potentially improving segmentation accuracy.
+            </ol>
+
+            <li>
+              Variability and Diversity:
+            </li>
+            <ol>
+              A diverse set of images in the training set (varying lighting, angles, backgrounds, object sizes, etc.) ensures the model generalizes well in real-world scenarios.
+            </ol>
+
+            <li>
+              Contextual Information:
+            </li>
+            <ol>
+              Context in images can assist in predicting the position of specific objects or structures, especially crucial in larger images.
+            </ol>
+
+            <li>
+              Spatial Dependencies:
+            </li>
+            <ol>
+              Considering the spatial dependencies between pixels within an image can lead to more accurate segmentation outcomes.
+            </ol>
+          </ol>
+
+          <h2 class="is-2">Conclusion</h2>
+          <hr/>
+
   </div>
 </section>
-
 
 <footer class="footer">
   <div class="container">
@@ -317,7 +350,6 @@
     </div>
   </div>
 </footer>
-
 
 </body>
 </html>
