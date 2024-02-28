@@ -73,7 +73,7 @@
         <link rel="dns-prefetch" href="https://www.googletagmanager.com">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
-        <link rel="stylesheet" href="../../css/jekyll-theme-chirpy.css">
+        <link rel="stylesheet" href="../../../css/jekyll-theme-chirpy.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.25.0/dist/tocbot.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css">
@@ -214,17 +214,17 @@
             <nav class="flex-column flex-grow-1 w-100 ps-0">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="../../../../leejisue.github.io" class="nav-link">
+                        <a href="../../../.." class="nav-link">
                             <i class="fa-fw fas fa-home"></i>
                             <span>HOME</span>
                         </a>
                     <li class="nav-item">
-                        <a href="../../categories" class="nav-link">
+                        <a href="../../../categories/categories.html" class="nav-link">
                             <i class="fa-fw fas fa-stream"></i>
                             <span>CATEGORIES</span>
                         </a>
                     <li class="nav-item">
-                        <a href="../../tags" class="nav-link">
+                        <a href="../../../tags" class="nav-link">
                             <i class="fa-fw fas fa-tags"></i>
                             <span>TAGS</span>
                         </a>
@@ -255,9 +255,9 @@
                     <div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100">
                         <nav id="breadcrumb" aria-label="Breadcrumb">
                             <span>
-                                <a href="../../../../leejisue.github.io">Home</a>
+                                <a href="https://leejisue.github.io/">Home</a>
                             </span>
-                            <span>(01) Introduction</span>
+                            <span>(03) Basic Usage</span>
                         </nav>
                         <button type="button" id="sidebar-trigger" class="btn btn-link">
                             <i class="fas fa-bars fa-fw"></i>
@@ -277,7 +277,7 @@
                     <main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4">
                         <article class="px-1">
                             <header>
-                                <h1 data-toc-skip>(01) Introduction</h1>
+                                <h1 data-toc-skip>(03) Basic Usage</h1>
                                 <div class="post-meta text-muted">
                                     <span>
                                         Posted <time data-ts="1709078400" data-df="ll" data-bs-toggle="tooltip" data-bs-placement="bottom">Feb 28, 2024</time>
@@ -289,7 +289,7 @@
                                         <span>
                                             By
                                             <em>
-                                                <a href="https://leejisue.github.io/">Ji Sue Lee</a>
+                                                <a href="../../../..">Ji Sue Lee</a>
                                             </em>
                                         </span>
                                         <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="811 words">
@@ -300,84 +300,302 @@
                                 </div>
                             </header>
                             <div class="content">
-                                <h2 id="what-is-isaac-sim">
-                                    <span class="me-2">What is Isaac Sim?</span>
-                                    <a href="#what-is-isaac-sim" class="anchor text-muted">
+                                <h2 id="environment">
+                                    <span class="me-2">Environment</span>
+                                    <a href="#environment" class="anchor text-muted">
                                         <i class="fas fa-hashtag"></i>
                                     </a>
                                 </h2>
-                                <p>
-                                    <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/isaac_sim.png?raw=true" class="popup img-link shimmer">
-                                        <img src="./imgs/isaac_sim.png" alt="isaac-sim preview" width="972" height="589" loading="lazy">
-                                    </a>
-                                    <em>NVIDIA Isaac-Sim Preview</em>
-                                </p>
-                                <p>
-                                    Isaac Sim<sup>TM</sup>은 AI 로봇을 기반으로 한 더 빠르고 효율적인 simulation 설계, 테스트 및 학습이 가능한 로봇 시뮬레이터입니다.
-                                    Isaac-Sim에서는 로봇 팔, 모바일 로봇 등 다양한 로봇이 존재하며 2024년 01월 기준 2023.01 버전이 출시되어 있다.
-                                    Isaac Sim은 ROS/ROS2, Domain Randomization, Ground-truth labeling, segmentation, bounding boxes와 같이 Robot 조작 및 Computer vision 테크닉도 같이 사용이 가능하여 로봇을 학습 또는 사용하고자 한다면 좋은 플랫폼이 되지 않을까 생각된다.
-                                </p>
+                                <p>우선 사람들은 아래와 같이 여러가지 이유로 인해 Isaac Sim을 사용할 수 있다.</p>
 
-                                <h2 id="system-architecture">
-                                    <span class="me-2">System Architecture</span>
-                                    <a href="#system-architecture" class="anchor text-muted">
-                                        <i class="fas fa-hashtag"></i>
-                                    </a>
-                                </h2>
-                                <p>Isaac Sim에서는 다양한 사용자 층을 고려하여 다양한 robot의 파일형식을 import할 수 있으며 아래와 같이 나열되어 있다.</p>
-                                <p>
-                                    <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/isaac_sim_system_architecture.png?raw=true" class="popup img-link shimmer">
-                                        <img src="./imgs/isaac_sim_system_architecture.png" alt="isaac-sim-architecture" width="972" height="589" loading="lazy">
-                                    </a>
-                                    <em>NVIDIA Isaac-Sim Architecture</em>
-                                </p>
                                 <ol>
                                     <li>
-                                        <a href="https://docs.omniverse.nvidia.com/extensions/latest/ext_onshape.html">Onshape</a>
-                                        : 무료 웹 CAD 프로그램 중 하나인 Onshape는 클라우드 컴퓨팅을 통해 작업이 가능한 도구이다.
-                                        사용자들에 의하면 다른 CAD 프로그램들과 호환성이 좋다고 한다.
+                                        순수 Robotics (ex. ROS 사용, verification 용)
                                     </li>
-
                                     <li>
-                                        <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/ext_omni_isaac_urdf.html">URDF</a>
-                                        : URDF는 Unified Robot Description Format의 줄임말으로써, URDF를 이용하면 로봇의 Navigation, Manipulation, Remote Control이 가능하다. 기본적으로 URDF는 XML 형식으로 작성이 가능하다.
-                                    </li>
-
-                                    <li>
-                                        <a href="https://github.com/NVIDIA-Omniverse/mjcf-importer-extension">MJCF</a>
-                                        : MJCF는 Multi-Joint dynamics with contact의 약자로 물리 시뮬레이션을 위한 XML 파일 형식이다. MJCF 파일은 고급 물리 시뮬레이션인 <a href="https://mujoco.org/">Mujoco</a>에서 쓰이는 파일이다.
-                                    </li>
-
-                                    <li>
-                                        <a href="https://developer.nvidia.com/usd">USD</a> USD는 Universal Scene Description의 약자이며 콘텐츠 생성 및 다양한 도구 간 교환을 위해 Pixar에서 개발한 쉽게 확장 가능한 오픈 소스 3D 장면 설정 및 파일 형식이다.
+                                        AI agent 생성 및 verification 용 (Computer Vision, Reinforcement Learning)
                                     </li>
                                 </ol>
-                                <h2 id="omniverse-kit">
-                                    <span class="me-2">Omniverse Kit</span>
-                                    <a href="#omniverse-kit" class="anchor text-muted">
-                                        <i class="fas fa-hashtag"></i>
-                                    </a>
-                                </h2>
+
                                 <p>
-                                    Omniverse Kit는 기본 Omniverse application 및 microservice를 구축하기 위한 SDK (Software Development Kit)이다. <a href="https://docs.omniverse.nvidia.com/kit/docs/kit-manual/latest/guide/kit_overview.html">Omniverse Kit</a>을 이용하여 Isaac Sim내에 SDK를 개발하고 싶은 사람은 사용하면 좋을 것 같다.
+                                    필자는 강화학습 (Reinforcement Learning, RL)을 이용한 모바일 로봇 (Wheeled-Mobile Robot, WMR)을 학습시킬 예정이므로, WMR을 기준으로 포스팅을 작성하겠다.
                                 </p>
 
-                                <h2 id="omniverse-nucleus">
-                                    <span class="me-2">Omniverse Nucleus</span>
-                                    <a href="#omniverse-nucleus" class="anchor text-muted">
+                                <h2 id="requirements">
+                                    <span class="me-2">Requirements</span>
+                                    <a href="#requirements" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h2>
+                                <p>WMR을 학습시키기 위해서는 아래와 같은 절차 (process)로 학습을 진행할 것인지 중요하다.</p>
+                                <ol>
+                                    <li>
+                                        학습할 환경 (ex. Indoor, Outdoor, ...)
+                                    </li>
+                                    <li>
+                                        학습할 로봇 (ex. Robot Arm, WMR, ...)
+                                    </li>
+                                    <li>
+                                        학습할 목표 (ex. navigation, collision avoidance, ...)
+                                    </li>
+                                    <li>
+                                        학습할 알고리즘 (ex. DQN, DDPG, ...)
+                                    </li>
+                                </ol>
+
+                                <p>
+                                    위와 같이 어떠한 환경에서 학습을 진행할 것인지, 어떠한 로봇을 사용할 것인지, 어떠한 목표로 우리의 로봇을 학습시킬 것인지, 어떠한 알고리즘을 통해서 학습시킬 것인지가 중요하다.
+                                    목표가 제대로 정해지지 않은 상황에서 학습을 수행한다는 것은 꿈이 없이 공부만 계속하는 것과 같을 것이다.
+                                </p>
+
+                                <p>
+                                    이렇게 우리가 나눈 절차대로 학습을 진행하기 위해 순서대로 어떻게 이루어지는지 살펴볼 것이다.
+                                </p>
+
+
+                                <h2 id="isaac-sim-content">
+                                    <span class="me-2">Isaac Sim Content</span>
+                                    <a href="#isaac-sim-content" class="anchor text-muted">
                                         <i class="fas fa-hashtag"></i>
                                     </a>
                                 </h2>
                                 <p>
-                                    Isaac Sim을 사용하고 있거나 사용할 예정인 사람들은 <a href="https://docs.omniverse.nvidia.com/nucleus/latest/overview/overview.html">Omniverse Nucleus</a>를 알아두는게 좋을 것이라고 생각이 된다.
-                                    Nucleus에는 다양한 환경 및 로봇 예제가 존재하고 이를 접근하여 수정사항을 DB (Database)에 게시하거나 구독할 수 있다. 클라우드 시스템과 동일하다고 보면 될 것 같다.
+                                    Omniverse Isaac release에 따라 자체적으로 사용할 수 있는 asset들이 있다.
+                                    만약, 아래에 나열된 환경, 로봇, 센서, 소품, 주요 자산을 가져다 쓰고 싶다면 <a href="./article2.html">이전 포스팅</a>에 언급된 <a href="https://docs.omniverse.nvidia.com/nucleus/latest/index.html">Nucleus 서버</a>에서 파일을 다운로드하거나 Nucleus 서버에 Isaac Mount를 생성해야한다.
+                                    자세한 설치 내용은 <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_workstation.html#isaac-sim-setup-native-main">Isaac Sim First Run</a> 또는 <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_faq.html#isaac-sim-setup-nucleus-add-assets-mount">Sample Asset</a>에서 확인가능하다.
+                                </p>
+                                <p>만약 Nucleus 설치 및 세팅이 완료되었다면 아래와 같이 확인할 수 있다.</p>
+                                <p>
+                                    <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/nucleus_example.PNG?raw=true" class="popup img-link shimmer">
+                                        <img src="imgs/nucleus_example.PNG" alt="nucleus-example" width="972" height="589" loading="lazy">
+                                    </a>
+                                    <em>Nucleus example</em>
+                                </p>
+
+                                <h2 id="environment-assets">
+                                    <span class="me-2">Environment Assets</span>
+                                    <a href="#environment-assets" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h2>
+                                <p>
+                                    우선 필자의 경우 Indoor 즉, 실내에서 움직이는 로봇을 만들 것이다.
+                                    Isaac Sim내에서는 다양한 환경 asset들을 지원하며, 지원하는 대표적인 환경 asset은 아래와 같다.
+                                </p>
+
+                                <h3 id="simple-grid">
+                                    <span class="me-3">Simple Grid</span>
+                                    <a href="#simple-grid" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h3>
+                                <p>
+                                    Simple Grid는 평평한 지면 (flat ground)와 그리드 텍스처가 있는 측면이 포함되어 있다.
+                                    단순하게, 평평한 바닥이 무한하게 있는게 아니라 벽이 있다.
+                                    아래의 첫번째, 두번째 환경은 정사각형 형태이고, 세번쨰 환경의 경우 모서리가 구부러진 (curved) 환경이다.
+                                </p>
+                                <p>
+                                    Asset 위치: <code class="language-plaintext highlighter-rouge">/Isaac/Environments/Grid/</code>
+                                </p>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thread>
+                                            <tr>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">default_environment.usd</code>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">gridroom_black.usd</code>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">gridroom_curved.usd</code>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/default_grid_room.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/default_grid_room.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/gridroom_black.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/gridroom_black.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/gridroom_curved.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/gridroom_curved.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+                                    </table>
+                                </div>
+
+                                <h3 id="simple-room">
+                                    <span class="me-3">Simple Room</span>
+                                    <a href="#simple-room" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h3>
+                                <p>Simple Room은 방에 테이블이 하나 놓여있는 구조이다.</p>
+                                <p>Asset 위치: <code class="language-plaintext highlighter-rouge">/Isaac/Environments/Simple_Room/simple_room.usd</code></p>
+
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thread>
+                                            <tr>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">simple_room.usd</code>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/simple_room.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/simple_room.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+                                    </table>
+                                </div>
+
+                                <h3 id="warehouse">
+                                    <span class="me-3">Warehouse</span>
+                                    <a href="#warehouse" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h3>
+                                <p>warehouse 환경에서는 선반 위에 objects들과 장애물들이 배치되어 있다.</p>
+                                <p>Asset 위치: <code class="language-plaintext highlighter-rouge">/Isaac/Environments/Simple_Warehouse/</code></p>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thread>
+                                            <tr>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">warehouse.usd</code>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">warehouse_with_forklifts.usd</code>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/warehouse.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/warehouse.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/warehouse_with_forklifts.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/warehouse_with_forklifts.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+                                                                    <tr>
+                                                                        <th style="text-align: center"><code class="language-plaintext highlighter-rouge">warehouse_multiple_shelves.usd</code>
+                                                                        <th style="text-align: center"><code class="language-plaintext highlighter-rouge">full_warehouse.usd</code>
+                                                                            <tr>
+                                                                                <td style="text-align: center">
+                                                                                    <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/warehouse_multiple_shelves.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                                        <img src="./imgs/warehouse_multiple_shelves.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                                    </a>
+                                                                                <td style="text-align: center">
+                                                                                    <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/full_warehouse.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                                        <img src="./imgs/full_warehouse.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                                    </a>
+                                    </table>
+                                </div>
+
+                                <h3 id="hospital">
+                                    <span class="me-3">Hospital</span>
+                                    <a href="#hospital" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h3>
+                                <p>Hospital 환경에서는 병원과 같이 여러개의 방과 공간이 꾸려져 있다.</p>
+                                <p>Asset 위치: <code class="language-plaintext highlighter-rouge">/Isaac/Environments/Hospital/hospital.usd</code></p>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thread>
+                                            <tr>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">hospital.usd</code>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/hospital.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/hospital.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+                                    </table>
+                                </div>
+
+                                <h3 id="office">
+                                    <span class="me-3">Office</span>
+                                    <a href="#office" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h3>
+                                <p>Office 환경에서는 사무실처럼 여러개의 방과 복도로 꾸며져 있다.</p>
+                                <p>Asset 위치: <code class="language-plaintext highlighter-rouge">/Isaac/Environments/Office/office.usd</code></p>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thread>
+                                            <tr>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">office.usd</code>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/office.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/office.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+                                    </table>
+                                </div>
+
+                                <h3 id="jetracer-track">
+                                    <span class="me-3">Jetracer Track</span>
+                                    <a href="#jetracer-track" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h3>
+                                <p>Jetracer track에서는 바닥에 레이싱 트랙이 생성되어 있어, Computer vision으로 line tracking 또는 line following을 수행해보고 싶은 사람들에게는 좋은 환경이다.</p>
+                                <p>Asset 위치: <code class="language-plaintext highlighter-rouge">/Isaac/Environments/Jetracer/jetracer_track_solid.usd</code></p>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thread>
+                                            <tr>
+                                                <th style="text-align: center"><code class="language-plaintext highlighter-rouge">jetracer_track_solid.usd</code>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align: center">
+                                                                <a href="https://github.com/leejisue/leejisue.github.io/blob/master/blog/simulation/isaac-sim/imgs/jetracer_track_solid.png?raw=true" class="popup img-link w-50 center shimmer">
+                                                                    <img src="./imgs/jetracer_track_solid.png" alt="nucleus-example" width="972" height="589" loading="lazy" >
+                                                                </a>
+                                    </table>
+                                </div>
+
+                                <h2 id="robot-assets">
+                                    <span class="me-2">Robot Assets</span>
+                                    <a href="#robot-assets" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h2>
+                                <p>
+                                    Isaac Sim을 사용하는 사람들에게 희소식은 <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_robots.html#isaac-assets-robots">로봇</a>의 경우 major한 (jetbot, carter) 로봇들은 이미 asset으로 제공하고 있다는 점이다.
+                                </p>
+
+                                <h2 id="sensor-assets">
+                                    <span class="me-2">Sensor Assets</span>
+                                    <a href="#sensor-assets" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h2>
+                                <p>
+                                    Lidar, Radar, Camera 등 <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_sensors.html#isaac-assets-sensors">센서</a>를 사용하고 싶다면 Isaac-Sim에서 불러와서 사용할 수 있다.
+                                </p>
+
+                                <h2 id="prop-assets">
+                                    <span class="me-2">Sensor Assets</span>
+                                    <a href="#prop-assets" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h2>
+                                <p>
+                                    사람 또는 간단한 차량 등 <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_props.html#isaac-assets-props">Prop</a>을 사용하고 싶다면 Isaac-Sim에서 불러와서 사용할 수 있다.
+                                </p>
+
+                                <h2 id="featured-assets">
+                                    <span class="me-2">Sensor Assets</span>
+                                    <a href="#featured-assets" class="anchor text-muted">
+                                        <i class="fas fa-hashtag"></i>
+                                    </a>
+                                </h2>
+                                <p>
+                                    Nova Carter와 같은 <a href="https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_featured.html#isaac-assets-featured">featured assets</a>을 사용하고 싶다면 Isaac-Sim에서 불러와서 사용할 수 있다.
                                 </p>
 
                             <div class="post-tail-wrapper text-muted">
                                 <div class="post-meta mb-3">
                                     <i class="far fa-folder-open fa-fw me-1"></i>
-                                    <a href="../../categories/simulation">Simulation</a>
-                                    , <a href="../../categories/simulation/isaacsim">NVIDIA ISAAC-SIM</a>
+                                    <a href="../../../categories/simulation">Simulation</a>
+                                    , <a href="../../../categories/simulation/isaacsim">NVIDIA ISAAC-SIM</a>
                                 </div>
                                 <div class="post-tags">
                                     <i class="fa fa-tags fa-fw me-1"></i>
@@ -415,9 +633,9 @@
                                 <h2 class="panel-heading">Recently Updated</h2>
                                 <ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2">
                                     <li class="text-truncate lh-lg">
-                                        <a href="./article1.html">(01) Introduction</a>
+                                        <a href="article1.html">(01) Introduction</a>
                                     <li class="text-truncate lh-lg">
-                                        <a href="./article2.html">(02) Installation</a>
+                                        <a href="article2.html">(02) Installation</a>
                                     <li class="text-truncate lh-lg">
                                         <a href="./article3.html">(03) Basic Usage</a>
 <!--                                    <li class="text-truncate lh-lg">-->
@@ -586,8 +804,8 @@
             </div>
         </aside>
         <script src="https://cdn.jsdelivr.net/combine/npm/jquery@3.7.1/dist/jquery.min.js,npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js,npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/magnific-popup@1.1.0/dist/jquery.magnific-popup.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.10/dayjs.min.js,npm/dayjs@1.11.10/locale/en.min.js,npm/dayjs@1.11.10/plugin/relativeTime.min.js,npm/dayjs@1.11.10/plugin/localizedFormat.min.js,npm/tocbot@4.25.0/dist/tocbot.min.js"></script>
-        <script defer src="../../js/post.min.js"></script>
-        <script defer src="../../js/app.min.js"></script>
+        <script defer src="../../../js/post.min.js"></script>
+        <script defer src="../../../js/app.min.js"></script>
         <script defer src="https://www.googletagmanager.com/gtag/js?id=G-6L3G54N42E"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
