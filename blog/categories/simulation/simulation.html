@@ -30,7 +30,7 @@
                 "headline": "Blogging",
                 "url": "https://chirpy.cotes.page/categories/blogging/"
             }</script>
-        <title>Blogging | Chirpy</title>
+        <title>Simulation</title>
         <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png">
@@ -186,7 +186,7 @@
         <aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
             <header class="profile-wrapper">
                 <a href="/" id="avatar" class="rounded-circle">
-                    <img src="https://chirpy-img.netlify.app/commons/avatar.jpg" width="112" height="112" alt="avatar" onerror="this.style.display='none'">
+                    <img src="../../../images/ljs_id_photo.jpg" width="112" height="112" alt="avatar" onerror="this.style.display='none'">
                 </a>
                 <h1 class="site-title">
                     <a href="/">Bruno Lee</a>
@@ -270,19 +270,18 @@
                                     <li class="d-flex justify-content-between px-md-3">
                                         <a href="../../post/simulation/isaac-sim/article1.html">(01) Introduction</a>
                                         <span class="dash flex-grow-1"></span>
-                                        <time class="text-muted small text-nowrap" data-ts="1709078400" data-df="ll">Feb 28, 2024</time>
+                                        <time class="text-muted small text-nowrap update-time" data-ts="1709164800" data-df="ll"/>
+                                    </li>
                                     <li class="d-flex justify-content-between px-md-3">
                                         <a href="../../post/simulation/isaac-sim/article2.html">(02) Installation</a>
                                         <span class="dash flex-grow-1"></span>
-                                        <time class="text-muted small text-nowrap" data-ts="1709078400" data-df="ll">Feb 28, 2024</time>
+                                        <time class="text-muted small text-nowrap" data-ts="1709078400" data-df="ll"/>
+                                    </li>
                                     <li class="d-flex justify-content-between px-md-3">
                                         <a href="../../post/simulation/isaac-sim/article3.html">(03) Basic Usage</a>
                                         <span class="dash flex-grow-1"></span>
-                                        <time class="text-muted small text-nowrap" data-ts="1709078400" data-df="ll">Feb 28, 2024</time>
-<!--                                    <li class="d-flex justify-content-between px-md-3">-->
-<!--                                        <a href="/posts/text-and-typography/">Text and Typography</a>-->
-<!--                                        <span class="dash flex-grow-1"></span>-->
-<!--                                        <time class="text-muted small text-nowrap" data-ts="1565235180" data-df="ll">Aug 8, 2019 </time>-->
+                                        <time class="text-muted small text-nowrap" data-ts="1709164800" data-df="ll"/>
+                                    </li>
                                 </ul>
                             </div>
                         </article>
@@ -403,3 +402,22 @@
                 }
             });
         </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const postTime = urlParams.get('postTime');
+
+                // 'update-time' 클래스를 가진 <time> 태그만 선택
+                const timeElements = document.querySelectorAll('time.update-time');
+
+                // 가져온 postTime 값으로 선택된 <time> 태그의 data-ts 속성 업데이트
+                timeElements.forEach(timeElement => {
+                    timeElement.setAttribute('data-ts', postTime);
+
+                    // 시간 형식을 변환하여 표시하려면 여기에 변환 로직을 추가
+                    // 예를 들어, formatTimestamp 함수를 정의하고 사용할 수 있습니다.
+                    });
+            });
+        </script>
+
