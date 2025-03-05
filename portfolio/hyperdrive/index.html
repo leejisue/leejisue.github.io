@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="HyperDrive: Advanced Reinforcement Learning for Autonomous Racing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HyperDrive: Advanced Reinforcement Learning for Autonomous Racing</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700|Playfair+Display:400,700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Framework -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-color: #002060;
+      --secondary-color: #0078D4;
+      --accent-color: #50C878;
+      --text-color: #333333;
+      --light-gray: #f5f5f5;
+      --dark-gray: #333333;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    
+    .hero.is-primary {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    }
+    
+    .hero-video {
+      overflow: hidden;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .hero-video video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 32, 96, 0.7);
+    }
+    
+    .publication-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+    
+    .author-block {
+      color: white;
+      font-weight: 500;
+    }
+    
+    .author-block a {
+      color: white;
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+      transition: border-bottom 0.2s ease;
+    }
+    
+    .author-block a:hover {
+      border-bottom: 1px solid white;
+    }
+    
+    .button.is-primary {
+      background-color: var(--accent-color);
+      transition: background-color 0.3s ease;
+    }
+    
+    .button.is-primary:hover {
+      background-color: #3DA066;
+    }
+    
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--primary-color);
+      position: relative;
+      display: inline-block;
+      margin-bottom: 2rem;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--accent-color);
+    }
+    
+    .card {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .algorithm-card {
+      padding: 2rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+    
+    .algorithm-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .results-chart {
+      width: 100%;
+      height: 400px;
+      background-color: var(--light-gray);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .methodology-icon {
+      font-size: 2.5rem;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+    
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .comparison-table th {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+    }
+    
+    .comparison-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .comparison-table tr:nth-child(even) {
+      background-color: var(--light-gray);
+    }
+    
+    .info-box {
+      background-color: var(--light-gray);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .info-box h4 {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    footer {
+      background-color: var(--dark-gray);
+      color: white;
+      padding: 3rem 0;
+    }
+    
+    footer a {
+      color: var(--accent-color);
+    }
+    
+    .navbar-item {
+      font-weight: 500;
+    }
+    
+    .key-insight {
+      border-left: 4px solid var(--accent-color);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .video-wrapper {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+    }
+    
+    .video-wrapper video {
+      width: 100%;
+      display: block;
+    }
+    
+    .metrics-container {
+      background-color: var(--light-gray);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-label {
+      font-size: 1rem;
+      color: var(--text-color);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Hero Section -->
+  <section class="hero is-primary is-fullheight">
+    <div class="hero-video">
+      <video playsinline autoplay muted loop>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="overlay"></div>
+    
+    <!-- Hero Head: Navigation -->
+    <div class="hero-head">
+      <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+        <div class="container">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+              <span class="has-text-weight-bold has-text-white is-size-4">HyperDrive</span>
+            </a>
+          </div>
+          
+          <div class="navbar-menu">
+            <div class="navbar-end">
+              <a class="navbar-item has-text-white" href="#about">
+                About
+              </a>
+              <a class="navbar-item has-text-white" href="#algorithms">
+                Algorithms
+              </a>
+              <a class="navbar-item has-text-white" href="#results">
+                Results
+              </a>
+              <a class="navbar-item has-text-white" href="#methodology">
+                Methodology
+              </a>
+              <span class="navbar-item">
+                <a href="https://github.com/yourusername/hyperdrive" class="button is-light is-outlined">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>GitHub</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    
+    <!-- Hero Body: Main Content -->
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title is-1 publication-title" style="font-size: 5rem;">
+          HyperDrive
+        </h1>
+        <h2 class="subtitle is-2 publication-title" style="font-size: 2.5rem;">
+          Advanced Reinforcement Learning<br>for Autonomous Racing
+        </h2>
+        <div class="author-block mt-6" style="font-size: 1.5rem;">
+          <a href="#">John Smith</a> &nbsp;&nbsp;
+          <a href="#">Emily Johnson</a> &nbsp;&nbsp;
+          <a href="#">Michael Chen</a> &nbsp;&nbsp;
+          <a href="#">Sarah Williams</a> &nbsp;&nbsp;
+          <a href="#">David Kim</a>
+        </div>
+        <h3 class="is-size-4 has-text-white mt-4">
+          Stanford University • MIT • UC Berkeley
+        </h3>
+        <div class="mt-6">
+          <a href="#" class="button is-medium is-primary mr-2">
+            <span class="icon">
+              <i class="fas fa-file-pdf"></i>
+            </span>
+            <span>Paper</span>
+          </a>
+          <a href="#" class="button is-medium is-light is-outlined mr-2">
+            <span class="icon">
+              <i class="fas fa-play-circle"></i>
+            </span>
+            <span>Demo</span>
+          </a>
+          <a href="#" class="button is-medium is-light is-outlined">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+            <span>Code</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <h2 class="title section-title">About HyperDrive</h2>
+          <div class="content">
+            <p class="is-size-5">
+              HyperDrive is a comprehensive study that evaluates and optimizes various reinforcement learning algorithms for autonomous racing using the Learn to Race simulator. Our research bridges the gap between theoretical advancements in reinforcement learning and their practical applications in high-speed, dynamic racing environments.
+            </p>
+            <div class="key-insight">
+              <p class="is-size-5 has-text-weight-bold">
+                We introduce a systematic framework for comparing online, offline, transformer-based, state space model, and meta-reinforcement learning algorithms in the context of autonomous racing, delivering actionable insights for both academic researchers and industry practitioners.
+              </p>
+            </div>
+            <p>
+              Unlike previous approaches that focus on single algorithm implementations, HyperDrive offers a holistic evaluation platform that enables direct comparison across algorithm families, providing unprecedented clarity on the strengths and limitations of each approach in high-performance racing scenarios.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Video Teaser -->
+      <div class="columns is-centered mt-6">
+        <div class="column is-8">
+          <h3 class="title is-4 has-text-centered mb-5">Project Overview</h3>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Key Metrics -->
+      <div class="columns is-multiline is-centered mt-6">
+        <div class="column is-3">
+          <div class="metrics-container has-text-centered">
+            <div class="metric-value">5+</div>
+            <div class="metric-label">RL Algorithm Families</div>
+          </div>
+        </div>
+        <div class="column is-3">
+          <div class="metrics-container has-text-centered">
+            <div class="metric-value">12</div>
+            <div class="metric-label">Racing Tracks</div>
+          </div>
+        </div>
+        <div class="column is-3">
+          <div class="metrics-container has-text-centered">
+            <div class="metric-value">250+</div>
+            <div class="metric-label">Hours of Training</div>
+          </div>
+        </div>
+        <div class="column is-3">
+          <div class="metrics-container has-text-centered">
+            <div class="metric-value">98%</div>
+            <div class="metric-label">Completion Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Algorithms Section -->
+  <section class="section has-background-light" id="algorithms">
+    <div class="container">
+      <h2 class="title section-title">Reinforcement Learning Algorithms</h2>
+      <div class="columns is-multiline">
+        <!-- Online RL -->
+        <div class="column is-4">
+          <div class="algorithm-card">
+            <h3 class="title is-4 has-text-primary">Online RL</h3>
+            <p class="mb-4">
+              Algorithms that learn directly from interactions with the racing environment, continuously adapting their policies to improve performance on the track.
+            </p>
+            <div class="content">
+              <ul>
+                <li><strong>PPO (Proximal Policy Optimization)</strong> - Stable policy gradient method with strong performance</li>
+                <li><strong>SAC (Soft Actor-Critic)</strong> - Sample-efficient algorithm with entropy regularization</li>
+                <li><strong>TD3 (Twin Delayed DDPG)</strong> - Advanced actor-critic approach with delayed policy updates</li>
+              </ul>
+            </div>
+            <div class="has-text-centered mt-4">
+              <a href="#" class="button is-primary is-outlined">Learn More</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Offline RL -->
+        <div class="column is-4">
+          <div class="algorithm-card">
+            <h3 class="title is-4 has-text-primary">Offline RL</h3>
+            <p class="mb-4">
+              Algorithms that learn from pre-collected datasets without direct environment interaction, ideal for scenarios where live training is impractical.
+            </p>
+            <div class="content">
+              <ul>
+                <li><strong>CQL (Conservative Q-Learning)</strong> - Prevents extrapolation errors in Q-function estimation</li>
+                <li><strong>IQL (Implicit Q-Learning)</strong> - Expectile regression approach to offline RL</li>
+                <li><strong>TD3+BC</strong> - Combines TD3 with behavior cloning constraint</li>
+              </ul>
+            </div>
+            <div class="has-text-centered mt-4">
+              <a href="#" class="button is-primary is-outlined">Learn More</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Transformer-based RL -->
+        <div class="column is-4">
+          <div class="algorithm-card">
+            <h3 class="title is-4 has-text-primary">Transformer-based RL</h3>
+            <p class="mb-4">
+              Leveraging attention mechanisms to capture long-range dependencies in sequential decision-making processes for racing.
+            </p>
+            <div class="content">
+              <ul>
+                <li><strong>Decision Transformer</strong> - Sequence modeling approach to reinforcement learning</li>
+                <li><strong>Trajectory Transformer</strong> - Planning through autoregressive modeling</li>
+                <li><strong>Gated Transformer-XL</strong> - Extended transformer with gating for temporal dynamics</li>
+              </ul>
+            </div>
+            <div class="has-text-centered mt-4">
+              <a href="#" class="button is-primary is-outlined">Learn More</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- State Space Models -->
+        <div class="column is-4">
+          <div class="algorithm-card">
+            <h3 class="title is-4 has-text-primary">State Space Models</h3>
+            <p class="mb-4">
+              Combining the efficiency of RNNs with the expressivity of transformers through structured state space sequence models for racing strategies.
+            </p>
+            <div class="content">
+              <ul>
+                <li><strong>S4 (Structured State Space)</strong> - Linear model with efficient long-range dependencies</li>
+                <li><strong>Mamba</strong> - Selective SSM with hardware-aware design</li>
+                <li><strong>H3 (Hungry Hungry Hippo)</strong> - Hybrid approach combining state space models with attention</li>
+              </ul>
+            </div>
+            <div class="has-text-centered mt-4">
+              <a href="#" class="button is-primary is-outlined">Learn More</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Meta-RL -->
+        <div class="column is-4">
+          <div class="algorithm-card">
+            <h3 class="title is-4 has-text-primary">Meta-RL</h3>
+            <p class="mb-4">
+              Meta-learning approaches that enable rapid adaptation to new racing tracks and conditions after training on a distribution of racing tasks.
+            </p>
+            <div class="content">
+              <ul>
+                <li><strong>MAML (Model-Agnostic Meta-Learning)</strong> - Learning initializations that allow fast adaptation</li>
+                <li><strong>RL^2</strong> - Recurrent policy that implicitly performs task inference</li>
+                <li><strong>PEARL</strong> - Probabilistic embedding approach to meta-RL</li>
+              </ul>
+            </div>
+            <div class="has-text-centered mt-4">
+              <a href="#" class="button is-primary is-outlined">Learn More</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hybrid Approaches -->
+        <div class="column is-4">
+          <div class="algorithm-card">
+            <h3 class="title is-4 has-text-primary">Hybrid Approaches</h3>
+            <p class="mb-4">
+              Novel combinations of multiple algorithm families, designed to leverage complementary strengths for optimal racing performance.
+            </p>
+            <div class="content">
+              <ul>
+                <li><strong>OT-Meta</strong> - Optimal transport meta-learning with trajectory alignment</li>
+                <li><strong>TrMPC</strong> - Transformer-based model predictive control</li>
+                <li><strong>S4-Actor-Critic</strong> - Actor-critic architecture with S4 backbones</li>
+              </ul>
+            </div>
+            <div class="has-text-centered mt-4">
+              <a href="#" class="button is-primary is-outlined">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Results Section -->
+  <section class="section" id="results">
+    <div class="container">
+      <h2 class="title section-title">Benchmark Results</h2>
+      
+      <div class="info-box">
+        <h4>Key Performance Metrics</h4>
+        <p>Our comprehensive evaluation framework measures performance across multiple dimensions:</p>
+        <div class="columns mt-4">
+          <div class="column">
+            <ul>
+              <li><strong>Lap Completion Rate</strong> - Percentage of successfully completed laps</li>
+              <li><strong>Average Lap Time</strong> - Time to complete a full circuit</li>
+              <li><strong>Sample Efficiency</strong> - Performance relative to training iterations</li>
+            </ul>
+          </div>
+          <div class="column">
+            <ul>
+              <li><strong>Generalization</strong> - Performance on unseen tracks</li>
+              <li><strong>Robustness</strong> - Stability under perturbations and noise</li>
+              <li><strong>Compute Requirements</strong> - Training and inference computational costs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Summary Charts -->
+      <div class="columns mt-6">
+        <div class="column">
+          <h3 class="title is-4">Performance Comparison</h3>
+          <div class="results-chart">
+            <img src="/api/placeholder/800/400" alt="Performance comparison chart" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Algorithm Comparison Table -->
+      <h3 class="title is-4 mt-6">Detailed Comparison</h3>
+      <div class="table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Lap Completion</th>
+              <th>Avg. Lap Time</th>
+              <th>Sample Efficiency</th>
+              <th>Generalization</th>
+              <th>Robustness</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PPO (Online)</td>
+              <td>98%</td>
+              <td>42.3s</td>
+              <td>Medium</td>
+              <td>Good</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <td>CQL (Offline)</td>
+              <td>94%</td>
+              <td>45.7s</td>
+              <td>High</td>
+              <td>Medium</td>
+              <td>Medium</td>
+            </tr>
+            <tr>
+              <td>Decision Transformer</td>
+              <td>96%</td>
+              <td>43.1s</td>
+              <td>High</td>
+              <td>Very Good</td>
+              <td>Medium</td>
+            </tr>
+            <tr>
+              <td>Mamba (SSM)</td>
+              <td>97%</td>
+              <td>41.8s</td>
+              <td>High</td>
+              <td>Excellent</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <td>MAML (Meta-RL)</td>
+              <td>95%</td>
+              <td>44.2s</td>
+              <td>Low</td>
+              <td>Excellent</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <td>TrMPC (Hybrid)</td>
+              <td>99%</td>
+              <td>40.5s</td>
+              <td>Medium</td>
+              <td>Very Good</td>
+              <td>Very High</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Algorithm Performance Videos -->
+      <h3 class="title is-4 mt-6">Visual Performance Comparison</h3>
+      <div class="columns is-multiline">
+        <div class="column is-6">
+          <h4 class="title is-5">Online RL (PPO)</h4>
+          <div class="video-wrapper">
+            <video controls autoplay loop muted>
+              <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="column is-6">
+          <h4 class="title is-5">Transformer-based RL</h4>
+          <div class="video-wrapper">
+            <video controls autoplay loop muted>
+              <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="column is-6">
+          <h4 class="title is-5">State Space Models (Mamba)</h4>
+          <div class="video-wrapper">
+            <video controls autoplay loop muted>
+              <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="column is-6">
+          <h4 class="title is-5">Meta-RL Adaptation</h4>
+          <div class="video-wrapper">
+            <video controls autoplay loop muted>
+              <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Key Findings -->
+      <div class="info-box mt-6">
+        <h4>Key Findings</h4>
+        <div class="content">
+          <ol>
+            <li><strong>Hybrid approaches consistently outperform single-family algorithms</strong>, suggesting that combining complementary strengths leads to superior racing performance.</li>
+            <li><strong>Transformer-based methods excel in long-term strategic planning</strong>, while State Space Models offer an excellent balance between computational efficiency and performance.</li>
+            <li><strong>Meta-RL algorithms demonstrate exceptional generalization</strong> to new tracks after minimal exposure, though they require more extensive training initially.</li>
+            <li><strong>Online methods remain competitive</strong> when computational resources permit continuous training and adaptation.</li>
+            <li><strong>The performance gap between algorithm families narrows significantly</strong> with increased training resources, highlighting the importance of computational considerations in algorithm selection.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Methodology Section -->
+  <section class="section has-background-light" id="methodology">
+    <div class="container">
+      <h2 class="title section-title">Methodology</h2>
+      
+      <div class="columns">
+        <div class="column is-8">
+          <p class="is-size-5 mb-5">
+            Our rigorous evaluation framework ensures fair and comprehensive comparison across algorithm families, with standardized environments, metrics, and computational resources.
+          </p>
+          
+          <div class="content">
+            <h3 class="title is-4">Experimental Setup</h3>
+            <p>
+              All algorithms were evaluated using the Learn to Race (L2R) simulator, a high-fidelity racing environment that models realistic vehicle dynamics, track conditions, and sensor inputs. Our experiments were conducted across 12 different tracks, ranging from simple oval circuits to complex Formula-style tracks with varying degrees of difficulty.
+            </p>
+            
+            <h3 class="title is-4 mt-5">Training Protocol</h3>
+            <p>
+              Each algorithm was allocated equivalent computational resources and trained until performance convergence or a maximum of 10 million environment steps. For fair comparison, we implemented a standardized observation and action space across all algorithms, with observations consisting of vehicle state information and track-relative positioning, and actions controlling steering, throttle, and braking.
+            </p>
+            
+            <h3 class="title is-4 mt-5">Evaluation Metrics</h3>
+            <p>
+              Performance evaluation was conducted using a suite of metrics including lap completion rate, average lap time, progress along the track, and trajectory smoothness. Additionally, we measured sample efficiency, computational requirements, and generalization ability to provide a holistic view of each algorithm's strengths and limitations.
+            </p>
+          </div>
+        </div>
+        
+        <div class="column is-4">
+          <div class="info-box">
+            <div class="has-text-centered">
+              <div class="methodology-icon">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <h4 class="title is-4">Infrastructure</h4>
+            </div>
+            <div class="content">
+              <ul>
+                <li><strong>Computing:</strong> 64 NVIDIA A100 GPUs</li>
+                <li><strong>Parallelization:</strong> 32 environments per training run</li>
+                <li><strong>Total Compute:</strong> ~250,000 GPU hours</li>
+                <li><strong>Simulation:</strong> Learn to Race v2.0</li>
+                <li><strong>Implementation:</strong> PyTorch, RLlib</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="info-box mt-5">
+            <div class="has-text-centered">
+              <div class="methodology-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h4 class="title is-4">Hyperparameter Optimization</h4>
+            </div>
+            <div class="content
