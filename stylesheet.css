@@ -1,3 +1,14 @@
+footer p {
+  color: #666;
+  font-size: 14px;
+}
+
+.name {
+  font-size: 32px;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
 /* latin-ext */
 @font-face {
   font-family: 'Lato';
@@ -109,10 +120,112 @@ h2 {
   font-size: 32px;
 }
 
+tr[bgcolor="#ffffd0"] {
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+tr[bgcolor="#ffffd0"]:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
 .one {
-  width: 160px;
-  height: 160px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
   position: relative;
+}
+
+.one {
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+@media (max-width: 768px) {
+  .one {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  td {
+    display: block;
+    width: 100% !important;
+    padding: 10px 0;
+  }
+  
+  tr {
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+.one img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.one:hover img {
+  transform: scale(1.05);
+}
+
+.paper-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  position: relative;
+}
+
+.paper-primary-image {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.paper-hover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.one:hover .paper-hover-image {
+  opacity: 1;
+}
+
+.one:hover .paper-primary-image {
+  opacity: 0;
+}
+
+.papertitle {
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+a:hover .papertitle {
+  color: #1772d0;
+}
+
+.bg_colour {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.bg_colour:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: #f0f0f0;
 }
 
 .two {

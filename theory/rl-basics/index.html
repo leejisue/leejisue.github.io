@@ -1,9 +1,96 @@
-                <div class="paper-section">
+<div class="header-sensor"></div>
+
+<header>
+    <div class="container header-container">
+        <div class="logo">
+            <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="8" fill="#E6F0FF"/>
+                <path d="M20 8L32 14.5V27.5L20 34L8 27.5V14.5L20 8Z" stroke="#0066CC" stroke-width="2"/>
+                <path d="M20 21V34M20 8V21M8 14.5L20 21L32 14.5" stroke="#0066CC" stroke-width="2"/>
+                <circle cx="20" cy="21" r="3" fill="#0066CC"/>
+            </svg>
+            <span class="logo-text">RL with JAX</span>
+        </div>
+        
+        <div class="nav-container">
+            <nav class="nav-links">
+                <a href="#overview" class="nav-link">Overview</a>
+                <a href="#basics" class="nav-link">RL Basics</a>
+                <a href="#algorithms" class="nav-link">Algorithms</a>
+                <a href="#resources" class="nav-link">Resources</a>
+            </nav>
+            
+            <a href="https://github.com/yourusername/reinforcement-learning-jax" class="nav-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>GitHub</span>
+            </a>
+        </div>
+        
+        <button class="mobile-nav-toggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Header show/hide functionality
+    const header = document.querySelector('header');
+    const headerSensor = document.querySelector('.header-sensor');
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    let isHeaderVisible = false;
+    
+    // Function to show header
+    function showHeader() {
+        if (!isHeaderVisible) {
+            header.style.top = '0';
+            isHeaderVisible = true;
+        }
+    }
+    
+    // Function to hide header
+    function hideHeader() {
+        if (isHeaderVisible && !navLinks.classList.contains('active')) {
+            header.style.top = '-80px';
+            isHeaderVisible = false;
+        }
+    }
+    
+    // Mobile navigation toggle
+    mobileNavToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+        // Ensure header stays visible when menu is open
+        if (navLinks.classList.contains('active')) {
+            showHeader();
+        }
+    });
+    
+    // Add events to the sensor
+    headerSensor.addEventListener('mouseenter', showHeader);
+    
+    // Hide header when mouse moves away from both header and sensor
+    document.addEventListener('mousemove', function(e) {
+        if (e.clientY > 100 && !navLinks.classList.contains('active')) {
+            hideHeader();
+        }
+    });
+    
+    // Keep header visible when interacting with it
+    header.addEventListener('mouseenter', showHeader);
+});
+</script>
+
+<div class="paper-section">
                     <div class="paper-image">
-                        <img src="/api/placeholder/500/350" alt="RL Diagram">
+                        <img src="https://leejisue.github.io/theory/rl-basics/img/logo.jpg" alt="RL Diagram">
                     </div>
                     <div class="paper-content">
-                        <h3 class="paper-title">Learn, Implement, Master</h3>
+                        <h3 class="paper-title" id="overview">Learn, Implement, Master</h3>
                         <p class="paper-text">
                             Welcome to my blog focused on reinforcement learning with JAX! This resource is designed to help researchers and practitioners understand both the theoretical foundations of reinforcement learning and their efficient implementation using Google's JAX library.
                         </p>
@@ -40,7 +127,7 @@
                     <div class="course-card">
                         <div class="course-header">
                             <div class="course-week">Week 1</div>
-                            <h3 class="course-title">Introduction to Reinforcement Learning</h3>
+                            <h3 class="course-title">Introduction to RL</h3>
                         </div>
                         <div class="course-content">
                             <p class="course-description">
@@ -492,12 +579,21 @@
         
         header {
             background-color: var(--bg-color);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+            position: fixed; 
+            width: 100%; 
+            top: -80px; /* 초기에는 헤더가 보이지 않도록 설정 */ 
+            left: 0; 
+            z-index: 1000; 
+            transition: top 0.3s ease; /* 부드러운 애니메이션 효과 */
+        }
+        .header-sensor {
             position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 20px; 
+            z-index: 1001;
         }
         
         .header-container {
@@ -525,10 +621,41 @@
             color: var(--primary-dark);
             letter-spacing: -0.01em;
         }
+
+        .nav-container {
+            margin-left: auto; 
+            display: flex; 
+            align-items: center;
+        }
         
         .nav-links {
             display: flex;
             gap: 32px;
+            margin-right: 20px;
+        }
+        @media (max-width: 768px) {
+            .nav-container {
+                order: 3; /* This ensures mobile menu button appears before nav on small screens */
+            }
+            
+            .mobile-nav-toggle {
+                margin-left: auto; /* Push toggle button to the right on mobile */
+            }
+            
+            .nav-links {
+                position: fixed; 
+                top: 70px; 
+                left: 0; 
+                right: 0; 
+                background-color: white; 
+                flex-direction: column; 
+                gap: 0; 
+                height: 0; 
+                overflow: hidden; 
+                transition: height 0.3s; 
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                margin-right: 0; 
+            } 
         }
         
         .nav-link {
@@ -1171,6 +1298,10 @@
             cursor: pointer;
             padding: 5px;
         }
+
+        main {
+            margin-top: 50px; 
+        }
         
         @media (max-width: 992px) {
             .hero-title {
@@ -1310,6 +1441,7 @@
             </nav>
         </div>
     </header>
+    </div>
     
     <main>
         <section class="hero">
@@ -1337,7 +1469,7 @@
                     </div>
                     
                     <div class="author-info">
-                        <img src="/api/placeholder/100/100" alt="Ji Sue Lee" class="author-photo">
+                        <img src="https://leejisue.github.io/images/ljs_id_photo.jpeg" alt="Ji Sue Lee" class="author-photo">
                         <div class="author-details">
                             <span class="author-name">Ji Sue Lee</span>
                             <span class="author-affiliation">Hanyang University</span>
@@ -1363,27 +1495,186 @@
             </div>
         </section>
         
-        <section class="section" id="overview">
+        </div>
+        
+        <section class="section section-alt" id="features">
             <div class="container">
                 <div class="section-heading">
                     <div class="section-divider"></div>
-                    <h2 class="section-title">Blog Overview</h2>
-                    <p class="section-description">Exploring reinforcement learning from theory to implementation with JAX's high-performance computing capabilities</p>
+                    <h2 class="section-title">Key Features</h2>
+                    <p class="section-description">Take advantage of these powerful features to accelerate your learning and implementation</p>
                 </div>
                 
-                <div class="paper-section">
-                    <div class="paper-image">
-                        <img src="/api/placeholder/500/350" alt="RL Diagram">
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-image">
+                            <img src="/api/placeholder/400/200" alt="JAX Acceleration">
+                        </div>
+                        <div class="feature-content">
+                            <span class="feature-tag">Performance</span>
+                            <h3 class="feature-title">JAX Acceleration</h3>
+                            <p class="feature-text">
+                                Learn how to leverage JAX's just-in-time compilation and automatic differentiation to speed up RL algorithm implementation and training.
+                            </p>
+                            <a href="#" class="feature-link">
+                                Learn more
+                                <svg class="feature-link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
-                    <div class="paper-content">
-                        <h3 class="paper-title">Learn, Implement, Master</h3>
-                        <p class="paper-text">
-                            Welcome to my blog focused on reinforcement learning with JAX! This resource is designed to help researchers and practitioners understand both the theoretical foundations of reinforcement learning and their efficient implementation using Google's JAX library.
-                        </p>
-                        <p class="paper-text">
-                            Throughout this blog, you'll find tutorials, code examples, and in-depth explanations of key RL concepts—from basics like Markov Decision Processes and Q-learning to advanced topics such as policy gradient methods and model-based RL. Each article emphasizes practical implementation techniques that leverage JAX's automatic differentiation, vectorization, and GPU/TPU acceleration.
-                        </p>
-                        <ul class="paper-list">
-                            <li class="paper-list-item">
-                                <svg class="paper-list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="
+                    
+                    <div class="feature-card">
+                        <div class="feature-image">
+                            <img src="/api/placeholder/400/200" alt="Interactive Notebooks">
+                        </div>
+                        <div class="feature-content">
+                            <span class="feature-tag">Learning</span>
+                            <h3 class="feature-title">Interactive Notebooks</h3>
+                            <p class="feature-text">
+                                Access complete Jupyter notebooks with step-by-step implementations of RL algorithms, complete with detailed explanations and visualizations.
+                            </p>
+                            <a href="#" class="feature-link">
+                                Explore notebooks
+                                <svg class="feature-link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-image">
+                            <img src="/api/placeholder/400/200" alt="Code Repository">
+                        </div>
+                        <div class="feature-content">
+                            <span class="feature-tag">Implementation</span>
+                            <h3 class="feature-title">Complete Code Repository</h3>
+                            <p class="feature-text">
+                                Access a GitHub repository with clean, modular implementations of all the algorithms discussed in the blog, designed for research and practical applications.
+                            </p>
+                            <a href="#" class="feature-link">
+                                View repository
+                                <svg class="feature-link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="newsletter">
+            <div class="container" style="max-width: 600px; text-align: center;">
+                <div class="section-heading" style="margin-bottom: 32px;">
+                    <div class="section-divider" style="margin: 0 auto 24px;"></div>
+                    <h2 class="section-title">Stay Updated</h2>
+                    <p class="section-description">Subscribe to receive notifications about new tutorials, code updates, and RL research insights</p>
+                </div>
+                
+                <div style="padding: 32px; background-color: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);">
+                    <form style="display: flex; gap: 16px; margin-bottom: 16px;">
+                        <input type="email" placeholder="Enter your email" style="flex: 1; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 1rem;">
+                        <button type="submit" class="btn-primary" style="white-space: nowrap;">
+                            Subscribe
+                        </button>
+                    </form>
+                    <p style="font-size: 0.9rem; color: var(--text-light); margin: 0;">
+                        We'll send updates monthly. You can unsubscribe at any time.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="8" fill="#E6F0FF"/>
+                        <path d="M20 8L32 14.5V27.5L20 34L8 27.5V14.5L20 8Z" stroke="#4D94FF" stroke-width="2"/>
+                        <path d="M20 21V34M20 8V21M8 14.5L20 21L32 14.5" stroke="#4D94FF" stroke-width="2"/>
+                        <circle cx="20" cy="21" r="3" fill="#4D94FF"/>
+                    </svg>
+                    <span class="footer-logo-text">RL with JAX</span>
+                </div>
+                <p class="footer-description">
+                    Learning reinforcement learning algorithms through theory and efficient implementation using JAX.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84 0 0 0 .497-3.753C20.18 7.773 21.692 5.25 22 4.009z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 10v8M12 6v12M16 14v4M4 18h16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-link-list">
+                    <li class="footer-link-item">
+                        <a href="#" class="footer-link">Course Materials</a>
+                    </li>
+                    <li class="footer-link-item">
+                        <a href="#" class="footer-link">Code Repository</a>
+                    </li>
+                    <li class="footer-link-item">
+                        <a href="#" class="footer-link">Video Tutorials</a>
+                    </li>
+                    <li class="footer-link-item">
+                        <a href="#" class="footer-link">Blog Articles</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4 class="footer-heading">About</h4>
+                <ul class="footer-link-list">
+                    <li class="footer-link-item">
+                        <a href="#" class="footer-link">About the Author</a>
+                    </li>
+                    <li class="footer-link-item">
+                        <a href="#" class="footer-link">Research</a>
+                    </li>
+                    <li class="footer-link-item">
+                        <a href="#" class="footer-link">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="footer-divider"></div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    © 2025 Reinforcement Learning with JAX. All rights reserved.
+                </div>
+                <div class="footer-legal">
+                    <a href="#" class="footer-legal-link">Terms</a>
+                    <a href="#" class="footer-legal-link">Privacy</a>
+                </div>
+            </div>
+            
+            <!-- Copyright notice and contact information -->
+            <div class="copyright-notice" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; line-height: 1.6;">
+                <p>© Copyright 2025. All rights reserved. Unauthorized reproduction or distribution of any materials on this site is strictly prohibited.</p>
+                <p>All content on this website is the intellectual property of Lee Ji Sue. For inquiries, please contact: <a href="mailto:brunoleej@gmail.com" style="color: rgba(255, 255, 255, 0.7); text-decoration: underline;">brunoleej@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
