@@ -1,0 +1,728 @@
+/* Training Progress Section */
+.training-progress-section {
+    padding: 4rem 0;
+    background-color: var(--background-light);
+}
+
+.training-progress-section h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    text-align: center;
+    color: var(--text-color);
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+.training-videos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.algorithm-training-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+}
+
+.algorithm-training-card h4 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.training-stages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.training-stage {
+    display: flex;
+    flex-direction: column;
+}
+
+.training-stage h5 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.training-stage .video-container {
+    flex-grow: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.training-stage .video-container:hover {
+    transform: scale(1.02);
+}
+
+.training-stage video {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .training-stages {
+        grid-template-columns: 1fr;
+    }
+    
+    .training-stage .video-container video {
+        height: 200px;
+    }
+}
+
+/* Tooltip Styles */
+.episode-tooltip {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    width: 250px;
+    text-align: center;
+    font-size: 0.8rem;
+    z-index: 10;
+    opacity: 0.9;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.training-stage {
+    position: relative;
+}
+
+.training-stage:hover .episode-tooltip {
+    bottom: -60px;
+    opacity: 1;
+}/* Training Progress Section */
+.training-progress-section {
+    padding: 4rem 0;
+    background-color: var(--background-light);
+}
+
+.training-progress-section h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    text-align: center;
+    color: var(--text-color);
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+.training-videos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.algorithm-training-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+}
+
+.algorithm-training-card h4 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.training-stages {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.training-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.training-stage h5 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.training-stage .video-container {
+    flex-grow: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.training-stage .video-container:hover {
+    transform: scale(1.02);
+}
+
+.training-stage video {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .training-stages {
+        flex-direction: column;
+    }
+    
+    .training-stage .video-container video {
+        height: 200px;
+    }
+}
+
+/* Tooltip Styles */
+.episode-tooltip {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    width: 250px;
+    text-align: center;
+    font-size: 0.8rem;
+    z-index: 10;
+    opacity: 0.9;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.training-stage {
+    position: relative;
+}
+
+.training-stage:hover .episode-tooltip {
+    bottom: -60px;
+    opacity: 1;
+}/* Training Progress Section Updates */
+.training-stages {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.training-stage {
+    flex: 1;
+    position: relative;
+}
+
+.training-stage h5 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.training-stage .video-container {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: 250px; /* Fixed height for consistent layout */
+}
+
+.training-stage .video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures video covers the entire container */
+}
+
+/* Existing code remains the same... */
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .training-stages {
+        flex-direction: column;
+    }
+}
+
+/* Rest of the existing CSS remains unchanged *//* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #002060;
+    --secondary-color: #0078D4;
+    --accent-color: #50C878;
+    --text-color: #333;
+    --background-light: #f4f4f8;
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-light);
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header Styles */
+.site-header {
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.logo h1 span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--secondary-color);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 1.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--secondary-color);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--white);
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.hero-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Overview Section */
+.overview-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.overview-section h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.overview-card {
+    background-color: var(--background-light);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.overview-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.overview-card ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+/* Algorithms Section */
+.algorithms-section {
+    padding: 4rem 0;
+    background-color: var(--background-light);
+}
+
+.algorithms-section h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+.algorithm-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.algorithm-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.algorithm-card:hover {
+    transform: translateY(-10px);
+}
+
+.algorithm-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.algorithm-header h4 {
+    font-size: 1.2rem;
+}
+
+.algorithm-tag {
+    background-color: var(--accent-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.algorithm-details {
+    padding: 1.5rem;
+}
+
+.algorithm-details h5 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.algorithm-details ul {
+    list-style-type: none;
+    margin-bottom: 1.5rem;
+}
+
+.algorithm-details ul li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--background-light);
+}
+
+.performance-metrics .metric {
+    margin-bottom: 1rem;
+}
+
+.performance-metrics .metric span {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: var(--background-light);
+    border-radius: 5px;
+    position: relative;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+}
+
+.performance-metrics .metric[data-value="75"] .progress-bar::before { width: 75%; }
+.performance-metrics .metric[data-value="85"] .progress-bar::before { width: 85%; }
+.performance-metrics .metric[data-value="90"] .progress-bar::before { width: 90%; }
+.performance-metrics .metric[data-value="95"] .progress-bar::before { width: 95%; }
+
+/* Comparisons Section */
+.comparisons-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.comparisons-section h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--white);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.comparison-table th, 
+.comparison-table td {
+    border: 1px solid var(--background-light);
+    padding: 1rem;
+    text-align: left;
+}
+
+.comparison-table th {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.comparison-table tr:nth-child(even) {
+    background-color: var(--background-light);
+}
+
+/* Resources Section */
+.resources-section {
+    padding: 4rem 0;
+    background-color: var(--background-light);
+}
+
+.resources-section h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.resource-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+    transform: translateY(-10px);
+}
+
+.resource-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.resource-card ul {
+    list-style-type: none;
+}
+
+.resource-card ul li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--background-light);
+    transition: color 0.3s ease;
+}
+
+.resource-card ul li:hover {
+    color: var(--secondary-color);
+}
+
+/* Training Progress Section */
+.training-progress-section {
+    padding: 4rem 0;
+    background-color: var(--background-light);
+}
+
+.training-progress-section h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    text-align: center;
+    color: var(--text-color);
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+.training-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.algorithm-training-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.algorithm-training-card:hover {
+    transform: translateY(-10px);
+}
+
+.algorithm-training-card h4 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.training-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.training-stage h5 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.training-stage .video-container {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.training-stage .video-container:hover {
+    transform: scale(1.02);
+}
+
+.training-stage video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1200px) {
+    .training-videos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .training-videos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Extend existing responsive styles */
+@media screen and (max-width: 768px) {
+    .training-progress-section .section-description {
+        font-size: 0.9rem;
+        padding: 0 1rem;
+    }
+}
+footer {
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 2rem 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+    .algorithm-grid,
+    .overview-grid,
+    .resources-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main-nav {
+        flex-direction: column;
+    }
+
+    .nav-links {
+        margin-top: 1rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-links li {
+        margin: 0.5rem 0;
+    }
+
+    .algorithm-grid,
+    .overview-grid,
+    .resources-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
