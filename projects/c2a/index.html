@@ -1,251 +1,373 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-96CCSDGHTX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-96CCSDGHTX');
-    </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-    <title>C2A: Causality-aware Context Adaptation for Meta-RL</title>
-    <meta name="author" content="Ji Su Lee">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="description"
+        content="C2A: Causality-aware Context Adaptation for Meta-Reinforcement Learning with Temporal Causal Discovery">
+  <meta name="keywords" content="C2A, Meta-RL, Causality, Reinforcement Learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C2A: Causality-aware Context Adaptation for Meta-Reinforcement Learning</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/main.css">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-96CCSDGHTX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-    <!-- MathJax for LaTeX equations -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true,
-                processEnvironments: true
-            },
-            options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-            }
-        };
-    </script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    function gtag() {
+      dataLayer.push(arguments);
+    }
 
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
-        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 0; margin-bottom: 40px; }
-        .hero h1 { font-size: 42px; font-weight: 700; margin-bottom: 20px; }
-        .hero p { font-size: 18px; opacity: 0.95; }
-        .section { margin: 60px 0; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 40px 0; }
-        .feature-card { padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; }
-        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 8px 12px rgba(0,0,0,0.15); }
-        .gradient-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .gradient-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
-        .gradient-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
-        .results-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .results-table th { background: #f8f9fa; padding: 12px; border: 1px solid #dee2e6; font-weight: 600; }
-        .results-table td { padding: 10px; border: 1px solid #dee2e6; }
-        .results-table tr:nth-child(even) { background: #f8f9fa; }
-        .highlight-row { background: #e8f5e9 !important; font-weight: bold; }
-        .equation-box { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .figure-container { margin: 30px 0; text-align: center; }
-        .figure-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .figure-caption { margin-top: 15px; font-size: 14px; color: #6c757d; font-style: italic; }
-        .algorithm-box { background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 8px; padding: 25px; margin: 30px 0; }
-        .cta-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 12px; text-align: center; margin: 60px 0; }
-        .cta-box a { color: white; text-decoration: underline; }
-    </style>
+    gtag('js', new Date());
+
+    gtag('config', 'G-96CCSDGHTX');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="icon" href="./img/icon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
 </head>
-
 <body>
-<div class="hero">
-    <div class="container">
-        <h1>C2A: Causality-aware Context Adaptation</h1>
-        <p>A Meta-Reinforcement Learning Framework with Temporal Causal Discovery</p>
-        <div style="margin-top: 25px; margin-bottom: 25px;">
-            <p style="font-size: 16px; margin-bottom: 10px;">
-                <span style="margin-right: 25px;">Jisu Lee<sup>1</sup></span>
-                <span style="margin-right: 25px;">Myoung Hoon Lee<sup>2,†</sup></span>
-                <span>Jun Moon<sup>1,†</sup></span>
-            </p>
-            <p style="font-size: 14px; opacity: 0.9;">
-                <sup>1</sup>Hanyang University &nbsp;&nbsp;&nbsp; <sup>2</sup>Incheon National University
-            </p>
-            <p style="font-size: 13px; opacity: 0.85; margin-top: 5px;">
-                <sup>†</sup>Corresponding authors
-            </p>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://leejisue.github.io/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://leejisue.github.io/projects/gome-ngu/">
+            GOME-NGU
+          </a>
+          <a class="navbar-item" href="https://leejisue.github.io/projects/c2a/">
+            C2A
+          </a>
         </div>
-        <p style="margin-top: 20px;">
-            <a href="https://github.com/yourusername/C2A" style="color: white; margin-right: 20px;">📦 Code (Currently not available)</a>
-            <a href="https://drive.google.com/file/d/1wTOLspoaeLxJoFiLkgUOFTQ0ADkEc1gm/view?usp=sharing" style="color: white; margin-right: 20px;">📄 Paper</a>
-            <a href="#results" style="color: white;">📊 Results</a>
-        </p>
+      </div>
     </div>
-</div>
 
-<div class="container">
-    <section class="section">
-        <h2>🎯 The Challenge</h2>
-        <p style="font-size: 18px; line-height: 1.8;">
-            Meta-RL agents struggle in high-dimensional environments because they treat all information equally.
-            In reality, <b>only a small subset of dimensions causally influence rewards</b>.
-            For example, in autonomous driving with 45 observable vehicles, typically only 2-3 actually affect lane-changing decisions.
-        </p>
+  </div>
+</nav>
 
-        <div class="figure-container">
-            <img src="img/motivation.png" alt="Motivation">
-            <div class="figure-caption">
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">C2A: Causality-aware Context Adaptation for Meta-Reinforcement Learning</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://leejisue.github.io/">Ji Sue Lee</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="#">Myoung Hoon Lee</a><sup>2,†</sup>,</span>
+            <span class="author-block">
+              <a href="https://junmoony.github.io/">Jun Moon</a><sup>1,†</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Hanyang University,</span>
+            <span class="author-block"><sup>2</sup>Incheon National University</span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top: 10px;">
+            <span class="author-block"><sup>†</sup>Corresponding authors</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://drive.google.com/file/d/1wTOLspoaeLxJoFiLkgUOFTQ0ADkEc1gm/view?usp=sharing"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img id="teaser" src="./img/figure01.png" alt="C2A Framework" style="width: 100%; height: auto;">
+      <h2 class="subtitle has-text-centered" style="margin-top: 20px;">
+        <strong>C2A Framework</strong>: Bidirectional integration of temporal causal discovery and latent representation learning for efficient meta-RL
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Meta-reinforcement learning (Meta-RL) enables agents to rapidly adapt to new tasks by leveraging prior experience.
+            However, existing approaches struggle in high-dimensional environments because they treat all information uniformly,
+            failing to identify which dimensions causally influence rewards.
+          </p>
+          <p>
+            We propose <b>C2A (Causality-aware Context Adaptation)</b>, a novel Meta-RL framework that discovers and exploits
+            temporal causal structures in trajectories. Our approach consists of three key components:
+          </p>
+          <ul>
+            <li><b>VarLiNGAM</b>: Discovers temporal causal structures from trajectories, identifying which dimensions truly influence rewards across time lags</li>
+            <li><b>CausalVAE</b>: Learns disentangled representations with causal structure, providing interpretable latent factors for control</li>
+            <li><b>ADCR (Adaptive Dimension-wise Causal Regularization)</b>: Adaptively focuses exploration on causally important dimensions</li>
+          </ul>
+          <p>
+            Experiments on MuJoCo locomotion tasks and Meta-Highway autonomous driving demonstrate that C2A achieves
+            <b>2× faster convergence</b> while maintaining competitive final performance compared to state-of-the-art methods.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Problem Statement -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">The Challenge</h2>
+        <div class="content has-text-justified">
+          <p>
+            In high-dimensional environments, only a small subset of dimensions causally influence rewards.
+            For example, in autonomous driving with 45 observable vehicles, typically only 2-3 actually affect
+            lane-changing decisions. Traditional Meta-RL approaches fail to identify these causal relationships,
+            leading to inefficient exploration and slower adaptation.
+          </p>
+          <div class="columns is-centered">
+            <div class="column">
+              <img src="./img/motivation.png" alt="Motivation" style="width: 100%;">
+              <p class="has-text-centered is-size-6" style="margin-top: 10px;">
                 <b>Figure 1:</b> C2A identifies causal dimensions (green) vs black-box approaches (red) that process all dimensions uniformly
+              </p>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+    <!--/ Problem Statement -->
 
-    <section class="section">
-        <h2>💡 Our Solution</h2>
+    <!-- Method -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <h3 class="title is-4">1. Temporal Causal Discovery with VarLiNGAM</h3>
+          <p>
+            VarLiNGAM discovers causal structure through a temporal model:
+          </p>
+          <p style="text-align: center;">
+            $$x_t = \sum_{\tau=0}^{p} B_\tau x_{t-\tau} + e_t$$
+          </p>
+          <p>
+            where \(B_0\) captures instantaneous effects and \(B_\tau\) captures time-lagged dependencies.
+          </p>
 
-        <div class="feature-grid">
-            <div class="feature-card gradient-1">
-                <h3 style="color: white;">🔍 VarLiNGAM</h3>
-                <p style="color: white;">Discovers temporal causal structures from trajectories, identifying which dimensions truly influence rewards across time lags.</p>
-            </div>
-            <div class="feature-card gradient-2">
-                <h3 style="color: white;">🧠 CausalVAE</h3>
-                <p style="color: white;">Learns disentangled representations with causal structure, providing interpretable latent factors for control.</p>
-            </div>
-            <div class="feature-card gradient-3">
-                <h3 style="color: white;">⚡ ADCR</h3>
-                <p style="color: white;">Adaptively focuses exploration on causally important dimensions, achieving 2× faster convergence.</p>
-            </div>
+          <h3 class="title is-4">2. Causal Representation Learning with CausalVAE</h3>
+          <p>
+            CausalVAE learns disentangled representations guided by the discovered causal structure:
+          </p>
+          <p style="text-align: center;">
+            $$\mathcal{L}_{CausalVAE} = \mathcal{L}_{recon} + \beta \cdot D_{KL}(q(z|x) || p(z)) + \lambda \cdot \mathcal{L}_{causal}$$
+          </p>
+
+          <h3 class="title is-4">3. Adaptive Exploration with ADCR</h3>
+          <p>
+            The causal importance \(c = |b^{(r)}| / ||b^{(r)}||_1\) guides exploration through ADCR:
+          </p>
+          <p style="text-align: center;">
+            $$H_{ADCR} = \sum_{i=1}^{d_a} w_i(z,c) \cdot H(a_i|s,z)$$
+          </p>
+          <p>
+            This enables the agent to focus exploration on causally important dimensions, achieving faster convergence.
+          </p>
         </div>
+      </div>
+    </div>
+    <!--/ Method -->
 
-        <div class="figure-container">
-            <img src="img/figure01.png" alt="C2A Architecture">
-            <div class="figure-caption">
-                <b>Figure 2:</b> C2A Framework - Bidirectional integration of temporal causal discovery and latent representation learning
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <h2>🔬 Technical Approach</h2>
-
-        <div class="equation-box">
-            <h3>Core Innovation</h3>
-            <p>C2A discovers causal structure through VarLiNGAM's temporal model:</p>
-            <div style="text-align: center; margin: 20px 0;">
-                $$x_t = \sum_{\tau=0}^{p} B_\tau x_{t-\tau} + e_t$$
-            </div>
-            <p>where \(B_0\) captures instantaneous effects and \(B_\tau\) captures time-lagged dependencies.</p>
-            <p>The causal importance \(c = |b^{(r)}| / ||b^{(r)}||_1\) guides exploration through ADCR:</p>
-            <div style="text-align: center; margin: 20px 0;">
-                $$H_{ADCR} = \sum_{i=1}^{d_a} w_i(z,c) \cdot H(a_i|s,z)$$
-            </div>
-        </div>
-
-        <div class="algorithm-box">
-            <h4 style="margin-top: 0;">Algorithm: C2A Meta-Training</h4>
-            <ol style="line-height: 2;">
-                <li>Collect context trajectories from task τ</li>
-                <li>Discover causal structure via VarLiNGAM → {B_τ}</li>
-                <li>Encode with CausalVAE guided by structure → z</li>
-                <li>Execute policy π(a|s,z) with ADCR exploration</li>
-                <li>Update with bidirectional consistency loss</li>
+    <!-- Algorithm -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Algorithm</h2>
+        <div class="box">
+          <div class="content has-text-left">
+            <p><b>Algorithm: C2A Meta-Training</b></p>
+            <ol>
+              <li>Collect context trajectories from task τ</li>
+              <li>Discover causal structure via VarLiNGAM → {B_τ}</li>
+              <li>Encode with CausalVAE guided by structure → z</li>
+              <li>Execute policy π(a|s,z) with ADCR exploration</li>
+              <li>Update with bidirectional consistency loss</li>
             </ol>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+    <!--/ Algorithm -->
+  </div>
+</section>
 
-    <section class="section" id="results">
-        <h2>📊 Results</h2>
+<!-- Results -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Experimental Results</h2>
 
-        <h3>MuJoCo Benchmarks</h3>
-        <table class="results-table">
+        <h3 class="title is-4">MuJoCo Benchmarks</h3>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-fullwidth">
             <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>Ant-Dir</th>
-                    <th>Cheetah-Dir</th>
-                    <th>Walker-Params</th>
-                </tr>
+              <tr>
+                <th>Method</th>
+                <th>Ant-Dir</th>
+                <th>Cheetah-Dir</th>
+                <th>Walker-Params</th>
+              </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>PEARL</td>
-                    <td>1119.9±152.3</td>
-                    <td>1737.0±211.6</td>
-                    <td>742.6±70.0</td>
-                </tr>
-                <tr>
-                    <td>CoRRO</td>
-                    <td>1142.6±158.6</td>
-                    <td>1646.0±210.5</td>
-                    <td>784.7±87.0</td>
-                </tr>
-                <tr class="highlight-row">
-                    <td>C2A (Ours)</td>
-                    <td>1243.3±221.5</td>
-                    <td>1727.6±416.9</td>
-                    <td>841.0±120.5</td>
-                </tr>
+              <tr>
+                <td>PEARL</td>
+                <td>1119.9±152.3</td>
+                <td>1737.0±211.6</td>
+                <td>742.6±70.0</td>
+              </tr>
+              <tr>
+                <td>CoRRO</td>
+                <td>1142.6±158.6</td>
+                <td>1646.0±210.5</td>
+                <td>784.7±87.0</td>
+              </tr>
+              <tr class="has-background-success-light has-text-weight-bold">
+                <td>C2A (Ours)</td>
+                <td>1243.3±221.5</td>
+                <td>1727.6±416.9</td>
+                <td>841.0±120.5</td>
+              </tr>
             </tbody>
-        </table>
-
-        <div class="figure-container">
-            <img src="img/mujoco_test.png" alt="MuJoCo Results">
-            <div class="figure-caption">
-                <b>Figure 3:</b> MuJoCo test performance across different locomotion tasks
-            </div>
+          </table>
         </div>
 
-        <h3>Meta-Highway (Autonomous Driving)</h3>
-        <div class="figure-container">
-            <img src="img/sample_efficiency.png" alt="Sample Efficiency">
-            <div class="figure-caption">
-                <b>Figure 4:</b> C2A achieves 2× faster convergence on Meta-Highway ML10
-            </div>
+        <div class="columns is-centered" style="margin-top: 30px;">
+          <div class="column is-full">
+            <img src="./img/mujoco_test.png" alt="MuJoCo Results" style="width: 100%;">
+            <p class="has-text-centered is-size-6" style="margin-top: 10px;">
+              <b>Figure 2:</b> MuJoCo test performance across different locomotion tasks
+            </p>
+          </div>
         </div>
 
-        <div class="figure-container">
-            <img src="img/causal_structures.png" alt="Discovered Causal Structures">
-            <div class="figure-caption">
-                <b>Figure 5:</b> Discovered causal structures reveal task-specific patterns
-            </div>
+        <h3 class="title is-4" style="margin-top: 40px;">Meta-Highway (Autonomous Driving)</h3>
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <img src="./img/sample_efficiency.png" alt="Sample Efficiency" style="width: 100%;">
+            <p class="has-text-centered is-size-6" style="margin-top: 10px;">
+              <b>Figure 3:</b> C2A achieves 2× faster convergence on Meta-Highway ML10
+            </p>
+          </div>
         </div>
-    </section>
 
-    <section class="section">
-        <h2>📚 Citation</h2>
-        <p style="margin-bottom: 20px; color: #6c757d; font-style: italic;">
-            Paper to be submitted to IEEE Robotics and Automation Letters (RA-L), 2025
-        </p>
-        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 14px;">
-            @article{lee2025c2a,<br>
-            &nbsp;&nbsp;title={C2A: Causality-aware Context Adaptation for Meta-Reinforcement Learning},<br>
-            &nbsp;&nbsp;author={Lee, Jisu and Lee, Myoung Hoon and Moon, Jun},<br>
-            &nbsp;&nbsp;journal={IEEE Robotics and Automation Letters (RA-L)},<br>
-            &nbsp;&nbsp;note={to be submitted},<br>
-            &nbsp;&nbsp;year={2025}<br>
-            }
+        <h3 class="title is-4" style="margin-top: 40px;">Discovered Causal Structures</h3>
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <img src="./img/causal_structures.png" alt="Discovered Causal Structures" style="width: 100%;">
+            <p class="has-text-centered is-size-6" style="margin-top: 10px;">
+              <b>Figure 4:</b> Discovered causal structures reveal task-specific patterns
+            </p>
+          </div>
         </div>
-    </section>
-</div>
 
-<script>
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-</script>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Results -->
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <p class="is-size-6" style="margin-bottom: 10px;">
+      <i>Paper to be submitted to IEEE Robotics and Automation Letters (RA-L), 2025</i>
+    </p>
+    <pre><code>@article{lee2025c2a,
+  author = {Jisu Lee and Myoung Hoon Lee and Jun Moon},
+  title  = {C2A: Causality-aware Context Adaptation for Meta-Reinforcement Learning},
+  journal = {IEEE Robotics and Automation Letters (RA-L)},
+  note   = {to be submitted},
+  year   = {2025},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            The website template was borrowed from <a href="https://keunhong.com/">Keunhong Park</a> and <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
