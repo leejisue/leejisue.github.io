@@ -1,0 +1,2856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Introduction to Reinforcement Learning | RL with JAX</title>
+
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    MathJax.startup.promise.then(() => {
+                        console.log('MathJax initial typesetting complete');
+                    });
+                }
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap');
+
+        :root {
+            --primary-color: #0066CC;
+            --primary-dark: #004C99;
+            --primary-light: #4D94FF;
+            --primary-lighter: #E6F0FF;
+            --secondary-color: #16325C;
+            --text-color: #333333;
+            --text-secondary: #4F6A92;
+            --text-light: #6C809A;
+            --bg-color: #FFFFFF;
+            --bg-alt: #F5F8FC;
+            --border-color: #E1E6EF;
+            --code-bg: #F0F4F8;
+            --highlight: #2D8EFF;
+            --success: #00A86B;
+            --warning: #FFC107;
+            --danger: #E53E3E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-svg {
+            height: 32px;
+            width: 32px;
+            margin-right: 12px;
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--primary-dark);
+            letter-spacing: -0.01em;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-light);
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background-color: var(--bg-alt);
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--primary-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--text-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, var(--primary-lighter) 0%, var(--bg-color) 100%);
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .week-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            line-height: 1.1;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 700px;
+        }
+
+        .learning-objectives {
+            background-color: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .objectives-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .objectives-list {
+            list-style: none;
+        }
+
+        .objectives-list li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .objectives-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            background-color: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 60px 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 88px;
+        }
+
+        .toc {
+            background-color: var(--bg-alt);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .toc-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-list li {
+            margin-bottom: 12px;
+        }
+
+        .toc-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            display: block;
+            padding: 4px 0;
+        }
+
+        .toc-list a:hover {
+            color: var(--primary-color);
+        }
+
+        .toc-list a.active {
+            color: var(--primary-color);
+            font-weight: 500;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 12px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .subsection {
+            margin-bottom: 32px;
+        }
+
+        .subsection-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 16px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            line-height: 1.7;
+            color: var(--text-color);
+        }
+
+        ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        ul li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            color: var(--text-color);
+        }
+
+        ul li strong {
+            color: var(--primary-dark);
+        }
+
+        /* Math Blocks */
+        .math-block {
+            background-color: var(--bg-alt);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            padding: 20px;
+            margin: 24px 0;
+            overflow-x: auto;
+        }
+
+        .equation-label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Code Blocks */
+        .code-container {
+            background-color: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 24px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .code-header {
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        .copy-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        pre {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--primary-dark);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 24px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: var(--bg-alt);
+        }
+
+        /* Interactive Elements */
+        .interactive-demo {
+            background-color: var(--bg-alt);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .demo-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background-color: var(--border-color);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .value-display {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+
+        /* Info Boxes */
+        .info-box {
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .info-box.note {
+            background-color: var(--primary-lighter);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .info-box.warning {
+            background-color: #FFF9E6;
+            border-left: 4px solid var(--warning);
+        }
+
+        .info-box.tip {
+            background-color: #E6F7F1;
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .info-box.note .info-box-title {
+            color: var(--primary-dark);
+        }
+
+        .info-box.warning .info-box-title {
+            color: #CC8800;
+        }
+
+        .info-box.tip .info-box-title {
+            color: #00734D;
+        }
+
+        /* Figures */
+        .figure-container {
+            margin: 32px 0;
+            text-align: center;
+        }
+
+        .figure-container img {
+            max-width: 70%;
+            height: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 16px;
+            background-color: white;
+        }
+
+        .figure-caption {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Figure reference links */
+        a.fig-ref {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        a.fig-ref:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Highlighted terms */
+        .highlight-term {
+            background: linear-gradient(180deg, transparent 60%, #FFF9C4 60%);
+            font-weight: 600;
+            padding: 0 2px;
+        }
+
+        /* Language-specific content */
+        .lang-content {
+            display: none;
+        }
+
+        .lang-content.active {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 48px 0;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .footer-section h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .grid {
+                grid-template-columns: repeat(4, 60px);
+            }
+
+            .cell {
+                width: 60px;
+                height: 60px;
+                font-size: 0.8rem;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="../../index.html" class="logo">
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#E6F0FF"/>
+                    <path d="M20 8L32 14.5V27.5L20 34L8 27.5V14.5L20 8Z" stroke="#0066CC" stroke-width="2"/>
+                    <path d="M20 21V34M20 8V21M8 14.5L20 21L32 14.5" stroke="#0066CC" stroke-width="2"/>
+                    <circle cx="20" cy="21" r="3" fill="#0066CC"/>
+                </svg>
+                <span class="logo-text">RL with JAX</span>
+            </a>
+
+            <div class="nav-container">
+                <nav class="breadcrumb">
+                    <a href="../../index.html">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Week 1</span>
+                </nav>
+
+                <div class="lang-toggle">
+                    <button class="lang-btn active" id="enBtn">English</button>
+                    <button class="lang-btn" id="koBtn">Korean</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container hero-content">
+            <div class="week-badge">Week 1</div>
+
+            <h1 class="hero-title">
+                <span class="lang-content en active">Introduction to Reinforcement Learning</span>
+                <span class="lang-content ko">강화학습 소개</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                <span class="lang-content en active">
+                    Foundations of RL, Markov Decision Processes, and fundamental concepts of reinforcement learning
+                </span>
+                <span class="lang-content ko">
+                    강화학습의 기초, 마르코프 의사결정 과정, 그리고 강화학습의 기본 개념
+                </span>
+            </p>
+
+            <div class="learning-objectives">
+                <h3 class="objectives-title">
+                    <span class="lang-content en active">Learning Objectives</span>
+                    <span class="lang-content ko">학습 목표</span>
+                </h3>
+                <ul class="objectives-list">
+                    <li class="lang-content en active">Understand the fundamental concepts of reinforcement learning</li>
+                    <li class="lang-content ko">강화학습의 기본 개념 이해</li>
+                    <li class="lang-content en active">Master Markov Decision Processes (MDPs)</li>
+                    <li class="lang-content ko">마르코프 의사결정 과정(MDP) 마스터</li>
+                    <li class="lang-content en active">Learn the Bellman equations and their significance</li>
+                    <li class="lang-content ko">벨만 방정식과 그 중요성 학습</li>
+                    <li class="lang-content en active">Understand key RL concepts: exploration vs exploitation, value functions, and policies</li>
+                    <li class="lang-content ko">핵심 RL 개념 이해: 탐색 대 활용, 가치 함수, 그리고 정책</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container content-grid">
+            <div class="main-content">
+                <!-- Section 1: What is RL -->
+                <section class="section" id="what-is-rl">
+                    <h2 class="section-title">
+                        <span class="lang-content en active">1. What is Reinforcement Learning?</span>
+                        <span class="lang-content ko">1. 강화학습이란 무엇인가?</span>
+                    </h2>
+
+                    <p class="lang-content en active">
+                        Reinforcement Learning or RL is a class of methods for solving various kinds of sequential decision making tasks.
+                        In such tasks, we want to design an <span class="highlight-term">agent</span> that interacts with an external <span class="highlight-term">environment</span>.
+                        The agent maintains an internal state $s_t$, which is passed to its <span class="highlight-term">policy</span> $\pi$ to choose an action $a_t = \pi(s_t)$.
+                        The environment responds by sending back an observation $o_{t+1}$, which the agent uses to update its internal state
+                        using state-update function $s_{t+1}=U(s_t, a_t, o_{t+1})$. See <a href="#figure1" class="fig-ref">Figure 1</a> for an illustration.
+                    </p>
+                    <p class="lang-content ko">
+                        강화학습(RL)은 다양한 종류의 순차적 의사결정 문제를 해결하기 위한 방법론의 한 종류입니다.
+                        이러한 작업에서는 외부 <span class="highlight-term">환경</span>과 상호작용하는 <span class="highlight-term">에이전트</span>를 설계하고자 합니다.
+                        에이전트는 내부 상태 $s_t$를 유지하며, 이를 <span class="highlight-term">정책</span> $\pi$에 전달하여 행동 $a_t = \pi(s_t)$를 선택합니다.
+                        환경은 관측값 $o_{t+1}$을 다시 보내며, 에이전트는 이를 사용하여 상태 업데이트 함수
+                        $s_{t+1}=U(s_t, a_t, o_{t+1})$를 통해 내부 상태를 업데이트합니다. <a href="#figure1" class="fig-ref">그림 1</a>을 참조하세요.
+                    </p>
+
+                    <div class="figure-container" id="figure1">
+                        <img src="img/figure1.png" alt="Agent-Environment Interaction">
+                        <div class="figure-caption">
+                            <span class="lang-content en active">Figure 1: The agent-environment interaction loop in reinforcement learning.</span>
+                            <span class="lang-content ko">그림 1: 강화학습에서의 에이전트-환경 상호작용 루프.</span>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">1.1 Problem Definition</span>
+                            <span class="lang-content ko">1.1 문제 정의</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            The fundamental objective of an RL agent is to learn a policy $\pi$ that maximizes the expected cumulative reward.
+                            Formally, we define the <span class="highlight-term">value function</span> for a policy $\pi$ starting from state $s_0$ as:
+                        </p>
+                        <p class="lang-content ko">
+                            RL 에이전트의 근본적인 목표는 기대 누적 보상을 최대화하는 정책 $\pi$를 학습하는 것입니다.
+                            공식적으로, 상태 $s_0$에서 시작하는 정책 $\pi$의 <span class="highlight-term">가치 함수</span>를 다음과 같이 정의합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Value Function</div>
+                            $$V^\pi(s_0) = \mathbb{E}_{\tau \sim \pi}\left[\sum_{t=0}^{T} R(s_t, a_t) \mid s_0\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $s_0$ is the initial state, $R(s_t, a_t)$ is the <span class="highlight-term">reward function</span>
+                            that measures the immediate value of taking action $a_t$ in state $s_t$, and the expectation is taken over
+                            trajectories $\tau = (s_0, a_0, s_1, a_1, \ldots, s_T, a_T)$ generated by following policy $\pi$.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $s_0$는 초기 상태, $R(s_t, a_t)$는 상태 $s_t$에서 행동 $a_t$를 취했을 때의 즉각적인 가치를
+                            측정하는 <span class="highlight-term">보상 함수</span>이며, 기댓값은 정책 $\pi$를 따라 생성된
+                            궤적 $\tau = (s_0, a_0, s_1, a_1, \ldots, s_T, a_T)$에 대해 계산됩니다.
+                        </p>
+
+                        <p class="lang-content en active">
+                            The trajectory distribution is determined by the policy and the environment dynamics:
+                        </p>
+                        <p class="lang-content ko">
+                            궤적 분포는 정책과 환경 역학에 의해 결정됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Trajectory Distribution</div>
+                            $$p(\tau \mid s_0, \pi) = \prod_{t=0}^{T} \pi(a_t \mid s_t) \cdot p_{\text{env}}(s_{t+1} \mid s_t, a_t)$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $\pi(a_t \mid s_t)$ is the probability of selecting action $a_t$ in state $s_t$ under policy $\pi$,
+                            and $p_{\text{env}}(s_{t+1} \mid s_t, a_t)$ is the environment's transition probability distribution
+                            (typically unknown to the agent).
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $\pi(a_t \mid s_t)$는 정책 $\pi$ 하에서 상태 $s_t$에서 행동 $a_t$를 선택할 확률이고,
+                            $p_{\text{env}}(s_{t+1} \mid s_t, a_t)$는 환경의 전이 확률 분포입니다 (일반적으로 에이전트에게 알려지지 않음).
+                        </p>
+
+                        <p class="lang-content en active">
+                            We define the <span class="highlight-term">optimal policy</span> as:
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">최적 정책</span>을 다음과 같이 정의합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Optimal Policy</div>
+                            $$\pi^* = \arg\max_{\pi} \mathbb{E}_{s_0 \sim p_0(s_0)} [V^\pi(s_0)]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where the expectation is over the initial state distribution $p_0(s_0)$. This formulation embodies the
+                            <span class="highlight-term">maximum expected utility principle</span>: the agent seeks to maximize
+                            its expected long-term reward rather than immediate gains.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 기댓값은 초기 상태 분포 $p_0(s_0)$에 대해 계산됩니다. 이 공식은
+                            <span class="highlight-term">최대 기대 효용 원리</span>를 구현합니다: 에이전트는 즉각적인 이득보다는
+                            기대 장기 보상을 최대화하려고 합니다.
+                        </p>
+
+                        <div class="info-box note">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Key Challenge</span>
+                                <span class="lang-content ko">주요 과제</span>
+                            </div>
+                            <p class="lang-content en active">
+                                Finding the optimal policy is challenging because: (1) the environment dynamics $p_{\text{env}}$
+                                are typically unknown, (2) the state and action spaces can be extremely large or continuous,
+                                and (3) we must balance exploration (gathering information) with exploitation (using current knowledge).
+                            </p>
+                            <p class="lang-content ko">
+                                최적 정책을 찾는 것은 다음과 같은 이유로 어렵습니다: (1) 환경 역학 $p_{\text{env}}$가 일반적으로 알려지지 않음,
+                                (2) 상태 및 행동 공간이 매우 크거나 연속적일 수 있음,
+                                (3) 탐색(정보 수집)과 활용(현재 지식 사용) 사이의 균형을 맞춰야 함.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">1.2 Episodic vs Continuing Tasks</span>
+                            <span class="lang-content ko">1.2 에피소드 작업과 연속 작업</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            If the agent can potentially interact with the environment forever, we call it a <span class="highlight-term">continuing task</span>.
+                            Alternatively, the agent is in an <span class="highlight-term">episodic task</span>, if its interaction terminates once
+                            the system enters a <span class="highlight-term">terminal state</span> or <span class="highlight-term">absorbing state</span>,
+                            which is a state which transitions to itself with 0 reward. After entering a terminal state, we may start a new
+                            <span class="highlight-term">episode</span> from a new initial world state $s_0 \sim p_0$. (The agent will typically
+                            also reinitialize its own internal state $s_0$.)
+                        </p>
+                        <p class="lang-content ko">
+                            에이전트가 환경과 잠재적으로 영원히 상호작용할 수 있다면, 이를 <span class="highlight-term">연속 작업</span>이라고 합니다.
+                            또는, 시스템이 <span class="highlight-term">종료 상태</span> 또는 <span class="highlight-term">흡수 상태</span>에
+                            진입하면 상호작용이 종료되는 경우 에이전트는 <span class="highlight-term">에피소드 작업</span>에 있습니다.
+                            흡수 상태는 0 보상으로 자기 자신으로 전이되는 상태입니다. 종료 상태에 진입한 후, 새로운 초기 세계 상태
+                            $s_0 \sim p_0$에서 새로운 <span class="highlight-term">에피소드</span>를 시작할 수 있습니다.
+                            (에이전트는 일반적으로 자신의 내부 상태 $s_0$도 재초기화합니다.)
+                        </p>
+
+                        <p class="lang-content en active">
+                            The episode length is in general random. For example, the amount of time a robot takes to reach its goal
+                            may be quite variable, depending on the decisions it makes, and the randomness in the environment.
+                            Finally, if the trajectory length $T$ in an episodic task is fixed and known, it is called a
+                            <span class="highlight-term">finite horizon problem</span>.
+                        </p>
+                        <p class="lang-content ko">
+                            에피소드 길이는 일반적으로 무작위입니다. 예를 들어, 로봇이 목표에 도달하는 데 걸리는 시간은
+                            로봇이 내리는 결정과 환경의 무작위성에 따라 상당히 가변적일 수 있습니다.
+                            마지막으로, 에피소드 작업에서 궤적 길이 $T$가 고정되어 있고 알려진 경우,
+                            이를 <span class="highlight-term">유한 지평 문제</span>라고 합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Return and Reward-to-Go</span>
+                            <span class="lang-content ko">수익과 보상-투-고</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            We define the <span class="highlight-term">return</span> for a state at time $t$ to be the sum of expected rewards
+                            obtained going forwards, where each reward is multiplied by a <span class="highlight-term">discount factor</span>
+                            $\gamma \in [0,1]$:
+                        </p>
+                        <p class="lang-content ko">
+                            시간 $t$의 상태에 대한 <span class="highlight-term">수익</span>을 앞으로 얻은 기대 보상의 합으로 정의하며,
+                            각 보상은 <span class="highlight-term">할인 인자</span> $\gamma \in [0,1]$로 곱해집니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Return (Discounted Cumulative Reward)</div>
+                            $$G_t \triangleq r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \cdots + \gamma^{T-t-1} r_{T-1}$$
+                            $$= \sum_{k=0}^{T-t-1} \gamma^k r_{t+k} = \sum_{j=t}^{T-1} \gamma^{j-t} r_j$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $r_t = R(s_t, a_t)$ is the reward, and $G_t$ is the <span class="highlight-term">reward-to-go</span>.
+                            For episodic tasks that terminate at time $T$, we define $G_t = 0$ for $t \geq T$.
+                            Clearly, the return satisfies the following recursive relationship:
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $r_t = R(s_t, a_t)$는 보상이고, $G_t$는 <span class="highlight-term">보상-투-고</span>입니다.
+                            시간 $T$에 종료되는 에피소드 작업의 경우, $t \geq T$에 대해 $G_t = 0$으로 정의합니다.
+                            분명히, 수익은 다음과 같은 재귀 관계를 만족합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Recursive Return</div>
+                            $$G_t = r_t + \gamma(r_{t+1} + \gamma r_{t+2} + \cdots) = r_t + \gamma G_{t+1}$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            Furthermore, we define the value function to be the expected reward-to-go:
+                        </p>
+                        <p class="lang-content ko">
+                            또한, 가치 함수를 기대 보상-투-고로 정의합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Value Function as Expected Return</div>
+                            $$V^\pi(s_t) = \mathbb{E}[G_t | \pi]$$
+                        </div>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Role of the Discount Factor</span>
+                            <span class="lang-content ko">할인 인자의 역할</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            The discount factor $\gamma$ plays two roles. First, it ensures the return is finite even if $T = \infty$ (i.e., infinite horizon),
+                            provided we use $\gamma < 1$ and the rewards $r_t$ are bounded. Second, it puts more weight on short-term rewards,
+                            which generally has the effect of encouraging the agent to achieve its goals more quickly.
+                        </p>
+                        <p class="lang-content ko">
+                            할인 인자 $\gamma$는 두 가지 역할을 합니다. 첫째, $\gamma < 1$과 보상 $r_t$가 유계인 경우
+                            $T = \infty$ (즉, 무한 지평)일지라도 수익이 유한하도록 보장합니다. 둘째, 단기 보상에 더 많은 가중치를 두어
+                            일반적으로 에이전트가 목표를 더 빨리 달성하도록 장려하는 효과가 있습니다.
+                        </p>
+
+                        <p class="lang-content en active">
+                            For example, if $\gamma = 0.99$, then an agent that reaches a terminal reward of $1.0$ in $15$ steps will receive
+                            an expected discounted reward of $0.99^{15} = 0.86$, whereas if it takes $17$ steps it will only get $0.99^{17} = 0.84$.
+                            However, if $\gamma$ is too small, the agent will become too greedy. In the extreme case where $\gamma = 0$,
+                            the agent is completely <span class="highlight-term">myopic</span>, and only tries to maximize its immediate reward.
+                        </p>
+                        <p class="lang-content ko">
+                            예를 들어, $\gamma = 0.99$인 경우, $15$단계에서 $1.0$의 종료 보상에 도달하는 에이전트는
+                            $0.99^{15} = 0.86$의 기대 할인 보상을 받는 반면, $17$단계가 걸리면 $0.99^{17} = 0.84$만 얻습니다.
+                            그러나 $\gamma$가 너무 작으면 에이전트가 너무 탐욕스러워집니다. $\gamma = 0$인 극단적인 경우,
+                            에이전트는 완전히 <span class="highlight-term">근시안적</span>이 되어 즉각적인 보상만 최대화하려고 합니다.
+                        </p>
+
+                        <div class="info-box tip">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Practical Insight</span>
+                                <span class="lang-content ko">실용적 통찰</span>
+                            </div>
+                            <p class="lang-content en active">
+                                In general, the discount factor reflects the assumption that there is a probability of $1 - \gamma$ that
+                                the interaction will end at the next step. For finite horizon problems, where $T$ is known,
+                                we can set $\gamma = 1$, since we know the life time of the agent a priori.
+                            </p>
+                            <p class="lang-content ko">
+                                일반적으로, 할인 인자는 다음 단계에서 상호작용이 종료될 확률이 $1 - \gamma$라는 가정을 반영합니다.
+                                $T$가 알려진 유한 지평 문제의 경우, 에이전트의 수명을 사전에 알고 있으므로 $\gamma = 1$로 설정할 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">1.3 Regret</span>
+                            <span class="lang-content ko">1.3 후회</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            So far we have been discussing maximizing the reward. However, the upper bound on this is usually unknown,
+                            so it can be hard to know how well a given agent is performing. An alternative approach is to work in terms of
+                            the <span class="highlight-term">regret</span>, which measures the difference between the expected reward under
+                            the agent's policy and the <span class="highlight-term">oracle policy</span> $\pi_*$, which knows the true MDP.
+                        </p>
+                        <p class="lang-content ko">
+                            지금까지 보상을 최대화하는 것에 대해 논의해 왔습니다. 그러나 이에 대한 상한선은 일반적으로 알려지지 않아
+                            주어진 에이전트가 얼마나 잘 수행하고 있는지 알기 어려울 수 있습니다. 대안적인 접근법은
+                            <span class="highlight-term">후회</span>의 관점에서 작업하는 것이며, 이는 에이전트의 정책 하에서의
+                            기대 보상과 실제 MDP를 아는 <span class="highlight-term">오라클 정책</span> $\pi_*$ 사이의 차이를 측정합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Per-Step Regret</span>
+                            <span class="lang-content ko">단계별 후회</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            Specifically, let $\pi_t$ be the agent's policy at time $t$. The <span class="highlight-term">per-step regret</span>
+                            at time $t$ is defined as the expected difference between the reward obtained by the oracle policy and the agent's policy:
+                        </p>
+                        <p class="lang-content ko">
+                            구체적으로, $\pi_t$를 시간 $t$에서의 에이전트의 정책이라고 하겠습니다. 시간 $t$에서의
+                            <span class="highlight-term">단계별 후회</span>는 오라클 정책이 얻은 보상과 에이전트의 정책이 얻은 보상 사이의
+                            기대 차이로 정의됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Per-Step Regret</div>
+                            $$l_t \triangleq \mathbb{E}_{s_{1:t}}\left[R(s_t, \pi_*(s_t)) - \mathbb{E}_{\pi}[R(s_t, a_t) | a_t \sim \pi_t(\cdot|s_t)]\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            Here the expectation is with respect to randomness in choosing actions using the policy $\pi$, as well as
+                            the stochasticity in state transitions, actions, and rewards from earlier time steps.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 기댓값은 정책 $\pi$를 사용하여 행동을 선택할 때의 무작위성뿐만 아니라
+                            이전 시간 단계의 상태 전이, 행동 및 보상의 확률성에 대한 것입니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Simple Regret vs Cumulative Regret</span>
+                            <span class="lang-content ko">단순 후회 대 누적 후회</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            If we only care about the final performance of the agent, as in most optimization problems, it is sufficient
+                            to look at the <span class="highlight-term">simple regret</span> at the final step, namely $l_T$.
+                            Optimizing simple regret results in a problem known as <span class="highlight-term">pure exploration</span>,
+                            where the agent needs to interact with the environment to learn the underlying MDP; at the end, it can then
+                            solve for the optimal policy using planning methods.
+                        </p>
+                        <p class="lang-content ko">
+                            대부분의 최적화 문제에서처럼 에이전트의 최종 성능만 고려한다면, 마지막 단계에서의
+                            <span class="highlight-term">단순 후회</span>, 즉 $l_T$를 보는 것으로 충분합니다.
+                            단순 후회를 최적화하면 <span class="highlight-term">순수 탐색</span>으로 알려진 문제가 발생하며,
+                            여기서 에이전트는 기본 MDP를 학습하기 위해 환경과 상호작용해야 합니다. 마지막에 계획 방법을 사용하여
+                            최적 정책을 해결할 수 있습니다.
+                        </p>
+
+                        <p class="lang-content en active">
+                            However, in RL, it is more common to focus on the <span class="highlight-term">cumulative regret</span>,
+                            also called the <span class="highlight-term">total regret</span>, which measures the total performance gap
+                            over the entire learning process:
+                        </p>
+                        <p class="lang-content ko">
+                            그러나 RL에서는 전체 학습 과정에 걸친 총 성능 격차를 측정하는
+                            <span class="highlight-term">누적 후회</span> 또는 <span class="highlight-term">총 후회</span>에
+                            초점을 맞추는 것이 더 일반적입니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Cumulative Regret</div>
+                            $$L_T \triangleq \mathbb{E}\left[\sum_{t=1}^{T} l_t\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            The cumulative regret captures the cost of learning: the agent accumulates regret while it explores
+                            the environment and learns about its dynamics. This leads to the fundamental challenge of
+                            <span class="highlight-term">earning while learning</span>, where the agent must balance:
+                        </p>
+                        <p class="lang-content ko">
+                            누적 후회는 학습 비용을 포착합니다: 에이전트는 환경을 탐색하고 역학에 대해 학습하는 동안 후회를 축적합니다.
+                            이는 <span class="highlight-term">학습하면서 수익 얻기</span>의 근본적인 문제로 이어지며,
+                            여기서 에이전트는 다음을 균형있게 조절해야 합니다:
+                        </p>
+
+                        <ul>
+                            <li class="lang-content en active">
+                                <strong>Exploration:</strong> Trying new actions to learn the environment dynamics and discover potentially better policies (which may incur short-term cost).
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>탐색:</strong> 환경 역학을 학습하고 잠재적으로 더 나은 정책을 발견하기 위해 새로운 행동 시도 (단기 비용이 발생할 수 있음).
+                            </li>
+                            <li class="lang-content en active">
+                                <strong>Exploitation:</strong> Using current knowledge to maximize immediate rewards and minimize regret at each step.
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>활용:</strong> 각 단계에서 즉각적인 보상을 최대화하고 후회를 최소화하기 위해 현재 지식 사용.
+                            </li>
+                        </ul>
+
+                        <div class="info-box note">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Key Insight</span>
+                                <span class="lang-content ko">핵심 통찰</span>
+                            </div>
+                            <p class="lang-content en active">
+                                The regret framework provides a principled way to evaluate learning algorithms by comparing them to
+                                the optimal policy. A good RL algorithm should achieve <strong>sublinear regret</strong>, meaning
+                                $L_T = o(T)$, which ensures that the average per-step regret $L_T/T \rightarrow 0$ as $T \rightarrow \infty$.
+                                This means the agent's average performance approaches that of the optimal policy over time.
+                            </p>
+                            <p class="lang-content ko">
+                                후회 프레임워크는 학습 알고리즘을 최적 정책과 비교하여 평가하는 원칙적인 방법을 제공합니다.
+                                좋은 RL 알고리즘은 <strong>부선형 후회</strong>를 달성해야 하며, 이는 $L_T = o(T)$를 의미하고,
+                                $T \rightarrow \infty$일 때 평균 단계별 후회 $L_T/T \rightarrow 0$을 보장합니다.
+                                이는 시간이 지남에 따라 에이전트의 평균 성능이 최적 정책의 성능에 접근함을 의미합니다.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Decision Process Frameworks -->
+                <section class="section" id="mdp">
+                    <h2 class="section-title">
+                        <span class="lang-content en active">2. Decision Process Frameworks</span>
+                        <span class="lang-content ko">2. 의사결정 과정 프레임워크</span>
+                    </h2>
+
+                    <p class="lang-content en active">
+                        Reinforcement learning problems can be formalized using different mathematical frameworks
+                        depending on the observability of the environment state and the problem structure.
+                        We will discuss three fundamental frameworks: MDPs, POMDPs, and Contextual MDPs.
+                    </p>
+                    <p class="lang-content ko">
+                        강화학습 문제는 환경 상태의 관측 가능성과 문제 구조에 따라 다양한 수학적 프레임워크를 사용하여 공식화할 수 있습니다.
+                        세 가지 기본 프레임워크인 MDP, POMDP, 그리고 Contextual MDP에 대해 논의하겠습니다.
+                    </p>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">2.1 Markov Decision Process (MDP)</span>
+                            <span class="lang-content ko">2.1 마르코프 의사결정 과정 (MDP)</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            An <span class="highlight-term">MDP</span> provides a mathematical framework for modeling decision-making
+                            in situations where the agent has full observability of the environment state, and outcomes are partly
+                            random and partly under the control of the decision maker.
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">MDP</span>는 에이전트가 환경 상태를 완전히 관측할 수 있고,
+                            결과가 부분적으로 무작위이고 부분적으로 의사결정자의 통제 하에 있는 상황에서
+                            의사결정을 모델링하기 위한 수학적 프레임워크를 제공합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">MDP Components</span>
+                            <span class="lang-content ko">MDP 구성요소</span>
+                        </h4>
+
+                        <div class="math-block">
+                            <div class="equation-label">MDP Definition</div>
+                            $$\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma \rangle$$
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span class="lang-content en active">Component</span><span class="lang-content ko">구성요소</span></th>
+                                        <th><span class="lang-content en active">Symbol</span><span class="lang-content ko">기호</span></th>
+                                        <th><span class="lang-content en active">Description</span><span class="lang-content ko">설명</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="lang-content en active">State Space</span><span class="lang-content ko">상태 공간</span></td>
+                                        <td>$\mathcal{S}$</td>
+                                        <td><span class="lang-content en active">Set of all possible states</span><span class="lang-content ko">가능한 모든 상태의 집합</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="lang-content en active">Action Space</span><span class="lang-content ko">행동 공간</span></td>
+                                        <td>$\mathcal{A}$</td>
+                                        <td><span class="lang-content en active">Set of all possible actions</span><span class="lang-content ko">가능한 모든 행동의 집합</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="lang-content en active">Transition Function</span><span class="lang-content ko">전이 함수</span></td>
+                                        <td>$\mathcal{P}$</td>
+                                        <td>$P(s'|s,a)$ - <span class="lang-content en active">Probability of next state</span><span class="lang-content ko">다음 상태의 확률</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="lang-content en active">Reward Function</span><span class="lang-content ko">보상 함수</span></td>
+                                        <td>$\mathcal{R}$</td>
+                                        <td>$R(s,a,s')$ - <span class="lang-content en active">Immediate reward</span><span class="lang-content ko">즉각적인 보상</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="lang-content en active">Discount Factor</span><span class="lang-content ko">할인 인자</span></td>
+                                        <td>$\gamma$</td>
+                                        <td>$\gamma \in [0,1]$ - <span class="lang-content en active">Future reward weight</span><span class="lang-content ko">미래 보상 가중치</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Markov Property</span>
+                            <span class="lang-content ko">마르코프 속성</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            The key assumption of an MDP is the <span class="highlight-term">Markov property</span>: the future is
+                            independent of the past given the present state. Mathematically:
+                        </p>
+                        <p class="lang-content ko">
+                            MDP의 핵심 가정은 <span class="highlight-term">마르코프 속성</span>입니다: 현재 상태가 주어지면
+                            미래는 과거와 독립적입니다. 수학적으로:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Markov Property</div>
+                            $$P(s_{t+1} | s_t, a_t, s_{t-1}, a_{t-1}, \ldots, s_0, a_0) = P(s_{t+1} | s_t, a_t)$$
+                        </div>
+
+                        <div class="info-box note">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Key Assumption</span>
+                                <span class="lang-content ko">핵심 가정</span>
+                            </div>
+                            <p class="lang-content en active">
+                                In an MDP, the agent has <strong>complete observability</strong>: the state $s_t$ contains all
+                                relevant information needed to make optimal decisions. This distinguishes MDPs from partially
+                                observable environments.
+                            </p>
+                            <p class="lang-content ko">
+                                MDP에서 에이전트는 <strong>완전한 관측 가능성</strong>을 가집니다: 상태 $s_t$는 최적 결정을 내리는 데
+                                필요한 모든 관련 정보를 포함합니다. 이는 MDP를 부분 관측 가능 환경과 구분합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">2.2 Partially Observable Markov Decision Process (POMDP)</span>
+                            <span class="lang-content ko">2.2 부분 관측 가능 마르코프 의사결정 과정 (POMDP)</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            In many real-world scenarios, the agent cannot directly observe the true state of the environment.
+                            A <span class="highlight-term">POMDP</span> extends the MDP framework to handle partial observability,
+                            where the agent receives observations that provide incomplete information about the underlying state.
+                        </p>
+                        <p class="lang-content ko">
+                            많은 실제 시나리오에서 에이전트는 환경의 실제 상태를 직접 관측할 수 없습니다.
+                            <span class="highlight-term">POMDP</span>는 에이전트가 기본 상태에 대한 불완전한 정보를 제공하는
+                            관측값을 받는 부분 관측 가능성을 처리하기 위해 MDP 프레임워크를 확장합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">POMDP Components</span>
+                            <span class="lang-content ko">POMDP 구성요소</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            A POMDP is defined as a tuple:
+                        </p>
+                        <p class="lang-content ko">
+                            POMDP는 다음과 같은 튜플로 정의됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">POMDP Definition</div>
+                            $$\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \mathcal{O}, \Omega, \gamma \rangle$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where, in addition to the MDP components, we have:
+                        </p>
+                        <p class="lang-content ko">
+                            MDP 구성요소 외에 다음이 추가됩니다:
+                        </p>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span class="lang-content en active">Component</span><span class="lang-content ko">구성요소</span></th>
+                                        <th><span class="lang-content en active">Symbol</span><span class="lang-content ko">기호</span></th>
+                                        <th><span class="lang-content en active">Description</span><span class="lang-content ko">설명</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="lang-content en active">Observation Space</span><span class="lang-content ko">관측 공간</span></td>
+                                        <td>$\mathcal{O}$</td>
+                                        <td><span class="lang-content en active">Set of all possible observations</span><span class="lang-content ko">가능한 모든 관측값의 집합</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="lang-content en active">Observation Function</span><span class="lang-content ko">관측 함수</span></td>
+                                        <td>$\Omega$</td>
+                                        <td>$\Omega(o|s',a)$ - <span class="lang-content en active">Probability of observation</span><span class="lang-content ko">관측값의 확률</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p class="lang-content en active">
+                            Instead of directly observing state $s_t$, the agent receives observation $o_t \sim \Omega(\cdot|s_t, a_{t-1})$.
+                            The agent must maintain a <span class="highlight-term">belief state</span> $b_t$ over possible states,
+                            which represents a probability distribution over $\mathcal{S}$ based on the history of observations and actions.
+                        </p>
+                        <p class="lang-content ko">
+                            상태 $s_t$를 직접 관측하는 대신, 에이전트는 관측값 $o_t \sim \Omega(\cdot|s_t, a_{t-1})$을 받습니다.
+                            에이전트는 관측값과 행동의 이력을 기반으로 $\mathcal{S}$에 대한 확률 분포를 나타내는
+                            가능한 상태에 대한 <span class="highlight-term">신념 상태</span> $b_t$를 유지해야 합니다.
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Belief Update</div>
+                            $$b_{t+1}(s') = \frac{\Omega(o_{t+1}|s', a_t) \sum_{s \in \mathcal{S}} P(s'|s,a_t) b_t(s)}{\sum_{s' \in \mathcal{S}} \Omega(o_{t+1}|s', a_t) \sum_{s \in \mathcal{S}} P(s'|s,a_t) b_t(s)}$$
+                        </div>
+
+                        <div class="info-box tip">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Practical Examples</span>
+                                <span class="lang-content ko">실용적 예제</span>
+                            </div>
+                            <p class="lang-content en active">
+                                POMDPs are common in real-world applications: a robot with limited sensors (can't see behind obstacles),
+                                medical diagnosis (symptoms don't uniquely identify disease), or autonomous driving (sensor noise and occlusions).
+                            </p>
+                            <p class="lang-content ko">
+                                POMDP는 실제 응용에서 흔합니다: 제한된 센서를 가진 로봇(장애물 뒤를 볼 수 없음),
+                                의료 진단(증상이 질병을 고유하게 식별하지 못함), 또는 자율 주행(센서 노이즈 및 가림).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">2.3 Contextual Markov Decision Process (Contextual MDP)</span>
+                            <span class="lang-content ko">2.3 문맥적 마르코프 의사결정 과정 (Contextual MDP)</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            A <span class="highlight-term">Contextual MDP</span> (also called Contextual Bandit with Dynamics) extends
+                            the MDP framework to scenarios where the environment's behavior depends on an external context that may
+                            change over time or across episodes. This is particularly useful for personalization and adaptation tasks.
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">Contextual MDP</span> (동역학을 가진 문맥적 밴딧이라고도 함)는
+                            환경의 동작이 시간이 지남에 따라 또는 에피소드에 걸쳐 변경될 수 있는 외부 문맥에 의존하는
+                            시나리오로 MDP 프레임워크를 확장합니다. 이는 개인화 및 적응 작업에 특히 유용합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Contextual MDP Components</span>
+                            <span class="lang-content ko">Contextual MDP 구성요소</span>
+                        </h4>
+
+                        <div class="math-block">
+                            <div class="equation-label">Contextual MDP Definition</div>
+                            $$\mathcal{M} = \langle \mathcal{C}, \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma \rangle$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $\mathcal{C}$ is the <span class="highlight-term">context space</span>. The key difference is that
+                            transitions and rewards now depend on both the context $c$ and the state-action pair:
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $\mathcal{C}$는 <span class="highlight-term">문맥 공간</span>입니다. 주요 차이점은
+                            전이와 보상이 이제 문맥 $c$와 상태-행동 쌍 모두에 의존한다는 것입니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Context-Dependent Dynamics</div>
+                            $$P(s_{t+1} | s_t, a_t, c_t) \quad \text{and} \quad R(s_t, a_t, c_t)$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            At the beginning of each episode (or time step, depending on the problem), a context $c$ is sampled from
+                            a distribution $p(c)$. The optimal policy is then conditioned on this context: $\pi^*(a|s, c)$.
+                        </p>
+                        <p class="lang-content ko">
+                            각 에피소드(또는 문제에 따라 시간 단계)의 시작에서 문맥 $c$가 분포 $p(c)$에서 샘플링됩니다.
+                            최적 정책은 이 문맥에 조건화됩니다: $\pi^*(a|s, c)$.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Applications and Examples</span>
+                            <span class="lang-content ko">응용 및 예제</span>
+                        </h4>
+
+                        <ul>
+                            <li class="lang-content en active">
+                                <strong>Personalized Recommendations:</strong> Context includes user demographics, time of day, or user preferences.
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>개인화된 추천:</strong> 문맥에는 사용자 인구 통계, 시간대 또는 사용자 선호도가 포함됩니다.
+                            </li>
+                            <li class="lang-content en active">
+                                <strong>Adaptive Control:</strong> Context represents environmental conditions (weather, terrain) that affect system dynamics.
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>적응 제어:</strong> 문맥은 시스템 동역학에 영향을 미치는 환경 조건(날씨, 지형)을 나타냅니다.
+                            </li>
+                            <li class="lang-content en active">
+                                <strong>Healthcare:</strong> Context captures patient-specific characteristics that influence treatment effectiveness.
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>의료:</strong> 문맥은 치료 효과에 영향을 미치는 환자별 특성을 포착합니다.
+                            </li>
+                        </ul>
+
+                        <div class="info-box note">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Relationship to Other Frameworks</span>
+                                <span class="lang-content ko">다른 프레임워크와의 관계</span>
+                            </div>
+                            <p class="lang-content en active">
+                                Contextual MDPs bridge contextual bandits (single-step, no dynamics) and standard MDPs (no context variation).
+                                They enable learning policies that generalize across different contexts while still handling sequential
+                                decision-making within each context.
+                            </p>
+                            <p class="lang-content ko">
+                                Contextual MDP는 문맥적 밴딧(단일 단계, 동역학 없음)과 표준 MDP(문맥 변화 없음) 사이를 연결합니다.
+                                각 문맥 내에서 순차적 의사결정을 처리하면서도 다양한 문맥에 걸쳐 일반화하는 정책을 학습할 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: RL Approaches -->
+                <section class="section" id="bellman">
+                    <h2 class="section-title">
+                        <span class="lang-content en active">3. Reinforcement Learning Approaches</span>
+                        <span class="lang-content ko">3. 강화학습 접근법</span>
+                    </h2>
+
+                    <p class="lang-content en active">
+                        Reinforcement learning algorithms can be broadly categorized into three main approaches based on what they learn
+                        and optimize: value functions, policies, or environment models. Understanding these different paradigms
+                        is essential for selecting appropriate methods for specific problems.
+                    </p>
+                    <p class="lang-content ko">
+                        강화학습 알고리즘은 학습하고 최적화하는 대상에 따라 가치 함수, 정책 또는 환경 모델의
+                        세 가지 주요 접근법으로 광범위하게 분류될 수 있습니다. 이러한 다양한 패러다임을 이해하는 것은
+                        특정 문제에 적합한 방법을 선택하는 데 필수적입니다.
+                    </p>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">3.1 Value-Based RL (Approximate Dynamic Programming)</span>
+                            <span class="lang-content ko">3.1 가치 기반 RL (근사 동적 프로그래밍)</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            In this section, we give a brief introduction to <span class="highlight-term">value-based RL</span>,
+                            also called <span class="highlight-term">Approximate Dynamic Programming</span> or
+                            <span class="highlight-term">ADP</span>.
+                        </p>
+                        <p class="lang-content ko">
+                            이 섹션에서는 <span class="highlight-term">가치 기반 RL</span>에 대한 간략한 소개를 제공하며,
+                            이는 <span class="highlight-term">근사 동적 프로그래밍</span> 또는
+                            <span class="highlight-term">ADP</span>라고도 불립니다.
+                        </p>
+
+                        <p class="lang-content en active">
+                            We introduced the value function $V^\pi(s)$ earlier, which we repeat here for convenience:
+                        </p>
+                        <p class="lang-content ko">
+                            앞서 가치 함수 $V^\pi(s)$를 소개했으며, 편의를 위해 여기서 반복합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Value Function</div>
+                            $$V^\pi(s) \triangleq \mathbb{E}_\pi[G_0 | s_0 = s] = \mathbb{E}_\pi\left[\sum_{t=0}^{\infty} \gamma^t r_t \mid s_0 = s\right]$$
+                        </div>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Bellman's Equation</span>
+                            <span class="lang-content ko">벨만 방정식</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            The value function for the optimal policy $\pi^*$ is known to satisfy the following recursive condition,
+                            known as <span class="highlight-term">Bellman's equation</span>:
+                        </p>
+                        <p class="lang-content ko">
+                            최적 정책 $\pi^*$의 가치 함수는 <span class="highlight-term">벨만 방정식</span>으로 알려진
+                            다음의 재귀적 조건을 만족하는 것으로 알려져 있습니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Bellman Optimality Equation</div>
+                            $$V_*(s) = \max_a R(s,a) + \gamma \mathbb{E}_{p_S(s'|s,a)}[V_*(s')]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            This follows from the principle of <span class="highlight-term">dynamic programming</span>, which computes
+                            the optimal solution to a problem (here the value of state $s$) by combining the optimal solutions of various
+                            subproblems (here the values of the next states $s'$). This can be used to derive the following learning rule:
+                        </p>
+                        <p class="lang-content ko">
+                            이는 <span class="highlight-term">동적 프로그래밍</span>의 원리에서 따르며, 이는 다양한 부문제의
+                            최적 해(여기서는 다음 상태 $s'$의 가치)를 결합하여 문제의 최적 해(여기서는 상태 $s$의 가치)를 계산합니다.
+                            이는 다음과 같은 학습 규칙을 도출하는 데 사용될 수 있습니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">TD Learning Rule for V</div>
+                            $$V(s) \leftarrow V(s) + \eta[r + \gamma V(s') - V(s)]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $s' \sim p_S(\cdot|s,a)$ is the next state sampled from the environment, and $r = R(s,a)$ is the
+                            observed reward. This is called <span class="highlight-term">Temporal Difference</span> or
+                            <span class="highlight-term">TD learning</span>. Unfortunately, it is not clear how to derive a policy
+                            if all we know is the value function. We now describe a solution to this problem.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $s' \sim p_S(\cdot|s,a)$는 환경에서 샘플링된 다음 상태이고, $r = R(s,a)$는 관측된 보상입니다.
+                            이를 <span class="highlight-term">시간차</span> 또는 <span class="highlight-term">TD 학습</span>이라고 합니다.
+                            안타깝게도, 가치 함수만 알고 있을 때 정책을 도출하는 방법이 명확하지 않습니다.
+                            이제 이 문제에 대한 해결책을 설명합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Q Function</span>
+                            <span class="lang-content ko">Q 함수</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            We first generalize the notion of value function to assigning a value to a state and action pair,
+                            by defining the <span class="highlight-term">Q function</span> as follows:
+                        </p>
+                        <p class="lang-content ko">
+                            먼저 상태와 행동 쌍에 가치를 할당하는 것으로 가치 함수의 개념을 일반화하여,
+                            <span class="highlight-term">Q 함수</span>를 다음과 같이 정의합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Q Function Definition</div>
+                            $$Q_\pi(s,a) \triangleq \mathbb{E}_\pi[G_0 | s_0 = s, a_0 = a] = \mathbb{E}_\pi\left[\sum_{t=0}^{\infty} \gamma^t r_t \mid s_0 = s, a_0 = a\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            This quantity represents the expected return obtained if we start by taking action $a$ in state $s$,
+                            and then follow $\pi$ to choose actions thereafter. The Q function for the optimal policy satisfies
+                            a modified Bellman equation:
+                        </p>
+                        <p class="lang-content ko">
+                            이 양은 상태 $s$에서 행동 $a$를 취한 다음 $\pi$를 따라 그 이후 행동을 선택할 때 얻는 기대 수익을 나타냅니다.
+                            최적 정책의 Q 함수는 수정된 벨만 방정식을 만족합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Bellman Equation for Q*</div>
+                            $$Q_*(s,a) = R(s,a) + \gamma \mathbb{E}_{p_S(s'|s,a)}\left[\max_{a'} Q_*(s',a')\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            This gives rise to the following TD update rule:
+                        </p>
+                        <p class="lang-content ko">
+                            이는 다음과 같은 TD 업데이트 규칙을 제공합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">TD Learning Rule for Q</div>
+                            $$Q(s,a) \leftarrow Q(s,a) + \eta[r + \gamma \max_{a'} Q(s',a') - Q(s,a)]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where we sample $s' \sim p_S(\cdot|s,a)$ from the environment. The action is chosen at each step from
+                            the implicit policy:
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 환경에서 $s' \sim p_S(\cdot|s,a)$를 샘플링합니다. 각 단계에서 행동은 암묵적 정책에서 선택됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Policy Extraction from Q</div>
+                            $$a = \arg\max_{a'} Q(s,a')$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            This is called <span class="highlight-term">Q learning</span>.
+                        </p>
+                        <p class="lang-content ko">
+                            이를 <span class="highlight-term">Q 학습</span>이라고 합니다.
+                        </p>
+
+                        <div class="info-box tip">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Key Insight: TD Learning</span>
+                                <span class="lang-content ko">핵심 통찰: TD 학습</span>
+                            </div>
+                            <p class="lang-content en active">
+                                The TD update rule $V(s) \leftarrow V(s) + \eta[r + \gamma V(s') - V(s)]$ uses the
+                                <strong>TD error</strong> $\delta = r + \gamma V(s') - V(s)$ to update value estimates.
+                                The term $[r + \gamma V(s')]$ is called the <strong>TD target</strong>, which provides a bootstrapped
+                                estimate of the true value. Popular value-based algorithms include Q-Learning, SARSA, Deep Q-Networks (DQN),
+                                and Double DQN.
+                            </p>
+                            <p class="lang-content ko">
+                                TD 업데이트 규칙 $V(s) \leftarrow V(s) + \eta[r + \gamma V(s') - V(s)]$는
+                                <strong>TD 오차</strong> $\delta = r + \gamma V(s') - V(s)$를 사용하여 가치 추정을 업데이트합니다.
+                                항 $[r + \gamma V(s')]$을 <strong>TD 타겟</strong>이라고 하며, 실제 가치의 부트스트랩 추정을 제공합니다.
+                                인기 있는 가치 기반 알고리즘으로는 Q-Learning, SARSA, Deep Q-Networks (DQN), Double DQN이 있습니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">3.2 Policy-Based RL</span>
+                            <span class="lang-content ko">3.2 정책 기반 RL</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            In this section we give a brief introduction to <span class="highlight-term">Policy-based RL</span>.
+                        </p>
+                        <p class="lang-content ko">
+                            이 섹션에서는 <span class="highlight-term">정책 기반 RL</span>에 대한 간략한 소개를 제공합니다.
+                        </p>
+
+                        <p class="lang-content en active">
+                            In policy-based methods, we try to directly maximize $J(\pi_\theta) = \mathbb{E}_{p(s_0)}[V_\pi(s_0)]$
+                            with respect to the parameter's $\theta$; this is called <span class="highlight-term">policy search</span>.
+                            If $J(\pi_\theta)$ is differentiable with respect to $\theta$, we can use
+                            <span class="highlight-term">stochastic gradient ascent</span> to optimize $\theta$, which is known as
+                            <span class="highlight-term">policy gradient</span>.
+                        </p>
+                        <p class="lang-content ko">
+                            정책 기반 방법에서는 매개변수 $\theta$에 대해 $J(\pi_\theta) = \mathbb{E}_{p(s_0)}[V_\pi(s_0)]$를
+                            직접 최대화하려고 시도합니다. 이를 <span class="highlight-term">정책 탐색</span>이라고 합니다.
+                            $J(\pi_\theta)$가 $\theta$에 대해 미분 가능한 경우, <span class="highlight-term">확률적 그래디언트 상승</span>을
+                            사용하여 $\theta$를 최적화할 수 있으며, 이를 <span class="highlight-term">정책 그래디언트</span>라고 합니다.
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Policy Gradient Objective</div>
+                            $$J(\theta) = \mathbb{E}_{p(s_0)}[V_\pi(s_0)] = \mathbb{E}_{\tau \sim \pi_\theta}\left[\sum_{t=0}^{T} r_t\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            Policy gradient methods have the advantage that they provably converge to a local optimum for many
+                            common policy classes, whereas Q-learning may diverge when approximation is used. In addition,
+                            policy gradient methods can easily be applied to <span class="highlight-term">continuous action spaces</span>,
+                            since they do not need to compute $\arg\max_a Q(s,a)$. Unfortunately, the score function estimator for
+                            $\nabla_\theta J(\pi_\theta)$ can have a very high variance, so the resulting method can converge slowly.
+                        </p>
+                        <p class="lang-content ko">
+                            정책 그래디언트 방법은 많은 일반적인 정책 클래스에 대해 지역 최적값으로 수렴하는 것이 입증된 장점이 있는 반면,
+                            Q-learning은 근사가 사용될 때 발산할 수 있습니다. 또한, 정책 그래디언트 방법은
+                            $\arg\max_a Q(s,a)$를 계산할 필요가 없으므로 <span class="highlight-term">연속 행동 공간</span>에
+                            쉽게 적용할 수 있습니다. 안타깝게도, $\nabla_\theta J(\pi_\theta)$에 대한 점수 함수 추정기는
+                            매우 높은 분산을 가질 수 있어 결과적으로 방법이 느리게 수렴할 수 있습니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Variance Reduction</span>
+                            <span class="lang-content ko">분산 감소</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            One way to reduce the variance is to learn an approximate value function, $V_w(s)$, and to use it as a
+                            <span class="highlight-term">baseline</span> in the score function estimator. We can learn $V_w(s)$ using
+                            TD learning. Alternatively, we can learn an <span class="highlight-term">advantage function</span>,
+                            $A_w(s,a)$, and use it as a baseline. These policy gradient variants are called
+                            <span class="highlight-term">actor-critic methods</span>, where the actor refers to the policy $\pi_\theta$
+                            and the critic refers to $V_w$ or $A_w$.
+                        </p>
+                        <p class="lang-content ko">
+                            분산을 줄이는 한 가지 방법은 근사 가치 함수 $V_w(s)$를 학습하고 이를 점수 함수 추정기에서
+                            <span class="highlight-term">기준선</span>으로 사용하는 것입니다. TD 학습을 사용하여 $V_w(s)$를 학습할 수 있습니다.
+                            또는, <span class="highlight-term">이점 함수</span> $A_w(s,a)$를 학습하고 이를 기준선으로 사용할 수 있습니다.
+                            이러한 정책 그래디언트 변형을 <span class="highlight-term">액터-크리틱 방법</span>이라고 하며,
+                            여기서 액터는 정책 $\pi_\theta$를 나타내고 크리틱은 $V_w$ 또는 $A_w$를 나타냅니다.
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Advantage Function</div>
+                            $$A_w(s,a) = Q_w(s,a) - V_w(s)$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            The advantage function measures how much better action $a$ is compared to the average action in state $s$.
+                            Using the advantage function as a baseline significantly reduces variance while maintaining an unbiased
+                            gradient estimate.
+                        </p>
+                        <p class="lang-content ko">
+                            이점 함수는 상태 $s$에서 평균 행동에 비해 행동 $a$가 얼마나 더 나은지를 측정합니다.
+                            이점 함수를 기준선으로 사용하면 편향되지 않은 그래디언트 추정을 유지하면서 분산을 크게 줄일 수 있습니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Policy Types</span>
+                            <span class="lang-content ko">정책 유형</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            Policies can be either <span class="highlight-term">deterministic</span> or <span class="highlight-term">stochastic</span>.
+                            A deterministic policy $\mu: \mathcal{S} \rightarrow \mathcal{A}$ maps each state to a specific action,
+                            while a stochastic policy $\pi: \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$ defines a probability
+                            distribution over actions for each state. See <a href="#figure2" class="fig-ref">Figure 2</a> for an illustration.
+                        </p>
+                        <p class="lang-content ko">
+                            정책은 <span class="highlight-term">결정론적</span> 또는 <span class="highlight-term">확률적</span>일 수 있습니다.
+                            결정론적 정책 $\mu: \mathcal{S} \rightarrow \mathcal{A}$는 각 상태를 특정 행동에 매핑하는 반면,
+                            확률적 정책 $\pi: \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$은 각 상태에 대한 행동에 대한
+                            확률 분포를 정의합니다. <a href="#figure2" class="fig-ref">그림 2</a>를 참조하세요.
+                        </p>
+
+                        <div class="figure-container" id="figure2">
+                            <img src="img/figure2.png" alt="Stochastic vs Deterministic Policy">
+                            <div class="figure-caption">
+                                <span class="lang-content en active">Figure 2: Comparison of stochastic policy (left) and deterministic policy (right).</span>
+                                <span class="lang-content ko">그림 2: 확률적 정책(왼쪽)과 결정론적 정책(오른쪽)의 비교.</span>
+                            </div>
+                        </div>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Policy Gradient</span>
+                            <span class="lang-content ko">정책 그래디언트</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            Policy-based methods typically use <span class="highlight-term">policy gradient</span> algorithms,
+                            which optimize the policy parameters by performing gradient ascent on the expected return:
+                        </p>
+                        <p class="lang-content ko">
+                            정책 기반 방법은 일반적으로 <span class="highlight-term">정책 그래디언트</span> 알고리즘을 사용하며,
+                            이는 기대 수익에 대한 그래디언트 상승을 수행하여 정책 매개변수를 최적화합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Policy Gradient Objective</div>
+                            $$J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta}[G(\tau)] = \mathbb{E}_{\tau \sim \pi_\theta}\left[\sum_{t=0}^{T} r_t\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            The parameters are updated using gradient ascent:
+                        </p>
+                        <p class="lang-content ko">
+                            매개변수는 그래디언트 상승을 사용하여 업데이트됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Policy Gradient Update</div>
+                            $$\theta \leftarrow \theta + \alpha \nabla_\theta J(\theta)$$
+                        </div>
+
+                        <div class="info-box note">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Advantages of Policy-Based Methods</span>
+                                <span class="lang-content ko">정책 기반 방법의 장점</span>
+                            </div>
+                            <p class="lang-content en active">
+                                Policy-based methods excel in: (1) continuous action spaces, (2) learning stochastic policies
+                                (useful for partially observable environments), and (3) scenarios where the optimal policy is simpler
+                                than the optimal value function. Examples include REINFORCE, PPO, and TRPO.
+                            </p>
+                            <p class="lang-content ko">
+                                정책 기반 방법은 다음에서 뛰어납니다: (1) 연속 행동 공간, (2) 확률적 정책 학습
+                                (부분 관측 가능 환경에 유용), (3) 최적 정책이 최적 가치 함수보다 간단한 시나리오.
+                                예로는 REINFORCE, PPO, TRPO가 있습니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">3.3 Model-Based RL</span>
+                            <span class="lang-content ko">3.3 모델 기반 RL</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            <span class="highlight-term">Model-based methods</span> explicitly learn a model of the environment's
+                            dynamics (transition function $P(s'|s,a)$ and reward function $R(s,a)$) and use this model for planning
+                            or to generate simulated experience for learning. This contrasts with model-free methods (value-based and
+                            policy-based) that learn directly from experience without building an explicit environment model.
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">모델 기반 방법</span>은 환경의 동역학 모델(전이 함수 $P(s'|s,a)$와 보상 함수 $R(s,a)$)을
+                            명시적으로 학습하고 이 모델을 계획이나 학습을 위한 시뮬레이션 경험 생성에 사용합니다.
+                            이는 명시적인 환경 모델을 구축하지 않고 경험에서 직접 학습하는 모델 프리 방법(가치 기반 및 정책 기반)과 대조됩니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Learning the Model</span>
+                            <span class="lang-content ko">모델 학습</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            The environment model is typically learned through supervised learning from collected transitions.
+                            Given a dataset $\mathcal{D} = \{(s_i, a_i, r_i, s'_i)\}$, we learn:
+                        </p>
+                        <p class="lang-content ko">
+                            환경 모델은 일반적으로 수집된 전이로부터 지도학습을 통해 학습됩니다.
+                            데이터셋 $\mathcal{D} = \{(s_i, a_i, r_i, s'_i)\}$가 주어지면, 다음을 학습합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Model Learning Objectives</div>
+                            $$\hat{P}_\phi(s'|s,a) \approx P(s'|s,a)$$
+                            $$\hat{R}_\psi(s,a) \approx R(s,a)$$
+                        </div>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Planning with the Model</span>
+                            <span class="lang-content ko">모델을 사용한 계획</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            Once we have a model, we can use it for:
+                        </p>
+                        <p class="lang-content ko">
+                            모델을 얻으면 다음에 사용할 수 있습니다:
+                        </p>
+
+                        <ul>
+                            <li class="lang-content en active">
+                                <strong>Planning:</strong> Using dynamic programming or tree search (e.g., MCTS) to find optimal policies without additional environment interaction.
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>계획:</strong> 추가 환경 상호작용 없이 최적 정책을 찾기 위해 동적 프로그래밍 또는 트리 검색(예: MCTS) 사용.
+                            </li>
+                            <li class="lang-content en active">
+                                <strong>Simulation:</strong> Generating synthetic trajectories to augment real experience, improving sample efficiency.
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>시뮬레이션:</strong> 실제 경험을 증강하기 위해 합성 궤적 생성, 샘플 효율성 향상.
+                            </li>
+                            <li class="lang-content en active">
+                                <strong>Prediction:</strong> Anticipating future states and rewards to improve decision-making.
+                            </li>
+                            <li class="lang-content ko">
+                                <strong>예측:</strong> 의사결정을 개선하기 위해 미래 상태 및 보상 예측.
+                            </li>
+                        </ul>
+
+                        <div class="info-box tip">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Trade-offs</span>
+                                <span class="lang-content ko">장단점</span>
+                            </div>
+                            <p class="lang-content en active">
+                                <strong>Advantages:</strong> Better sample efficiency (fewer environment interactions needed),
+                                ability to plan ahead, and transferability across tasks.<br>
+                                <strong>Challenges:</strong> Model errors can compound over long horizons (model bias),
+                                and learning accurate models in complex environments can be difficult.<br>
+                                Examples: Dyna-Q, MBPO (Model-Based Policy Optimization), MuZero.
+                            </p>
+                            <p class="lang-content ko">
+                                <strong>장점:</strong> 더 나은 샘플 효율성(더 적은 환경 상호작용 필요),
+                                미래 계획 능력, 작업 간 전이 가능성.<br>
+                                <strong>문제:</strong> 모델 오류가 긴 시간 범위에 걸쳐 누적될 수 있음(모델 편향),
+                                복잡한 환경에서 정확한 모델을 학습하기 어려울 수 있음.<br>
+                                예: Dyna-Q, MBPO (Model-Based Policy Optimization), MuZero.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Exploration-Exploitation Tradeoff -->
+                <section class="section" id="exploration-exploitation">
+                    <h2 class="section-title">
+                        <span class="lang-content en active">4. Exploration-Exploitation Tradeoff</span>
+                        <span class="lang-content ko">4. 탐색-활용 균형</span>
+                    </h2>
+
+                    <p class="lang-content en active">
+                        One of the most fundamental challenges in reinforcement learning is the <span class="highlight-term">exploration-exploitation tradeoff</span>:
+                        the agent must balance between exploiting its current knowledge to maximize immediate rewards and exploring new actions
+                        to potentially discover better strategies. This section covers various approaches to address this challenge.
+                    </p>
+                    <p class="lang-content ko">
+                        강화학습의 가장 근본적인 도전 과제 중 하나는 <span class="highlight-term">탐색-활용 균형</span>입니다:
+                        에이전트는 즉각적인 보상을 최대화하기 위해 현재 지식을 활용하는 것과 잠재적으로 더 나은 전략을 발견하기 위해
+                        새로운 행동을 탐색하는 것 사이에서 균형을 맞춰야 합니다. 이 섹션에서는 이 도전 과제를 해결하기 위한 다양한 접근법을 다룹니다.
+                    </p>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">4.1 Simple Heuristics</span>
+                            <span class="lang-content ko">4.1 단순 휴리스틱</span>
+                        </h3>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Greedy Policy</span>
+                            <span class="lang-content ko">탐욕 정책</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            The simplest approach is the <span class="highlight-term">greedy policy</span>, which always selects the action
+                            with the highest estimated value:
+                        </p>
+                        <p class="lang-content ko">
+                            가장 간단한 접근법은 <span class="highlight-term">탐욕 정책</span>으로, 항상 추정된 가치가 가장 높은
+                            행동을 선택합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Greedy Policy</div>
+                            $$a_t = \arg\max_a Q(s_t, a)$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            While this maximizes immediate exploitation, it performs no exploration and may get stuck in suboptimal policies.
+                        </p>
+                        <p class="lang-content ko">
+                            이는 즉각적인 활용을 최대화하지만 탐색을 수행하지 않아 차선의 정책에 갇힐 수 있습니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">ε-Greedy Policy</span>
+                            <span class="lang-content ko">ε-탐욕 정책</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            The <span class="highlight-term">ε-greedy policy</span> introduces exploration by selecting a random action
+                            with probability $\epsilon$ and the greedy action with probability $1-\epsilon$:
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">ε-탐욕 정책</span>은 확률 $\epsilon$으로 무작위 행동을 선택하고
+                            확률 $1-\epsilon$으로 탐욕 행동을 선택하여 탐색을 도입합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">ε-Greedy Policy</div>
+                            $$\pi(a|s) = \begin{cases}
+                            1 - \epsilon + \frac{\epsilon}{|A|} & \text{if } a = \arg\max_{a'} Q(s,a') \\
+                            \frac{\epsilon}{|A|} & \text{otherwise}
+                            \end{cases}$$
+                        </div>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">ε<sub>z</sub>-Greedy Policy</span>
+                            <span class="lang-content ko">ε<sub>z</sub>-탐욕 정책</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            A variant called <span class="highlight-term">ε<sub>z</sub>-greedy</span> uses a state-dependent exploration rate,
+                            where $\epsilon_z = \epsilon / z(s)$ and $z(s)$ is the number of times state $s$ has been visited.
+                            This gradually reduces exploration as states become more familiar.
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">ε<sub>z</sub>-탐욕</span>이라는 변형은 상태 의존적 탐색 비율을 사용하며,
+                            $\epsilon_z = \epsilon / z(s)$이고 $z(s)$는 상태 $s$가 방문된 횟수입니다.
+                            이는 상태가 익숙해짐에 따라 탐색을 점진적으로 줄입니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Boltzmann Exploration (Softmax)</span>
+                            <span class="lang-content ko">볼츠만 탐색 (소프트맥스)</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            <span class="highlight-term">Boltzmann exploration</span> uses a softmax distribution over action values,
+                            providing a more graded exploration strategy. Actions with higher values are more likely to be selected,
+                            but lower-valued actions still have non-zero probability:
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">볼츠만 탐색</span>은 행동 가치에 대한 소프트맥스 분포를 사용하여
+                            더 점진적인 탐색 전략을 제공합니다. 더 높은 가치를 가진 행동이 선택될 가능성이 더 높지만,
+                            낮은 가치의 행동도 0이 아닌 확률을 가집니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Boltzmann Policy</div>
+                            $$\pi(a|s) = \frac{\exp(Q(s,a)/\tau)}{\sum_{a'} \exp(Q(s,a')/\tau)}$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $\tau$ is the <span class="highlight-term">temperature parameter</span>: high $\tau$ leads to more uniform
+                            exploration, while low $\tau$ approaches greedy behavior.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $\tau$는 <span class="highlight-term">온도 매개변수</span>입니다: 높은 $\tau$는 더 균등한
+                            탐색으로 이어지고, 낮은 $\tau$는 탐욕적 행동에 가까워집니다.
+                        </p>
+
+                        <div class="info-box note">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Comparison: ε-Greedy vs Boltzmann</span>
+                                <span class="lang-content ko">비교: ε-탐욕 대 볼츠만</span>
+                            </div>
+                            <p class="lang-content en active">
+                                <strong>ε-Greedy:</strong> Simple to implement, uniform exploration over non-greedy actions,
+                                clear exploitation-exploration split.<br>
+                                <strong>Boltzmann:</strong> Proportional exploration based on action values, smoother transition between
+                                exploration and exploitation, requires tuning temperature $\tau$.
+                            </p>
+                            <p class="lang-content ko">
+                                <strong>ε-탐욕:</strong> 구현이 간단, 비탐욕 행동에 대한 균일한 탐색,
+                                활용-탐색 분할이 명확함.<br>
+                                <strong>볼츠만:</strong> 행동 가치에 기반한 비례적 탐색, 탐색과 활용 간의 더 부드러운 전환,
+                                온도 $\tau$ 조정이 필요함.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">4.2 Methods Based on the Belief State MDP</span>
+                            <span class="lang-content ko">4.2 신념 상태 MDP 기반 방법</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            When uncertainty about the environment model is explicitly maintained as a <span class="highlight-term">belief state</span>,
+                            we can formulate exploration as part of the optimal solution to a more complex MDP. These methods provide principled
+                            approaches to exploration by treating it as an optimization problem.
+                        </p>
+                        <p class="lang-content ko">
+                            환경 모델에 대한 불확실성을 <span class="highlight-term">신념 상태</span>로 명시적으로 유지할 때,
+                            탐색을 더 복잡한 MDP의 최적 솔루션의 일부로 공식화할 수 있습니다. 이러한 방법은 탐색을
+                            최적화 문제로 취급하여 원칙적인 접근법을 제공합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Bandit Case: Gittins Indices</span>
+                            <span class="lang-content ko">밴딧 경우: 기틴스 인덱스</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            For multi-armed bandit problems (single-state MDPs), the optimal exploration-exploitation strategy can be characterized
+                            by <span class="highlight-term">Gittins indices</span>. Each action is assigned an index value that represents its
+                            attractiveness considering both immediate reward and information gain:
+                        </p>
+                        <p class="lang-content ko">
+                            다중 암 밴딧 문제(단일 상태 MDP)의 경우, 최적 탐색-활용 전략은 <span class="highlight-term">기틴스 인덱스</span>로
+                            특성화될 수 있습니다. 각 행동에는 즉각적인 보상과 정보 이득을 모두 고려한 매력도를 나타내는 인덱스 값이 할당됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Gittins Index</div>
+                            $$G(b) = \sup_{\tau} \frac{\mathbb{E}[\sum_{t=0}^{\tau-1} \gamma^t r_t | b]}{\mathbb{E}[\sum_{t=0}^{\tau-1} \gamma^t | b]}$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $b$ is the belief state about the action's reward distribution, and $\tau$ is a stopping time.
+                            The optimal policy simply selects the action with the highest Gittins index at each time step.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $b$는 행동의 보상 분포에 대한 신념 상태이고, $\tau$는 정지 시간입니다.
+                            최적 정책은 각 시간 단계에서 가장 높은 기틴스 인덱스를 가진 행동을 선택하기만 하면 됩니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">MDP Case: Bayes-Adaptive MDPs (BAMDP)</span>
+                            <span class="lang-content ko">MDP 경우: 베이즈 적응 MDP (BAMDP)</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            For general MDPs with unknown dynamics, the problem can be formulated as a <span class="highlight-term">Bayes-Adaptive MDP</span>.
+                            The augmented state space consists of the original state $s$ and a belief over the MDP parameters $b$:
+                        </p>
+                        <p class="lang-content ko">
+                            동역학을 알 수 없는 일반 MDP의 경우, 문제를 <span class="highlight-term">베이즈 적응 MDP</span>로 공식화할 수 있습니다.
+                            확장된 상태 공간은 원래 상태 $s$와 MDP 매개변수에 대한 신념 $b$로 구성됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">BAMDP State Space</div>
+                            $$\tilde{s} = (s, b), \quad b \in \mathcal{P}(\Theta)$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $\Theta$ is the space of possible MDP parameters (transition and reward functions).
+                            The belief $b$ is updated via Bayesian inference as new transitions are observed:
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $\Theta$는 가능한 MDP 매개변수(전이 및 보상 함수)의 공간입니다.
+                            신념 $b$는 새로운 전이가 관찰됨에 따라 베이지안 추론을 통해 업데이트됩니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Belief Update</div>
+                            $$b_{t+1}(\theta) \propto P(s_{t+1}, r_t | s_t, a_t, \theta) \cdot b_t(\theta)$$
+                        </div>
+
+                        <div class="info-box tip">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Computational Challenge</span>
+                                <span class="lang-content ko">계산적 도전</span>
+                            </div>
+                            <p class="lang-content en active">
+                                While BAMDP provides the theoretically optimal solution to exploration-exploitation, solving it exactly
+                                is computationally intractable for most problems. Approximate methods and heuristics inspired by this
+                                framework (like UCB and Thompson sampling) are more practical.
+                            </p>
+                            <p class="lang-content ko">
+                                BAMDP는 탐색-활용에 대한 이론적으로 최적의 솔루션을 제공하지만, 대부분의 문제에 대해
+                                정확하게 푸는 것은 계산적으로 불가능합니다. 이 프레임워크에서 영감을 받은 근사 방법과
+                                휴리스틱(UCB 및 톰슨 샘플링 등)이 더 실용적입니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">4.3 Upper Confidence Bounds (UCBs)</span>
+                            <span class="lang-content ko">4.3 상한 신뢰 구간 (UCBs)</span>
+                        </h3>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Basic Idea</span>
+                            <span class="lang-content ko">기본 아이디어</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            The <span class="highlight-term">principle of optimism in the face of uncertainty</span> guides UCB methods:
+                            assign each action an upper confidence bound on its value, then select the action with the highest bound.
+                            This naturally balances exploitation (actions with high estimated value) and exploration (actions with high uncertainty).
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">불확실성 하의 낙관주의 원칙</span>이 UCB 방법을 안내합니다:
+                            각 행동에 가치에 대한 상한 신뢰 구간을 할당한 다음, 가장 높은 구간을 가진 행동을 선택합니다.
+                            이는 활용(높은 추정 가치를 가진 행동)과 탐색(높은 불확실성을 가진 행동) 사이의 균형을 자연스럽게 맞춥니다.
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">UCB Action Selection</div>
+                            $$a_t = \arg\max_a \left[\hat{Q}(a) + U(a)\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $\hat{Q}(a)$ is the estimated value (exploitation term) and $U(a)$ is the uncertainty bonus (exploration term).
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $\hat{Q}(a)$는 추정 가치(활용 항)이고 $U(a)$는 불확실성 보너스(탐색 항)입니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Bandit Case: Frequentist Approach</span>
+                            <span class="lang-content ko">밴딧 경우: 빈도주의 접근</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            For multi-armed bandits, UCB algorithms use concentration inequalities like the
+                            <span class="highlight-term">Chernoff-Hoeffding inequality</span> to bound the true value:
+                        </p>
+                        <p class="lang-content ko">
+                            다중 암 밴딧의 경우, UCB 알고리즘은 <span class="highlight-term">체르노프-회프딩 부등식</span>과 같은
+                            집중 부등식을 사용하여 실제 가치를 제한합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Hoeffding's Inequality</div>
+                            $$P\left(Q^*(a) > \hat{Q}_t(a) + \sqrt{\frac{2\ln t}{n_t(a)}}\right) \leq t^{-4}$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $\hat{Q}_t(a)$ is the empirical mean reward for action $a$, $n_t(a)$ is the number of times action $a$
+                            has been selected by time $t$. The famous <span class="highlight-term">UCB1 algorithm</span> uses:
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $\hat{Q}_t(a)$는 행동 $a$에 대한 경험적 평균 보상이고, $n_t(a)$는 시간 $t$까지
+                            행동 $a$가 선택된 횟수입니다. 유명한 <span class="highlight-term">UCB1 알고리즘</span>은 다음을 사용합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">UCB1</div>
+                            $$a_t = \arg\max_a \left[\hat{Q}_t(a) + c\sqrt{\frac{\ln t}{n_t(a)}}\right]$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $c$ is an exploration constant (often $c = \sqrt{2}$). This achieves logarithmic regret: $O(\log T)$.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $c$는 탐색 상수입니다(종종 $c = \sqrt{2}$). 이는 대수적 후회를 달성합니다: $O(\log T)$.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Bandit Case: Bayesian Approach</span>
+                            <span class="lang-content ko">밴딧 경우: 베이지안 접근</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            A Bayesian UCB approach maintains a posterior distribution over each action's value and selects based on
+                            upper quantiles of these posteriors:
+                        </p>
+                        <p class="lang-content ko">
+                            베이지안 UCB 접근법은 각 행동의 가치에 대한 사후 분포를 유지하고 이러한 사후의 상위 분위수를 기반으로 선택합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Bayesian UCB</div>
+                            $$a_t = \arg\max_a \, Q_{\alpha}^t(a)$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $Q_{\alpha}^t(a)$ is the $(1-\alpha)$-quantile of the posterior distribution for action $a$ at time $t$.
+                            As more data is collected, the posterior concentrates and the quantile approaches the true mean.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $Q_{\alpha}^t(a)$는 시간 $t$에서 행동 $a$에 대한 사후 분포의 $(1-\alpha)$-분위수입니다.
+                            더 많은 데이터가 수집됨에 따라 사후가 집중되고 분위수가 실제 평균에 접근합니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">MDP Case</span>
+                            <span class="lang-content ko">MDP 경우</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            UCB principles extend to full MDPs through exploration bonuses added to the value function or Q-function.
+                            For example, the <span class="highlight-term">UCRL2 algorithm</span> constructs confidence intervals around
+                            transition probabilities and rewards, then optimistically plans using the upper bounds:
+                        </p>
+                        <p class="lang-content ko">
+                            UCB 원칙은 가치 함수 또는 Q-함수에 추가된 탐색 보너스를 통해 완전한 MDP로 확장됩니다.
+                            예를 들어, <span class="highlight-term">UCRL2 알고리즘</span>은 전이 확률과 보상 주위에
+                            신뢰 구간을 구성한 다음 상한을 사용하여 낙관적으로 계획합니다:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">UCRL2 Optimistic Planning</div>
+                            $$\tilde{V}^*(s) = \max_{\pi} \max_{M \in \mathcal{M}(s)} V_M^{\pi}(s)$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            where $\mathcal{M}(s)$ is the confidence set of plausible MDPs given observations. Modern deep RL methods
+                            incorporate exploration bonuses based on state visitation counts, prediction errors, or ensemble disagreement.
+                        </p>
+                        <p class="lang-content ko">
+                            여기서 $\mathcal{M}(s)$는 관찰을 고려할 때 타당한 MDP의 신뢰 집합입니다. 현대 심층 RL 방법은
+                            상태 방문 횟수, 예측 오류 또는 앙상블 불일치를 기반으로 한 탐색 보너스를 통합합니다.
+                        </p>
+
+                        <div class="info-box note">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">UCB Advantages</span>
+                                <span class="lang-content ko">UCB 장점</span>
+                            </div>
+                            <p class="lang-content en active">
+                                UCB methods provide <strong>theoretical guarantees</strong> (logarithmic regret bounds),
+                                are <strong>parameter-free</strong> or require minimal tuning, and provide a
+                                <strong>principled exploration strategy</strong> that automatically adapts to uncertainty.
+                            </p>
+                            <p class="lang-content ko">
+                                UCB 방법은 <strong>이론적 보장</strong>(대수적 후회 한계)을 제공하고,
+                                <strong>매개변수가 없거나</strong> 최소한의 조정이 필요하며,
+                                불확실성에 자동으로 적응하는 <strong>원칙적인 탐색 전략</strong>을 제공합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">4.4 Thompson Sampling</span>
+                            <span class="lang-content ko">4.4 톰슨 샘플링</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            <span class="highlight-term">Thompson sampling</span> (also called posterior sampling) is a Bayesian approach
+                            that naturally balances exploration and exploitation through randomization. Instead of selecting the action
+                            with the highest upper confidence bound, Thompson sampling:
+                        </p>
+                        <p class="lang-content ko">
+                            <span class="highlight-term">톰슨 샘플링</span>(사후 샘플링이라고도 함)은 무작위화를 통해
+                            탐색과 활용의 균형을 자연스럽게 맞추는 베이지안 접근법입니다. 가장 높은 상한 신뢰 구간을 가진
+                            행동을 선택하는 대신, 톰슨 샘플링은:
+                        </p>
+
+                        <ol>
+                            <li class="lang-content en active">
+                                Maintains a posterior distribution over the unknown parameters (e.g., reward distributions, value functions)
+                            </li>
+                            <li class="lang-content ko">
+                                알 수 없는 매개변수에 대한 사후 분포를 유지합니다(예: 보상 분포, 가치 함수)
+                            </li>
+                            <li class="lang-content en active">
+                                Samples a parameter configuration from the posterior
+                            </li>
+                            <li class="lang-content ko">
+                                사후에서 매개변수 구성을 샘플링합니다
+                            </li>
+                            <li class="lang-content en active">
+                                Acts optimally with respect to the sampled parameters
+                            </li>
+                            <li class="lang-content ko">
+                                샘플링된 매개변수에 대해 최적으로 행동합니다
+                            </li>
+                            <li class="lang-content en active">
+                                Updates the posterior with new observations
+                            </li>
+                            <li class="lang-content ko">
+                                새로운 관찰로 사후를 업데이트합니다
+                            </li>
+                        </ol>
+
+                        <div class="math-block">
+                            <div class="equation-label">Thompson Sampling Algorithm</div>
+                            $$\begin{align}
+                            \theta_t &\sim p(\theta | \mathcal{D}_{t-1}) \quad \text{(sample from posterior)} \\
+                            a_t &= \arg\max_a Q(s_t, a; \theta_t) \quad \text{(act optimally for sample)} \\
+                            \mathcal{D}_t &= \mathcal{D}_{t-1} \cup \{(s_t, a_t, r_t, s_{t+1})\} \quad \text{(update data)}
+                            \end{align}$$
+                        </div>
+
+                        <p class="lang-content en active">
+                            The key insight is that the <span class="highlight-term">probability of selecting an action is proportional to the
+                            probability that it is optimal</span> given current beliefs. Actions that are likely to be optimal or very uncertain
+                            (and thus might be optimal) receive more exploration.
+                        </p>
+                        <p class="lang-content ko">
+                            핵심 통찰은 <span class="highlight-term">행동을 선택할 확률이 현재 신념을 고려할 때 최적일 확률에
+                            비례한다</span>는 것입니다. 최적일 가능성이 높거나 매우 불확실한(따라서 최적일 수 있는) 행동은
+                            더 많은 탐색을 받습니다.
+                        </p>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Example: Bernoulli Bandits</span>
+                            <span class="lang-content ko">예시: 베르누이 밴딧</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            For bandits with Bernoulli rewards, using a Beta prior $\text{Beta}(\alpha_a, \beta_a)$ for each action $a$
+                            leads to a simple update rule. After observing reward $r \in \{0,1\}$:
+                        </p>
+                        <p class="lang-content ko">
+                            베르누이 보상을 가진 밴딧의 경우, 각 행동 $a$에 대해 베타 사전 $\text{Beta}(\alpha_a, \beta_a)$를
+                            사용하면 간단한 업데이트 규칙이 생성됩니다. 보상 $r \in \{0,1\}$을 관찰한 후:
+                        </p>
+
+                        <div class="math-block">
+                            <div class="equation-label">Beta-Bernoulli Thompson Sampling</div>
+                            $$\begin{align}
+                            \theta_a &\sim \text{Beta}(\alpha_a, \beta_a) \quad \text{for each } a \\
+                            a_t &= \arg\max_a \theta_a \\
+                            \alpha_{a_t} &\leftarrow \alpha_{a_t} + r_t \\
+                            \beta_{a_t} &\leftarrow \beta_{a_t} + (1-r_t)
+                            \end{align}$$
+                        </div>
+
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--secondary-color); margin: 24px 0 12px 0;">
+                            <span class="lang-content en active">Extension to MDPs</span>
+                            <span class="lang-content ko">MDP로의 확장</span>
+                        </h4>
+
+                        <p class="lang-content en active">
+                            Thompson sampling extends to MDPs by maintaining posteriors over transition dynamics $P(s'|s,a)$ and
+                            reward functions $R(s,a)$. At each episode or planning step:
+                        </p>
+                        <p class="lang-content ko">
+                            톰슨 샘플링은 전이 동역학 $P(s'|s,a)$와 보상 함수 $R(s,a)$에 대한 사후를 유지하여 MDP로 확장됩니다.
+                            각 에피소드 또는 계획 단계에서:
+                        </p>
+
+                        <ul>
+                            <li class="lang-content en active">
+                                Sample an MDP from the posterior: $\tilde{M} \sim p(M | \mathcal{D})$
+                            </li>
+                            <li class="lang-content ko">
+                                사후에서 MDP를 샘플링: $\tilde{M} \sim p(M | \mathcal{D})$
+                            </li>
+                            <li class="lang-content en active">
+                                Solve for the optimal policy in the sampled MDP: $\pi^* = \arg\max_{\pi} V_{\tilde{M}}^{\pi}$
+                            </li>
+                            <li class="lang-content ko">
+                                샘플링된 MDP에서 최적 정책을 풀기: $\pi^* = \arg\max_{\pi} V_{\tilde{M}}^{\pi}$
+                            </li>
+                            <li class="lang-content en active">
+                                Execute the policy to collect new data
+                            </li>
+                            <li class="lang-content ko">
+                                새로운 데이터를 수집하기 위해 정책을 실행
+                            </li>
+                            <li class="lang-content en active">
+                                Update the posterior with the new observations
+                            </li>
+                            <li class="lang-content ko">
+                                새로운 관찰로 사후를 업데이트
+                            </li>
+                        </ul>
+
+                        <div class="info-box tip">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">Why Thompson Sampling Works Well</span>
+                                <span class="lang-content ko">톰슨 샘플링이 잘 작동하는 이유</span>
+                            </div>
+                            <p class="lang-content en active">
+                                <strong>Theoretical guarantees:</strong> Achieves logarithmic regret like UCB in many settings.<br>
+                                <strong>Computational efficiency:</strong> Often simpler to implement than computing confidence bounds.<br>
+                                <strong>Empirical performance:</strong> Frequently outperforms UCB in practice, especially in complex domains.<br>
+                                <strong>Natural handling of delayed rewards:</strong> The Bayesian framework naturally propagates uncertainty through time.<br>
+                                Examples: PSRL (Posterior Sampling for RL), RLSVI (RL with Randomized Value Functions).
+                            </p>
+                            <p class="lang-content ko">
+                                <strong>이론적 보장:</strong> 많은 설정에서 UCB와 같은 대수적 후회를 달성합니다.<br>
+                                <strong>계산 효율성:</strong> 신뢰 구간을 계산하는 것보다 구현이 더 간단한 경우가 많습니다.<br>
+                                <strong>경험적 성능:</strong> 실제로 특히 복잡한 도메인에서 UCB보다 자주 더 나은 성능을 보입니다.<br>
+                                <strong>지연된 보상의 자연스러운 처리:</strong> 베이지안 프레임워크는 시간에 걸쳐 불확실성을 자연스럽게 전파합니다.<br>
+                                예: PSRL (RL을 위한 사후 샘플링), RLSVI (무작위 가치 함수를 사용한 RL).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: JAX Benefits -->
+                <section class="section" id="jax-benefits">
+                    <h2 class="section-title">
+                        <span class="lang-content en active">5. Implementing RL with JAX</span>
+                        <span class="lang-content ko">5. JAX로 RL 구현하기</span>
+                    </h2>
+
+                    <p class="lang-content en active">
+                        Now that we've covered the theoretical foundations of reinforcement learning—from MDPs and value functions to
+                        exploration strategies—it's time to discuss how we can efficiently implement these algorithms in practice.
+                        In this course, we use <span class="highlight-term">JAX</span>, a powerful numerical computing library that
+                        brings together the best features of NumPy, automatic differentiation, and high-performance compilation.
+                    </p>
+                    <p class="lang-content ko">
+                        이제 MDP와 가치 함수부터 탐색 전략까지 강화학습의 이론적 기초를 다루었으므로, 이러한 알고리즘을 실제로
+                        효율적으로 구현하는 방법에 대해 논의할 차례입니다. 이 과정에서는 NumPy의 장점, 자동 미분,
+                        고성능 컴파일을 결합한 강력한 수치 계산 라이브러리인 <span class="highlight-term">JAX</span>를 사용합니다.
+                    </p>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">Why JAX for Reinforcement Learning?</span>
+                            <span class="lang-content ko">왜 강화학습에 JAX를 사용하는가?</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            JAX is particularly well-suited for RL research and implementation due to several key features that directly
+                            address the computational challenges we encounter in RL algorithms:
+                        </p>
+                        <p class="lang-content ko">
+                            JAX는 RL 알고리즘에서 마주하는 계산적 도전 과제를 직접적으로 해결하는 여러 핵심 기능으로 인해
+                            RL 연구 및 구현에 특히 적합합니다:
+                        </p>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">Key Advantages</span>
+                            <span class="lang-content ko">주요 장점</span>
+                        </h3>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><span class="lang-content en active">Feature</span><span class="lang-content ko">특징</span></th>
+                                        <th><span class="lang-content en active">Benefit for RL</span><span class="lang-content ko">RL에 대한 이점</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>JIT Compilation</td>
+                                        <td><span class="lang-content en active">Fast execution of iterative algorithms</span><span class="lang-content ko">반복 알고리즘의 빠른 실행</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Automatic Differentiation</td>
+                                        <td><span class="lang-content en active">Easy implementation of gradient-based methods</span><span class="lang-content ko">그래디언트 기반 방법의 쉬운 구현</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vectorization (vmap)</td>
+                                        <td><span class="lang-content en active">Parallel environment simulation</span><span class="lang-content ko">병렬 환경 시뮬레이션</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>GPU/TPU Support</td>
+                                        <td><span class="lang-content en active">Scalable to large-scale problems</span><span class="lang-content ko">대규모 문제로 확장 가능</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Functional Programming</td>
+                                        <td><span class="lang-content en active">Clean, composable algorithm implementations</span><span class="lang-content ko">깔끔하고 조합 가능한 알고리즘 구현</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="info-box tip">
+                        <div class="info-box-title">
+                            <span class="lang-content en active">Performance Tip</span>
+                            <span class="lang-content ko">성능 팁</span>
+                        </div>
+                        <p class="lang-content en active">
+                            Using JAX's vmap, we can vectorize our DP algorithms to solve multiple MDPs in parallel,
+                            achieving significant speedups for hyperparameter search or multi-task learning scenarios.
+                        </p>
+                        <p class="lang-content ko">
+                            JAX의 vmap을 사용하면 DP 알고리즘을 벡터화하여 여러 MDP를 병렬로 해결할 수 있으며,
+                            하이퍼파라미터 검색이나 멀티태스크 학습 시나리오에서 상당한 속도 향상을 달성할 수 있습니다.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Section 6: Summary -->
+                <section class="section" id="summary">
+                    <h2 class="section-title">
+                        <span class="lang-content en active">6. Summary and Key Takeaways</span>
+                        <span class="lang-content ko">6. 요약 및 핵심 사항</span>
+                    </h2>
+
+                    <p class="lang-content en active">
+                        In this introductory week, we've laid the foundation for understanding reinforcement learning and
+                        its core principles. Let's recap the essential concepts we've covered:
+                    </p>
+                    <p class="lang-content ko">
+                        이번 입문 주차에서 우리는 강화학습과 그 핵심 원리를 이해하기 위한 기초를 다졌습니다.
+                        다룬 핵심 개념을 요약해보겠습니다:
+                    </p>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">Core Concepts</span>
+                            <span class="lang-content ko">핵심 개념</span>
+                        </h3>
+
+                        <div class="info-box note" style="margin-bottom: 24px;">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">1. Reinforcement Learning Framework</span>
+                                <span class="lang-content ko">1. 강화학습 프레임워크</span>
+                            </div>
+                            <p class="lang-content en active">
+                                RL is fundamentally about an <strong>agent</strong> learning to make optimal decisions through
+                                interaction with an <strong>environment</strong>. The agent observes states, takes actions according
+                                to its <strong>policy</strong>, and receives rewards. The goal is to maximize cumulative reward over time.
+                            </p>
+                            <p class="lang-content ko">
+                                RL은 근본적으로 <strong>에이전트</strong>가 <strong>환경</strong>과의 상호작용을 통해
+                                최적의 결정을 내리는 방법을 학습하는 것입니다. 에이전트는 상태를 관찰하고, <strong>정책</strong>에
+                                따라 행동을 취하며, 보상을 받습니다. 목표는 시간에 걸쳐 누적 보상을 최대화하는 것입니다.
+                            </p>
+                        </div>
+
+                        <div class="info-box note" style="margin-bottom: 24px;">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">2. Decision Process Frameworks</span>
+                                <span class="lang-content ko">2. 의사결정 프로세스 프레임워크</span>
+                            </div>
+                            <p class="lang-content en active">
+                                We formalize RL problems using different frameworks: <strong>MDPs</strong> for fully observable environments
+                                with Markovian dynamics, <strong>POMDPs</strong> for partially observable settings where the agent must
+                                maintain belief states, and <strong>Contextual MDPs</strong> for problems with external context information.
+                            </p>
+                            <p class="lang-content ko">
+                                RL 문제를 다양한 프레임워크로 공식화합니다: 마르코프 동역학을 가진 완전 관측 가능 환경을 위한 <strong>MDP</strong>,
+                                에이전트가 신념 상태를 유지해야 하는 부분 관측 가능 설정을 위한 <strong>POMDP</strong>,
+                                외부 맥락 정보가 있는 문제를 위한 <strong>맥락적 MDP</strong>.
+                            </p>
+                        </div>
+
+                        <div class="info-box note" style="margin-bottom: 24px;">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">3. Three Approaches to RL</span>
+                                <span class="lang-content ko">3. RL의 세 가지 접근법</span>
+                            </div>
+                            <p class="lang-content en active">
+                                <strong>Value-based methods</strong> learn value functions (V or Q) and derive policies from them using
+                                Bellman equations and TD learning. <strong>Policy-based methods</strong> directly optimize the policy
+                                using gradient ascent on expected returns. <strong>Model-based methods</strong> learn environment models
+                                and use them for planning or generating synthetic experience.
+                            </p>
+                            <p class="lang-content ko">
+                                <strong>가치 기반 방법</strong>은 가치 함수(V 또는 Q)를 학습하고 벨만 방정식과 TD 학습을 사용하여
+                                정책을 도출합니다. <strong>정책 기반 방법</strong>은 기대 수익에 대한 그래디언트 상승을 사용하여
+                                정책을 직접 최적화합니다. <strong>모델 기반 방법</strong>은 환경 모델을 학습하고 계획이나
+                                합성 경험 생성에 사용합니다.
+                            </p>
+                        </div>
+
+                        <div class="info-box note" style="margin-bottom: 24px;">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">4. Exploration vs Exploitation</span>
+                                <span class="lang-content ko">4. 탐색 대 활용</span>
+                            </div>
+                            <p class="lang-content en active">
+                                The exploration-exploitation tradeoff is central to RL. We explored various strategies: simple heuristics
+                                like <strong>ε-greedy</strong> and <strong>Boltzmann exploration</strong>, principled approaches based on
+                                <strong>belief state MDPs</strong> (Gittins indices, BAMDPs), <strong>Upper Confidence Bounds</strong>
+                                with theoretical guarantees, and <strong>Thompson sampling</strong> which balances exploration naturally
+                                through Bayesian randomization.
+                            </p>
+                            <p class="lang-content ko">
+                                탐색-활용 균형은 RL의 핵심입니다. 다양한 전략을 탐구했습니다: <strong>ε-탐욕</strong>과
+                                <strong>볼츠만 탐색</strong> 같은 단순 휴리스틱, <strong>신념 상태 MDP</strong> 기반의
+                                원칙적 접근법(기틴스 인덱스, BAMDP), 이론적 보장을 가진 <strong>상한 신뢰 구간</strong>,
+                                베이지안 무작위화를 통해 탐색의 균형을 자연스럽게 맞추는 <strong>톰슨 샘플링</strong>.
+                            </p>
+                        </div>
+
+                        <div class="info-box note" style="margin-bottom: 24px;">
+                            <div class="info-box-title">
+                                <span class="lang-content en active">5. Implementation with JAX</span>
+                                <span class="lang-content ko">5. JAX로 구현</span>
+                            </div>
+                            <p class="lang-content en active">
+                                JAX provides the ideal framework for implementing RL algorithms efficiently: JIT compilation for speed,
+                                automatic differentiation for gradient-based methods, vectorization for parallel environments, and
+                                seamless GPU/TPU support for scalability.
+                            </p>
+                            <p class="lang-content ko">
+                                JAX는 RL 알고리즘을 효율적으로 구현하기 위한 이상적인 프레임워크를 제공합니다: 속도를 위한 JIT 컴파일,
+                                그래디언트 기반 방법을 위한 자동 미분, 병렬 환경을 위한 벡터화,
+                                확장성을 위한 원활한 GPU/TPU 지원.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">
+                            <span class="lang-content en active">Looking Ahead</span>
+                            <span class="lang-content ko">앞으로의 계획</span>
+                        </h3>
+
+                        <p class="lang-content en active">
+                            With these foundational concepts in place, we're ready to dive into specific algorithms in the coming weeks.
+                            We'll start with classic methods like <strong>Q-learning</strong> and <strong>SARSA</strong>, move on to
+                            policy gradient methods like <strong>REINFORCE</strong> and <strong>Actor-Critic</strong>, and eventually
+                            explore modern deep RL algorithms like <strong>DQN</strong>, <strong>PPO</strong>, and beyond.
+                        </p>
+                        <p class="lang-content ko">
+                            이러한 기초 개념을 갖추고, 앞으로 몇 주 동안 구체적인 알고리즘을 깊이 탐구할 준비가 되었습니다.
+                            <strong>Q-러닝</strong>과 <strong>SARSA</strong> 같은 고전적 방법으로 시작하여,
+                            <strong>REINFORCE</strong>와 <strong>액터-크리틱</strong> 같은 정책 그래디언트 방법으로 나아가고,
+                            최종적으로 <strong>DQN</strong>, <strong>PPO</strong> 등 현대 심층 RL 알고리즘을 탐구할 것입니다.
+                        </p>
+
+                        <p class="lang-content en active">
+                            Each algorithm will be accompanied by complete JAX implementations, mathematical derivations,
+                            and practical examples that you can run and experiment with. The goal is not just to understand
+                            the theory, but to develop intuition through hands-on coding and experimentation.
+                        </p>
+                        <p class="lang-content ko">
+                            각 알고리즘에는 완전한 JAX 구현, 수학적 유도, 실행하고 실험할 수 있는 실용적인 예제가 함께 제공됩니다.
+                            목표는 단순히 이론을 이해하는 것이 아니라, 직접 코딩하고 실험하면서 직관을 개발하는 것입니다.
+                        </p>
+                    </div>
+
+                    <div class="info-box tip">
+                        <div class="info-box-title">
+                            <span class="lang-content en active">Next Steps</span>
+                            <span class="lang-content ko">다음 단계</span>
+                        </div>
+                        <p class="lang-content en active">
+                            <strong>Practice:</strong> Review the mathematical derivations and try implementing simple examples yourself.<br>
+                            <strong>Explore:</strong> Experiment with the JAX code examples and modify them to deepen your understanding.<br>
+                            <strong>Prepare:</strong> Make sure you're comfortable with the core concepts before moving to Week 2,
+                            where we'll implement our first complete RL algorithm: Tabular Q-Learning.
+                        </p>
+                        <p class="lang-content ko">
+                            <strong>연습:</strong> 수학적 유도를 복습하고 간단한 예제를 직접 구현해보세요.<br>
+                            <strong>탐구:</strong> JAX 코드 예제를 실험하고 수정하여 이해를 깊게 하세요.<br>
+                            <strong>준비:</strong> 2주차로 넘어가기 전에 핵심 개념을 편안하게 이해하도록 하세요.
+                            2주차에서는 첫 번째 완전한 RL 알고리즘인 표 형식 Q-러닝을 구현할 것입니다.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="toc">
+                    <h4 class="toc-title">
+                        <span class="lang-content en active">Contents</span>
+                        <span class="lang-content ko">목차</span>
+                    </h4>
+                    <ul class="toc-list">
+                        <li><a href="#what-is-rl" class="active">1. What is RL?</a></li>
+                        <li><a href="#mdp">2. Decision Process Frameworks</a></li>
+                        <li><a href="#bellman">3. RL Approaches</a></li>
+                        <li><a href="#exploration-exploitation">4. Exploration-Exploitation Tradeoff</a></li>
+                        <li><a href="#jax-benefits">5. Implementing RL with JAX</a></li>
+                        <li><a href="#summary">6. Summary</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="implementation.py">Full Implementation</a></li>
+                        <li><a href="colab_notebook.ipynb">Google Colab</a></li>
+                        <li><a href="../../index.html">Course Home</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>References</h4>
+                    <ul>
+                        <li><a href="https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf">Sutton & Barto (2018)</a></li>
+                        <li><a href="https://docs.jax.dev/en/latest/">JAX Documentation</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 RL with JAX. Created by Bruno Lee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language toggle functionality
+        const enBtn = document.getElementById('enBtn');
+        const koBtn = document.getElementById('koBtn');
+        const enContents = document.querySelectorAll('.lang-content.en');
+        const koContents = document.querySelectorAll('.lang-content.ko');
+
+        function setLanguage(lang) {
+            if (lang === 'en') {
+                enBtn.classList.add('active');
+                koBtn.classList.remove('active');
+                enContents.forEach(el => el.classList.add('active'));
+                koContents.forEach(el => el.classList.remove('active'));
+            } else {
+                koBtn.classList.add('active');
+                enBtn.classList.remove('active');
+                koContents.forEach(el => el.classList.add('active'));
+                enContents.forEach(el => el.classList.remove('active'));
+            }
+
+            // Re-render MathJax after language change
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch((err) => console.log('MathJax typeset error:', err));
+            }
+        }
+
+        enBtn.addEventListener('click', () => setLanguage('en'));
+        koBtn.addEventListener('click', () => setLanguage('ko'));
+
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.nextElementSibling;
+            const code = codeBlock.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        // Table of contents active state
+        const tocLinks = document.querySelectorAll('.toc-list a');
+        const sections = document.querySelectorAll('.section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply syntax highlighting
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+</body>
+</html>
