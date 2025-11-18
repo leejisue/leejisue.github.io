@@ -1,478 +1,3 @@
-<div class="header-sensor"></div>
-
-<header>
-    <div class="container header-container">
-        <div class="logo">
-            <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="8" fill="#E6F0FF"/>
-                <path d="M20 8L32 14.5V27.5L20 34L8 27.5V14.5L20 8Z" stroke="#0066CC" stroke-width="2"/>
-                <path d="M20 21V34M20 8V21M8 14.5L20 21L32 14.5" stroke="#0066CC" stroke-width="2"/>
-                <circle cx="20" cy="21" r="3" fill="#0066CC"/>
-            </svg>
-            <span class="logo-text">RL with JAX</span>
-        </div>
-        
-        <div class="nav-container">
-            <nav class="nav-links">
-                <a href="#overview" class="nav-link">Overview</a>
-                <a href="#basics" class="nav-link">RL Basics</a>
-                <a href="#algorithms" class="nav-link">Algorithms</a>
-                <a href="#resources" class="nav-link">Resources</a>
-            </nav>
-            
-            <a href="https://github.com/brunoleej/RL-with-JAX" class="nav-button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>GitHub</span>
-            </a>
-        </div>
-        
-        <button class="mobile-nav-toggle">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-    </div>
-</header>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Header show/hide functionality
-    const header = document.querySelector('header');
-    const headerSensor = document.querySelector('.header-sensor');
-    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    let isHeaderVisible = false;
-    
-    // Function to show header
-    function showHeader() {
-        if (!isHeaderVisible) {
-            header.style.top = '0';
-            isHeaderVisible = true;
-        }
-    }
-    
-    // Function to hide header
-    function hideHeader() {
-        if (isHeaderVisible && !navLinks.classList.contains('active')) {
-            header.style.top = '-80px';
-            isHeaderVisible = false;
-        }
-    }
-    
-    // Mobile navigation toggle
-    mobileNavToggle.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-        // Ensure header stays visible when menu is open
-        if (navLinks.classList.contains('active')) {
-            showHeader();
-        }
-    });
-    
-    // Add events to the sensor
-    headerSensor.addEventListener('mouseenter', showHeader);
-    
-    // Hide header when mouse moves away from both header and sensor
-    document.addEventListener('mousemove', function(e) {
-        if (e.clientY > 100 && !navLinks.classList.contains('active')) {
-            hideHeader();
-        }
-    });
-    
-    // Keep header visible when interacting with it
-    header.addEventListener('mouseenter', showHeader);
-});
-</script>
-
-<div class="paper-section">
-                    <div class="paper-image">
-                        <img src="https://leejisue.github.io/theory/rl-basics/img/logo.jpg" alt="RL Diagram">
-                    </div>
-                    <div class="paper-content">
-                        <h3 class="paper-title" id="overview">Learn, Implement, Master</h3>
-                        <p class="paper-text">
-                            Welcome to my blog focused on reinforcement learning with JAX! This resource is designed to help researchers and practitioners understand both the theoretical foundations of reinforcement learning and their efficient implementation using Google's JAX library.
-                        </p>
-                        <p class="paper-text">
-                            Throughout this blog, you'll find tutorials, code examples, and in-depth explanations of key RL concepts—from basics like Markov Decision Processes and Q-learning to advanced topics such as policy gradient methods and model-based RL. Each article emphasizes practical implementation techniques that leverage JAX's automatic differentiation, vectorization, and GPU/TPU acceleration.
-                        </p>
-                        <ul class="paper-list">
-                            <li class="paper-list-item">
-                                <svg class="paper-list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <span>13-week comprehensive curriculum</span>
-                            </li>
-                            <li class="paper-list-item">
-                                <svg class="paper-list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <span>Video tutorials and code implementations</span>
-                            </li>
-                            <li class="paper-list-item">
-                                <svg class="paper-list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <span>Practical exercises and projects</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <h3 class="section-title" id="courses" style="font-size: 1.75rem; margin-top: 64px;">13-Week Course Schedule</h3>
-                
-                <div class="course-grid">
-                    <!-- Week 1 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 1</div>
-                            <h3 class="course-title">Introduction to RL</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Overview of RL paradigm, key concepts, relation to other ML approaches, and introduction to JAX basics.
-                            </p>
-                            <div class="course-links">
-                                <a href="week_materials/week1/" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 2 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 2</div>
-                            <h3 class="course-title">Markov Decision Processes</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Mathematical formulation of MDPs, policies, value functions, and the Bellman equations.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 3 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 3</div>
-                            <h3 class="course-title">Dynamic Programming</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Policy evaluation, policy improvement, value iteration, and policy iteration with JAX implementation.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 4 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 4</div>
-                            <h3 class="course-title">Monte Carlo Methods</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Monte Carlo prediction and control, first-visit MC, every-visit MC, and exploring starts.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 5 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 5</div>
-                            <h3 class="course-title">Temporal Difference Learning</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                TD prediction (TD(0)), SARSA, Q-learning, and expected SARSA with JAX acceleration.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 6 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 6</div>
-                            <h3 class="course-title">n-step Bootstrapping</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                n-step TD prediction, n-step SARSA, n-step Q-learning, and the forward and backward views.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 7 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 7</div>
-                            <h3 class="course-title">Planning and Learning</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Model-based RL, Dyna-Q, prioritized sweeping, and monte carlo tree search using JAX.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 8 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 8</div>
-                            <h3 class="course-title">Function Approximation</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Feature-based representations, gradient TD methods, and linear function approximation with JAX.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 9 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 9</div>
-                            <h3 class="course-title">Deep Q-Networks</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Deep Q-learning, experience replay, target networks, and implementing DQN with JAX and Haiku.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 10 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 10</div>
-                            <h3 class="course-title">Policy Gradient Methods</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                REINFORCE algorithm, policy gradient theorem, and actor-critic methods implemented with JAX.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 11 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 11</div>
-                            <h3 class="course-title">Trust Region Methods</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                TRPO, PPO, and constrained policy optimization with JAX's automatic differentiation.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 12 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 12</div>
-                            <h3 class="course-title">Model-Based RL</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Learning environment models, model-based planning, and imagination-based methods with JAX implementations.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Week 13 -->
-                    <div class="course-card">
-                        <div class="course-header">
-                            <div class="course-week">Week 13</div>
-                            <h3 class="course-title">Exploration vs. Exploitation</h3>
-                        </div>
-                        <div class="course-content">
-                            <p class="course-description">
-                                Multi-armed bandits, UCB, Thompson sampling, intrinsic motivation, and curiosity-driven learning.
-                            </p>
-                            <div class="course-links">
-                                <a href="#" class="course-link link-materials">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Materials
-                                </a>
-                                <a href="https://youtube.com/" class="course-link link-youtube">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
-                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1361,6 +886,8 @@
     </style>
 </head>
 <body>
+    <div class="header-sensor"></div>
+
     <header>
         <div class="container header-container">
             <div class="logo">
@@ -1393,8 +920,56 @@
             </nav>
         </div>
     </header>
-    </div>
-    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Header show/hide functionality
+        const header = document.querySelector('header');
+        const headerSensor = document.querySelector('.header-sensor');
+        const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        let isHeaderVisible = false;
+
+        // Function to show header
+        function showHeader() {
+            if (!isHeaderVisible) {
+                header.style.top = '0';
+                isHeaderVisible = true;
+            }
+        }
+
+        // Function to hide header
+        function hideHeader() {
+            if (isHeaderVisible && !navLinks.classList.contains('active')) {
+                header.style.top = '-80px';
+                isHeaderVisible = false;
+            }
+        }
+
+        // Mobile navigation toggle
+        mobileNavToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            // Ensure header stays visible when menu is open
+            if (navLinks.classList.contains('active')) {
+                showHeader();
+            }
+        });
+
+        // Add events to the sensor
+        headerSensor.addEventListener('mouseenter', showHeader);
+
+        // Hide header when mouse moves away from both header and sensor
+        document.addEventListener('mousemove', function(e) {
+            if (e.clientY > 100 && !navLinks.classList.contains('active')) {
+                hideHeader();
+            }
+        });
+
+        // Keep header visible when interacting with it
+        header.addEventListener('mouseenter', showHeader);
+    });
+    </script>
+
     <main>
         <section class="hero">
             <div class="container">
@@ -1446,9 +1021,401 @@
                 </div>
             </div>
         </section>
-        
-        </div>
-        
+
+        <section class="section" id="overview">
+            <div class="container">
+                <div class="paper-section">
+                    <div class="paper-image">
+                        <img src="https://leejisue.github.io/theory/rl-basics/img/logo.jpg" alt="RL Diagram">
+                    </div>
+                    <div class="paper-content">
+                        <h3 class="paper-title">Learn, Implement, Master</h3>
+                        <p class="paper-text">
+                            Welcome to my blog focused on reinforcement learning with JAX! This resource is designed to help researchers and practitioners understand both the theoretical foundations of reinforcement learning and their efficient implementation using Google's JAX library.
+                        </p>
+                        <p class="paper-text">
+                            Throughout this blog, you'll find tutorials, code examples, and in-depth explanations of key RL concepts—from basics like Markov Decision Processes and Q-learning to advanced topics such as policy gradient methods and model-based RL. Each article emphasizes practical implementation techniques that leverage JAX's automatic differentiation, vectorization, and GPU/TPU acceleration.
+                        </p>
+                        <ul class="paper-list">
+                            <li class="paper-list-item">
+                                <svg class="paper-list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>13-week comprehensive curriculum</span>
+                            </li>
+                            <li class="paper-list-item">
+                                <svg class="paper-list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Video tutorials and code implementations</span>
+                            </li>
+                            <li class="paper-list-item">
+                                <svg class="paper-list-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Practical exercises and projects</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="section-title" id="courses" style="font-size: 1.75rem; margin-top: 64px;">13-Week Course Schedule</h3>
+
+                <div class="course-grid">
+                    <!-- Week 1 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 1</div>
+                            <h3 class="course-title">Introduction to RL</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Overview of RL paradigm, key concepts, relation to other ML approaches, and introduction to JAX basics.
+                            </p>
+                            <div class="course-links">
+                                <a href="week_materials/week1/index.html" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 2 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 2</div>
+                            <h3 class="course-title">Value-based RL</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Mathematical formulation of MDPs, policies, value functions, and the Bellman equations.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 3 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 3</div>
+                            <h3 class="course-title">Dynamic Programming</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Policy evaluation, policy improvement, value iteration, and policy iteration with JAX implementation.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 4 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 4</div>
+                            <h3 class="course-title">Monte Carlo Methods</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Monte Carlo prediction and control, first-visit MC, every-visit MC, and exploring starts.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 5 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 5</div>
+                            <h3 class="course-title">Temporal Difference Learning</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                TD prediction (TD(0)), SARSA, Q-learning, and expected SARSA with JAX acceleration.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 6 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 6</div>
+                            <h3 class="course-title">n-step Bootstrapping</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                n-step TD prediction, n-step SARSA, n-step Q-learning, and the forward and backward views.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 7 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 7</div>
+                            <h3 class="course-title">Planning and Learning</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Model-based RL, Dyna-Q, prioritized sweeping, and monte carlo tree search using JAX.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 8 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 8</div>
+                            <h3 class="course-title">Function Approximation</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Feature-based representations, gradient TD methods, and linear function approximation with JAX.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 9 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 9</div>
+                            <h3 class="course-title">Deep Q-Networks</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Deep Q-learning, experience replay, target networks, and implementing DQN with JAX and Haiku.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 10 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 10</div>
+                            <h3 class="course-title">Policy Gradient Methods</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                REINFORCE algorithm, policy gradient theorem, and actor-critic methods implemented with JAX.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 11 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 11</div>
+                            <h3 class="course-title">Trust Region Methods</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                TRPO, PPO, and constrained policy optimization with JAX's automatic differentiation.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 12 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 12</div>
+                            <h3 class="course-title">Model-Based RL</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Learning environment models, model-based planning, and imagination-based methods with JAX implementations.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Week 13 -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-week">Week 13</div>
+                            <h3 class="course-title">Exploration vs. Exploitation</h3>
+                        </div>
+                        <div class="course-content">
+                            <p class="course-description">
+                                Multi-armed bandits, UCB, Thompson sampling, intrinsic motivation, and curiosity-driven learning.
+                            </p>
+                            <div class="course-links">
+                                <a href="#" class="course-link link-materials">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M12 6.25278V19.2528M12 6.25278L6.75 10.5056M12 6.25278L17.25 10.5056" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Materials
+                                </a>
+                                <a href="https://youtube.com/" class="course-link link-youtube">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;">
+                                        <path d="M14 12L10 16M14 12L10 8M14 12H6M20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section section-alt" id="features">
             <div class="container">
                 <div class="section-heading">
