@@ -25,9 +25,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
 
-  <!-- Bulma slider (for the Experiment 01 range input behavior) -->
-  <link rel="stylesheet" href="./css/bulma-slider.min.css">
-
   <!-- Main stylesheet -->
   <link rel="stylesheet" href="./css/index.css">
 
@@ -274,15 +271,9 @@
     </div>
   </footer>
 
-  <!-- Slider JS (bulma-slider for init; inline logic for GIF swap) -->
-  <script src="./js/bulma-slider.min.js"></script>
+  <!-- Slider JS (inline logic for GIF swap) -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Init bulma slider styling if present
-      if (typeof bulmaSlider !== 'undefined') {
-        bulmaSlider.attach();
-      }
-
       const slider = document.getElementById('interpolation-slider');
       const imageDisplayIcm = document.getElementById('image-display-icm');
       const imageDisplayRnd = document.getElementById('image-display-rnd');
@@ -292,16 +283,16 @@
         slider.addEventListener('input', function () {
           const value = parseInt(this.value, 10);
 
-          // ICM image update
-          const icmNumber = String(Math.round(value * 3.357)).padStart(3, '0');
+          // ICM image update (802 frames)
+          const icmNumber = String(Math.round(value * 802 / 1533)).padStart(3, '0');
           imageDisplayIcm.src = `./img/experiment01_continuous/icm/ICM${icmNumber}.gif`;
 
-          // RND image update
-          const rndNumber = String(Math.round(value * 3.495)).padStart(3, '0');
+          // RND image update (840 frames)
+          const rndNumber = String(Math.round(value * 840 / 1533)).padStart(3, '0');
           imageDisplayRnd.src = `./img/experiment01_continuous/rnd/RND${rndNumber}.gif`;
 
-          // NGU image update
-          const nguNumber = String(Math.round(value * 6.328)).padStart(4, '0');
+          // NGU image update (1533 frames, 1:1 with slider)
+          const nguNumber = String(value).padStart(4, '0');
           imageDisplayNgu.src = `./img/experiment01_continuous/ngu/NGU${nguNumber}.gif`;
         });
       }
