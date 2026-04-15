@@ -120,19 +120,10 @@ h2 {
   font-size: 32px;
 }
 
-tr[bgcolor="#ffffd0"] {
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-tr[bgcolor="#ffffd0"]:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
 
 .one {
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: white;
   position: relative;
@@ -140,7 +131,7 @@ tr[bgcolor="#ffffd0"]:hover {
 
 .one {
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
@@ -170,11 +161,6 @@ tr[bgcolor="#ffffd0"]:hover {
   width: 100%;
   height: auto;
   object-fit: contain;
-  transition: transform 0.3s ease;
-}
-
-.one:hover img {
-  transform: scale(1.05);
 }
 
 .paper-image {
@@ -197,13 +183,6 @@ tr[bgcolor="#ffffd0"]:hover {
   transition: opacity 0.3s ease;
 }
 
-.one:hover .paper-hover-image {
-  opacity: 1;
-}
-
-.one:hover .paper-primary-image {
-  opacity: 0;
-}
 
 .papertitle {
   font-weight: bold;
@@ -216,16 +195,7 @@ a:hover .papertitle {
 }
 
 .bg_colour {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-  margin-bottom: 20px;
-}
-
-.bg_colour:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  background-color: #f0f0f0;
+  margin-bottom: 8px;
 }
 
 .two {

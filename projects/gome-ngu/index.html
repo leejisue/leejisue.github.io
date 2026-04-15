@@ -1,342 +1,312 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GOME-NGU: visual navigation under sparse reward via Goal Oriented Memory Encoder with Never Give Up">
+  <meta name="keywords" content="GOME, NGU, GOME-NGU, visual navigation, sparse reward, reinforcement learning">
+  <title>GOME-NGU: visual navigation under sparse reward via Goal Oriented Memory Encoder with Never Give Up</title>
+
+  <!-- MathJax -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="description"
-        content="GOME-NGU: Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
-  <meta name="keywords" content="GOME, NGU, GOME-NGU">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GOME-NGU: visual navigation under sparse reward via Goal Oriented Memory Encoder with Never Give Up</title>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-PYVRSFMDRL');
   </script>
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./css/bulma.min.css">
-  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <!-- Bulma slider (for the Experiment 01 range input behavior) -->
   <link rel="stylesheet" href="./css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./css/index.css">
-  <link rel="icon" href="./img/bear.png">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./js/fontawesome.all.min.js"></script>
-  <script src="./js/bulma-carousel.min.js"></script>
-  <script src="./js/bulma-slider.min.js"></script>
-  <script src="./js/index.js"></script>
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="./css/index.css">
+
+  <link rel="icon" href="./img/bear.png">
 </head>
 <body>
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-  <div class="navbar-menu">
-    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-      <a class="navbar-item" href="https://leejisue.github.io/">
-      <span class="icon">
-          <i class="fas fa-home"></i>
-      </span>
-      </a>
+  <!-- ===== HEADER / HERO ===== -->
+  <header class="header">
+    <div class="container">
+      <h1>GOME-NGU: visual navigation under sparse reward<br>via Goal Oriented Memory Encoder with Never Give Up</h1>
 
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More Research
+      <p class="authors">
+        <a href="https://leejisue.github.io/">Jisu Lee</a>
+        &nbsp;and&nbsp;
+        <a href="https://junmoony.github.io/">Jun Moon</a><sup>&dagger;</sup>
+      </p>
+      <p class="affiliation">Control &amp; Optimization Laboratory, Hanyang University</p>
+
+      <div class="action-buttons">
+        <a href="https://ieeexplore.ieee.org/document/10947036" class="action-btn" target="_blank" rel="noopener">
+          <!-- PDF icon -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
+          </svg>
+          Paper
         </a>
-        <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://leejisue.github.io/projects/gome-ngu/">
-            GOME-NGU
-          </a>
-        </div>
+        <a href="https://youtu.be/jLMrcgprdCg?feature=shared" class="action-btn" target="_blank" rel="noopener">
+          <!-- YouTube icon -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/>
+          </svg>
+          Video
+        </a>
       </div>
     </div>
+  </header>
 
-  </div>
-</nav>
+  <!-- ===== STICKY NAV ===== -->
+  <nav class="nav-bar" aria-label="Page sections">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#method">Method</a></li>
+        <li><a href="#experiments">Experiments</a></li>
+        <li><a href="#video">Video</a></li>
+        <li><a href="#bibtex">BibTeX</a></li>
+      </ul>
+    </div>
+  </nav>
 
-
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">GOME-NGU: visual navigation under sparse reward via Goal Oriented Memory Encoder with Never Give Up</h1>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="https://leejisue.github.io/">Ji Su Lee</a><sup>1</sup></span>
-            and
-            <span class="author-block">
-              <a href="https://junmoony.github.io/">Jun Moon</a><sup>2</sup>
-            </span>
-          </div>
-
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1, 2</sup>Hanyang University</span>
-          </div>
-
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <!-- PDF Link. -->
-              <span class="link-block">
-                <a href="https://ieeexplore.ieee.org/document/10947036"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span>
-              <!-- Video Link. -->
-              <span class="link-block">
-                <a href="https://youtu.be/jLMrcgprdCg?feature=shared"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-youtube"></i>
-                  </span>
-                  <span>Video</span>
-                </a>
-              </span>
-            </div>
-
-          </div>
-        </div>
-      </div>
+  <!-- ===== TEASER ===== -->
+  <div class="teaser-section">
+    <div class="container">
+      <img class="teaser-img" src="./img/abstract.gif" alt="GOME-NGU overview animation">
     </div>
   </div>
-</section>
 
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <img id="teaser" src="./img/abstract.gif" alt="Abstract Image" style="width: 100%; height: auto;">
+  <!-- ===== ABSTRACT ===== -->
+  <section id="abstract">
+    <div class="container">
+      <h2>Abstract</h2>
+      <p class="abstract-text">
+        In this paper, we propose the <strong>G</strong>oal <strong>O</strong>riented <strong>M</strong>emory <strong>E</strong>ncoder (<strong>GOME</strong>) with <strong>N</strong>ever-<strong>G</strong>ive-<strong>U</strong>p (<strong>NGU</strong>) model to enhance visual navigation in sparse rewards environments.
+        Our approach addresses the critical need for efficient exploration and exploitation under high-dimensional visual data and limited spatial information.
+        In our proposed <strong>GOME-NGU</strong>, we first utilize NGU for sufficient exploration.
+        Then GOME is applied to effectively leverage the information acquired during the exploration phase for exploitation.
+        In GOME, the information of goals and their associated rewards, obtained during the exploration phase, are stored as pairs.
+        During the exploitation phase, priorities are assigned to the stored goals based on the agent's current location, arranging them in order of proximity to enable the agent acting optimally.
+        To demonstrate the efficiency of the proposed <strong>GOME-NGU</strong>, we consider two different experiment categories.
+        Specifically, (i) to validate the sufficiency of exploration using NGU, we measured the environment's state and recorded the number of times the agent visited each state, and (ii) to confirm that GOME optimizes the path to goals nearest to the agent's location during the exploitation phase, we measured the frequency of the agent consecutively reaching nearby goals at least twice.
+        The training for (i) and (ii) was conducted using NVIDIA Isaac Gym, and post-training validation was carried out through migration to Isaac Sim.
+        Additionally, for (ii), the efficiency of the proposed GOME-NGU was validated using the Husky robot in the real-world setting.
+        In the experimental results, our proposed <strong>GOME-NGU</strong> demonstrated the enhanced performance in both exploration and exploitation aspects in environments with sparse rewards.
+      </p>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
+  <!-- ===== METHOD ===== -->
+  <section id="method">
+    <div class="container">
+      <h2>Method</h2>
+
+      <div class="method-steps">
+
+        <div class="method-step">
+          <div class="method-step-header">
+            <span class="step-number">1</span>
+            <h3>Save the goal image and goal reward</h3>
+          </div>
           <p>
-            In this paper, we propose the <b>G</b>oal <b>O</b>riented <b>M</b>emory <b>E</b>ncoder (<b>GOME</b>) with <b>N</b>ever-<b>G</b>ive-<b>U</b>p (<b>NGU</b>) model to enhance visual navigation in sparse rewards environments.
-            Our approach addresses the critical need for efficient exploration and exploitation under high-dimensional visual data and limited spatial information.
-            In our proposed <b>GOME-NGU</b>, we first utilize NGU for sufficient exploration.
-            Then GOME is applied to effectively leverage the information acquired during the exploration phase for exploitation.
-            In GOME, the information of goals and their associated rewards, obtained during the exploration phase, are stored as pairs.
-            During the exploitation phase, priorities are assigned to the stored goals based on the agent's current location, arranging them in order of proximity to enable the agent acting optimally.
-            To demonstrate the efficiency of the proposed <b>GOME-NGU</b>, we consider two different experiment categories.
-            Specifically, (i) to validate the sufficiency of exploration using NGU, we measured the environment's state and recorded the number of times the agent visited each state, and (ii) to confirm that GOME optimizes the path to goals nearest to the agent's location during the exploitation phase, we measured the frequency of the agent consecutively reaching nearby goals at least twice.
-            The training for (i) and (ii) was conducted using NVIDIA Isaac Gym, and post-training validation was carried out through migration to Isaac Sim.
-            Additionally, for (ii), the efficiency of the proposed GOME-NGU was validated using the Husky robot in the real-world setting.
-            In the experimental results, our proposed <b>GOME-NGU</b> demonstrated the enhanced performance in both exploration and exploitation aspects in environments with sparse rewards.
+            Within our goal-oriented network, we input the goal image and generate the goal reward \(r^g_t\).
+            In the GOME, each pair of \((g_t, r^g_t)\) is stored.
+            The value of \(r^g_t\) changes according to the proximity of the goal based on the location of the agent.
+            If the agent takes a specific action (such as reaching a goal) during exploration, all \(r^g_t\) are set to 1.
           </p>
         </div>
-      </div>
-    </div>
-    <!--/ Abstract. -->
 
-    <!--    Method-->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Method</h2>
-        <div class="content has-text-justified">
-          <ol>
-            <li><b>Save the goal image and goal reward</b></li>
-            <p>Within our goal-oriented network, we input the goal image and generate the goal reward \(r^g_t\).
-              In the GOME, each pair of \((g_t, r^g_t)\) is stored.
-              The value of \(r^g_t\) changes according to the proximity of the goal based on the location of the agent.
-              If the agent takes a specific action (such as reaching a goal) during exploration, all \(r^g_t\) are set to 1.</p>
-            <li><b>Goal image feature extraction</b></li>
-            <p>
-              Through feature extraction, we provide meaningful information from the goal image. We utilize <a href="https://arxiv.org/pdf/1512.03385.pdf">ResNet-50</a> as the baseline for this process.
-            </p>
-            <li><b>Priority goal selection based on the location of the agent</b></li>
-            <p>
-              Next, we select a priority goal based on the location of the agent. This involves assessing the similarity between the current and goal images in the GOME. If the \(g_n\) is close to the agent, it is selected as the priority goal. The proximity of the goal to the agent corresponds to the similarity score. A high score indicates that the goal is close to the agent. We utilze the cosine similarity to measure this similarity, which is calculated as follows:
-              $$
-              \begin{align*}
-              (v_t^O, v_t^G) = \frac{v_t^O \cdot v_t^G}{\|v_t^O\| \times \|v_t^G\|}
-              \end{align*}
-              $$
-              where \(v^O_t\) is the feature vector of the current image and \(v^G_t\) is the feature vector of the goal image in GOME. The norm of vector, \(v\) is represented as \(\|v\|\).
-            </p>
-            <li><b>Goal reward re-parameterization and GOME update</b></li>
-            <p>
-              Once the priority goal is selected, we re-parameterize our goal reward to prioritize the targets near the agent. This re-parameterization scales the similarity score to the goal. The priority goal is selected, and we re-parameterize \(r^g_t\) according to the following formula to facilitate the learning of the agent to visit closer goals first:
-              $$
-              \begin{align}
-              r^g_t = \frac{1}{(v^O_t, v^G_t)^\xi},
-              \end{align}
-              $$
-              where \(\xi\) is a parameter that adjusts the influence of distance. Using the formula above, goals that are farther from the agent will receive smaller rewards in the given episode.
-            </p>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--  Method-->
-
-  <!-- Experiment. -->
-  <div class="container is-max-desktop">
-  <div class="columns is-centered">
-    <div class="column is-full-width">
-      <h2 class="title is-3 has-text-centered">Experiment</h2>
-      <h3 class="title is-4">Experiment 01 - State Visitation Count</h3>
-
-      <img src="./img/experiment01.png" alt="Experiment 01 Image Description">
-      <div class="content has-text-justified">
-        <p>
-          <li>
-            We discretized states in a simple environment (empty warehouse) and measured the number of times each algorithm visited a state for three exploration algorithms.
-          </li>
-          <li>
-
-            In the case of ICM and RND, the problem of occasionally vanishing when revisiting states prevented sufficient exploration, but <strong>NGU</strong> was able to perform sufficient exploration.
-          </li>
-        </p>
-      </div>
-
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-one-third">
-          <img id="image-display-icm" src="./img/experiment01_continuous/icm/ICM000.gif" alt="ICM Image Display" style="width: 100%;">
-          <p>ICM</p>
-        </div>
-
-        <div class="column is-one-third">
-          <img id="image-display-rnd" src="./img/experiment01_continuous/rnd/RND000.gif" alt="RND Image Display" style="width: 100%;">
-          <p>RND</p>
-        </div>
-        <div class="column is-one-third">
-          <img id="image-display-ngu" src="./img/experiment01_continuous/ngu/NGU0000.gif" alt="NGU Image Display" style="width: 100%;">
-          <p>NGU</p>
-        </div>
-      </div>
-      <input class="slider is-fullwidth is-large is-info" id="interpolation-slider" step="1" min="0" max="1533" value="0" type="range">
-
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const slider = document.getElementById('interpolation-slider');
-          const imageDisplayIcm = document.getElementById('image-display-icm');
-          const imageDisplayRnd = document.getElementById('image-display-rnd');
-          const imageDisplayNgu = document.getElementById('image-display-ngu');
-
-          slider.oninput = function() {
-            const value = parseInt(this.value, 10);
-
-            // ICM 이미지 업데이트
-            const icmNumber = String(Math.round(value * 3.357)).padStart(3, '0');
-            imageDisplayIcm.src = `./img/experiment01_continuous/icm/ICM${icmNumber}.gif`;
-
-            // RND 이미지 업데이트
-            const rndNumber = String(Math.round(value * 3.495)).padStart(3, '0');
-            imageDisplayRnd.src = `./img/experiment01_continuous/rnd/RND${rndNumber}.gif`;
-
-            // NGU 이미지 업데이트
-            const nguNumber = String(Math.round(value * 6.328)).padStart(4, '0');
-            imageDisplayNgu.src = `./img/experiment01_continuous/ngu/NGU${nguNumber}.gif`;
-          }
-        });
-      </script>
-
-      <div class="content has-text-justified">
-        <p>
-          <li>
-            We compared exploration algorithms in a complex environment (hospital) and validated that <strong>NGU</strong> enables long-horizontal exploration.
-          </li>
-          <li>
-            The experimental results showed that ICM and RND were unable to perform exploration to deep locations, whereas <strong>NGU</strong> demonstrated the capability for long-horizontal exploration.
-          </li>
-        </p>
-
-      </div>
-
-      <h3 class="title is-4">Experiment 02 - Sequential Goal Visitation Count</h3>
-        <div class="container is-max-desktop">
-          <div class="hero-body">
-            <img id="teaser" src="./img/Experiment_two_one_sim.gif" alt="Abstract Image" style="width: 100%; height: auto;">
+        <div class="method-step">
+          <div class="method-step-header">
+            <span class="step-number">2</span>
+            <h3>Goal image feature extraction</h3>
           </div>
-          <div class="content has-text-justified">
-          <li>
-            We conducted validation on the proposed <strong>GOME-NGU</strong> in a complex environment (hospital).
-          </li>
-            <li>
-              ICM and RND were unable to perform deep exploration, but <strong>NGU</strong> enabled long-horizontal exploration.
-              In terms of sequential goal count, neither ICM, RND, nor NGU demonstrated good performance individually. However, when combined with GOME, both GOME-ICM, GOME-RND, and GOME-NGU exhibited strong performance.
-              Among these, the proposed <strong>GOME-NGU</strong> achieved the highest performance.
-            </li>
+          <p>
+            Through feature extraction, we provide meaningful information from the goal image. We utilize <a href="https://arxiv.org/pdf/1512.03385.pdf">ResNet-50</a> as the baseline for this process.
+          </p>
         </div>
+
+        <div class="method-step">
+          <div class="method-step-header">
+            <span class="step-number">3</span>
+            <h3>Priority goal selection based on the location of the agent</h3>
+          </div>
+          <p>
+            Next, we select a priority goal based on the location of the agent. This involves assessing the similarity between the current and goal images in the GOME. If the \(g_n\) is close to the agent, it is selected as the priority goal. The proximity of the goal to the agent corresponds to the similarity score. A high score indicates that the goal is close to the agent. We utilize the cosine similarity to measure this similarity, which is calculated as follows:
+          </p>
+          <p>
+            $$
+            \begin{align*}
+            (v_t^O, v_t^G) = \frac{v_t^O \cdot v_t^G}{\|v_t^O\| \times \|v_t^G\|}
+            \end{align*}
+            $$
+          </p>
+          <p>
+            where \(v^O_t\) is the feature vector of the current image and \(v^G_t\) is the feature vector of the goal image in GOME. The norm of vector, \(v\) is represented as \(\|v\|\).
+          </p>
+        </div>
+
+        <div class="method-step">
+          <div class="method-step-header">
+            <span class="step-number">4</span>
+            <h3>Goal reward re-parameterization and GOME update</h3>
+          </div>
+          <p>
+            Once the priority goal is selected, we re-parameterize our goal reward to prioritize the targets near the agent. This re-parameterization scales the similarity score to the goal. The priority goal is selected, and we re-parameterize \(r^g_t\) according to the following formula to facilitate the learning of the agent to visit closer goals first:
+          </p>
+          <p>
+            $$
+            \begin{align}
+            r^g_t = \frac{1}{(v^O_t, v^G_t)^\xi},
+            \end{align}
+            $$
+          </p>
+          <p>
+            where \(\xi\) is a parameter that adjusts the influence of distance. Using the formula above, goals that are farther from the agent will receive smaller rewards in the given episode.
+          </p>
+        </div>
+
       </div>
     </div>
-  </div>
-  </div>
-</section>
+  </section>
 
-<section class="section">
-  <!-- Paper video. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Video</h2>
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/jLMrcgprdCg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen width="320" height="300"></iframe>
+  <!-- ===== EXPERIMENTS ===== -->
+  <section id="experiments">
+    <div class="container">
+      <h2>Experiments</h2>
+
+      <!-- Experiment 01 -->
+      <div class="experiment-card">
+        <h3>Experiment 01 &mdash; State Visitation Count</h3>
+
+        <img src="./img/experiment01.png" alt="Experiment 01 state visitation count results">
+
+        <ul>
+          <li>We discretized states in a simple environment (empty warehouse) and measured the number of times each algorithm visited a state for three exploration algorithms.</li>
+          <li>In the case of ICM and RND, the problem of occasionally vanishing when revisiting states prevented sufficient exploration, but <strong>NGU</strong> was able to perform sufficient exploration.</li>
+        </ul>
+
+        <!-- GIF comparison slider -->
+        <div class="gif-comparison-grid">
+          <div class="gif-comparison-item">
+            <img id="image-display-icm" src="./img/experiment01_continuous/icm/ICM000.gif" alt="ICM exploration">
+            <p>ICM</p>
+          </div>
+          <div class="gif-comparison-item">
+            <img id="image-display-rnd" src="./img/experiment01_continuous/rnd/RND000.gif" alt="RND exploration">
+            <p>RND</p>
+          </div>
+          <div class="gif-comparison-item">
+            <img id="image-display-ngu" src="./img/experiment01_continuous/ngu/NGU0000.gif" alt="NGU exploration">
+            <p>NGU</p>
+          </div>
         </div>
+
+        <div class="slider-row">
+          <span class="slider-label">Scrub through time</span>
+          <input class="gome-slider" id="interpolation-slider" type="range" step="1" min="0" max="1533" value="0" aria-label="Exploration time slider">
+        </div>
+
+        <ul>
+          <li>We compared exploration algorithms in a complex environment (hospital) and validated that <strong>NGU</strong> enables long-horizontal exploration.</li>
+          <li>The experimental results showed that ICM and RND were unable to perform exploration to deep locations, whereas <strong>NGU</strong> demonstrated the capability for long-horizontal exploration.</li>
+        </ul>
+      </div>
+
+      <!-- Experiment 02 -->
+      <div class="experiment-card">
+        <h3>Experiment 02 &mdash; Sequential Goal Visitation Count</h3>
+
+        <img src="./img/Experiment_two_one_sim.gif" alt="Experiment 02 sequential goal visitation in Isaac Sim">
+
+        <ul>
+          <li>We conducted validation on the proposed <strong>GOME-NGU</strong> in a complex environment (hospital).</li>
+          <li>ICM and RND were unable to perform deep exploration, but <strong>NGU</strong> enabled long-horizontal exploration. In terms of sequential goal count, neither ICM, RND, nor NGU demonstrated good performance individually. However, when combined with GOME, both GOME-ICM, GOME-RND, and GOME-NGU exhibited strong performance. Among these, the proposed <strong>GOME-NGU</strong> achieved the highest performance.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== VIDEO ===== -->
+  <section id="video">
+    <div class="container">
+      <h2>Video</h2>
+      <div class="video-embed-wrapper">
+        <iframe src="https://www.youtube.com/embed/jLMrcgprdCg"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                title="GOME-NGU demonstration video"></iframe>
       </div>
     </div>
-    <!--/ Paper video. -->
-  </div>
-</section>
+  </section>
 
-
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@unpublished{gome-ngu,
-	author = {Ji Sue Lee and Jun Moon},
-	title  = {{GOME-NGU: visual navigation under sparse reward via Goal-Oriented Memory Encoder with Never Give Up}},
-	year   = {2025},
+  <!-- ===== BIBTEX ===== -->
+  <section id="bibtex">
+    <div class="container">
+      <h2>BibTeX</h2>
+      <div class="bibtex-block">
+        <pre><code>@article{gome-ngu,
+  author  = {Ji Sue Lee and Jun Moon},
+  title   = {{GOME-NGU: visual navigation under sparse reward via Goal-Oriented Memory Encoder with Never Give Up}},
+  journal = {IEEE Access},
+  year    = {2025},
 }</code></pre>
-  </div>
-</section>
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            The website template was borrowed from <a href="https://keunhong.com/">Keunhong Park</a> and <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
-          </p>
-        </div>
       </div>
     </div>
-  </div>
-</footer>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p>Website template borrowed from <a href="https://keunhong.com/">Keunhong Park</a> and <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.</p>
+      <p>&copy; 2025 Hanyang University</p>
+    </div>
+  </footer>
+
+  <!-- Slider JS (bulma-slider for init; inline logic for GIF swap) -->
+  <script src="./js/bulma-slider.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Init bulma slider styling if present
+      if (typeof bulmaSlider !== 'undefined') {
+        bulmaSlider.attach();
+      }
+
+      const slider = document.getElementById('interpolation-slider');
+      const imageDisplayIcm = document.getElementById('image-display-icm');
+      const imageDisplayRnd = document.getElementById('image-display-rnd');
+      const imageDisplayNgu = document.getElementById('image-display-ngu');
+
+      if (slider) {
+        slider.addEventListener('input', function () {
+          const value = parseInt(this.value, 10);
+
+          // ICM image update
+          const icmNumber = String(Math.round(value * 3.357)).padStart(3, '0');
+          imageDisplayIcm.src = `./img/experiment01_continuous/icm/ICM${icmNumber}.gif`;
+
+          // RND image update
+          const rndNumber = String(Math.round(value * 3.495)).padStart(3, '0');
+          imageDisplayRnd.src = `./img/experiment01_continuous/rnd/RND${rndNumber}.gif`;
+
+          // NGU image update
+          const nguNumber = String(Math.round(value * 6.328)).padStart(4, '0');
+          imageDisplayNgu.src = `./img/experiment01_continuous/ngu/NGU${nguNumber}.gif`;
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>
