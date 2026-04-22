@@ -198,6 +198,24 @@ a:hover .papertitle {
   margin-bottom: 8px;
 }
 
+.project-filter {
+  font-size: 16px;
+  font-weight: 500;
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.project-filter:hover {
+  color: #4b7bec;
+}
+
+.project-filter--active {
+  color: #4b7bec;
+  font-weight: 600;
+}
+
 .two {
   width: 160px;
   height: 160px;

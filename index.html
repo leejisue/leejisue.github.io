@@ -55,8 +55,8 @@
             <tr onmouseout="recon_stop()" onmouseover="recon_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                    <img src="projects/prism/img/motivation.png" alt="PRISM preview" class="paper-primary-image" style="width:100%; height:auto;">
-                    <img id="recon_image" src="projects/prism/img/motivation.png" alt="PRISM detail" class="paper-hover-image" style="width:100%; height:auto;">
+                    <img src="projects/c2a/img/motivation.png" alt="C2A preview" class="paper-primary-image" style="width:100%; height:auto;">
+                    <img id="recon_image" src="projects/c2a/img/motivation.png" alt="C2A detail" class="paper-hover-image" style="width:100%; height:auto;">
                 </div>
                 <script type="text/javascript">
                     function recon_start() {
@@ -77,9 +77,9 @@
                 <br>
                 <!-- <em>IEEE Robotics and Automation Letters (RA-L)</em>, submitted, 2025 -->
                 <em>preprint.</em>
-                <!-- <br>
+                <br>
                 project page
-                <br> -->
+                <br>
               </td>
             </tr>
           </tbody></table>
@@ -180,12 +180,55 @@
             <tr>
               <td>
                 <h2>Projects</h2>
+                <p style="text-align:left; margin-top:8px;">
+                  <a href="javascript:void(0)" id="filter-all" class="project-filter project-filter--active" onclick="filterProjects('all')">All</a>
+                  &nbsp;/&nbsp;
+                  <a href="javascript:void(0)" id="filter-tbd" class="project-filter" onclick="filterProjects('tbd')">TBD</a>
+                </p>
               </td>
             </tr>
         </tbody></table>
 
-        <!-- Projects 항목에 호버 효과 적용 -->
-        <table border=0 class="bg_colour" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-bottom:8px;"><tbody>
+        <!-- Projects — newest first -->
+
+        <!-- 1. MetaHighwayEnv (Apr. 2026) -->
+        <table border=0 class="bg_colour project-item" data-status="done" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-bottom:8px;"><tbody>
+          <tr>
+              <td style="padding:10px;width:25%;vertical-align:middle">
+                  <div class="one">
+                      <img src='portfolio/meta-highway/MetaHighway.png' width="100%" style="max-height: 160px; object-fit: contain;">
+                  </div>
+              </td>
+              <td style="padding:10px;width:75%;vertical-align:top">
+                  <a href="https://github.com/leejisue/MetaHighwayEnv"><papertitle><big>MetaHighwayEnv: Causal Meta-RL for Autonomous Driving</papertitle></big></a> (Apr. 2026)
+                  <br>
+                  A causal meta-reinforcement learning environment built on highway-env, designed for research on context-based adaptation and causal inference in non-stationary traffic scenarios with a pure-JAX reimplementation for GPU-accelerated training.
+                  <br>
+                  Supports 14 environment types with a unified do-calculus intervention API, declarative SCM engine, and counterfactual replay.
+              </td>
+          </tr>
+        </tbody></table>
+
+        <!-- 2. Drone Position Control (Aug. 2025) -->
+        <table border=0 class="bg_colour project-item" data-status="done" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-bottom:8px;"><tbody>
+          <tr>
+              <td style="padding:10px;width:25%;vertical-align:middle">
+                  <div class="one">
+                      <img src='https://i.imgur.com/eE4QxhC.png' width="100%" style="max-height: 160px; object-fit: contain;">
+                  </div>
+              </td>
+              <td style="padding:10px;width:75%;vertical-align:top">
+                  <a href="https://position-drone.github.io/"><papertitle><big>Drone Position Control using Reinforcement Learning</papertitle></big></a> (Aug. 2025 - Sep. 2025)
+                  <br>
+                  A collaborative research project with KAUST laboratory focusing on autonomous drone control using reinforcement learning techniques for precise position control.
+                  <br>
+                  Developed and implemented RL-based position control algorithms for quadrotor drones in complex 3D environments.
+              </td>
+          </tr>
+        </tbody></table>
+
+        <!-- 3. Isaac-Sim Mobile Robot (May. 2024) -->
+        <table border=0 class="bg_colour project-item" data-status="tbd" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-bottom:8px;"><tbody>
             <tr>
               <td style="padding:10px;width:25%;vertical-align:middle">
                   <div class="one">
@@ -199,10 +242,11 @@
                   <br>
                   We are developing a new user interface (UI) in the NVIDIA Isaac-Sim.
               </td>
-          </tr>          
+          </tr>
         </tbody></table>
 
-        <table border=0 class="bg_colour" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-bottom:8px;"><tbody>
+        <!-- 4. CARLA Semantic Segmentation (May. 2023) -->
+        <table border=0 class="bg_colour project-item" data-status="done" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-bottom:8px;"><tbody>
           <tr>
               <td style="padding:10px;width:25%;vertical-align:middle">
                   <div class="one">
@@ -219,7 +263,8 @@
           </tr>
         </tbody></table>
 
-        <table border=0 class="bg_colour" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+        <!-- 5. HyperDrive (TBD) -->
+        <table border=0 class="bg_colour project-item" data-status="tbd" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
           <tr>
               <td style="padding:10px;width:25%;vertical-align:middle">
                   <div class="one">
@@ -233,23 +278,6 @@
                   A research-driven project exploring advanced reinforcement learning techniques for autonomous racing, conducted using the Learn to Race simulation platform.
                   <br>
                   Developed and evaluated various reinforcement learning algorithms, including Online RL, Offline RL, Transformer-based RL, State Space Models, and Meta-RL.
-              </td>
-          </tr>
-        </tbody></table>
-
-        <table border=0 class="bg_colour" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-bottom:8px;"><tbody>
-          <tr>
-              <td style="padding:10px;width:25%;vertical-align:middle">
-                  <div class="one">
-                      <img src='https://i.imgur.com/eE4QxhC.png' width="100%" style="max-height: 160px; object-fit: contain;">
-                  </div>
-              </td>
-              <td style="padding:10px;width:75%;vertical-align:top">
-                  <a href="https://position-drone.github.io/"><papertitle><big>Drone Position Control using Reinforcement Learning</papertitle></big></a> (Aug. 2025 - Sep. 2025)
-                  <br>
-                  A collaborative research project with KAUST laboratory focusing on autonomous drone control using reinforcement learning techniques for precise position control.
-                  <br>
-                  Developed and implemented RL-based position control algorithms for quadrotor drones in complex 3D environments.
               </td>
           </tr>
         </tbody></table>
@@ -298,5 +326,19 @@
         </td>
       </tr>
     </table>
+  <script>
+  function filterProjects(filter) {
+    var items = document.querySelectorAll('.project-item');
+    items.forEach(function(el) {
+      if (filter === 'all') {
+        el.style.display = '';
+      } else {
+        el.style.display = el.dataset.status === filter ? '' : 'none';
+      }
+    });
+    document.getElementById('filter-all').classList.toggle('project-filter--active', filter === 'all');
+    document.getElementById('filter-tbd').classList.toggle('project-filter--active', filter === 'tbd');
+  }
+  </script>
   </body>
 </html>
